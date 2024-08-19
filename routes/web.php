@@ -1,5 +1,6 @@
 <?php
 
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -14,15 +15,26 @@ use Illuminate\Support\Facades\Route;
 */
 
 
-Route::view('/', 'welcome');
-Route::redirect('/', '/login');
+Route::get('/', function () {
+    if (Auth::check()) {
+        if (Auth::user()->role === 'admin') {
+            return redirect()->route('clients');
+        } else if (Auth::user()->role === 'client') {
+            return redirect()->route('requests');
+        }
+    }
+    return redirect()->route('login');
+});
 
-Route::view('clients', 'clients')
-    ->name('clients');
+Route::group(['middleware' => 'auth'], function () {
+    Route::view('clients', 'clients')
+        ->name('clients');
+});
 
-Route::view('dashboard', 'dashboard')
-    ->middleware(['auth', 'verified'])
-    ->name('dashboard');
+
+// Route::view('dashboard', 'dashboard')
+//     ->middleware(['auth', 'verified'])
+//     ->name('dashboard');
 
 Route::view('profile', 'profile')
     ->middleware(['auth'])
