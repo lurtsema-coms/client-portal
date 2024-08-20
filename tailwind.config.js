@@ -13,6 +13,7 @@ export default {
         extend: {
             fontFamily: {
                 sans: ["Figtree", ...defaultTheme.fontFamily.sans],
+                bebas: ["Bebas Neue", "sans-serif"],
             },
             colors: {
                 "custom-blue": "rgb(4, 32, 44)",
