@@ -17,10 +17,15 @@ return new class extends Migration
             $table->string('role')->default('admin');
             $table->string('client_type')->nullable();
             $table->string('email')->unique();
+            $table->string('company_cell_number');
+            $table->text('company_address');
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password');
+            $table->unsignedBigInteger('created_by')->length(10)->nullable();
+            $table->unsignedBigInteger('updated_by')->length(10)->nullable();
             $table->rememberToken();
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 

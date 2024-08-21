@@ -31,6 +31,8 @@ Route::group(['middleware' => 'auth'], function () {
         ->name('clients');
     Route::view('users', 'users')
         ->name('users');
+    Route::view('add-users', 'add-users')
+        ->name('add-users');
 });
 
 
