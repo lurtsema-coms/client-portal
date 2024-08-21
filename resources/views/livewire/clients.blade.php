@@ -13,9 +13,8 @@ new class extends Component {
                 <option class="text-black" value="{{ $clientType }}">{{ ucwords($clientType) }}</option>
             @endforeach
         </select>
-        <div class="w-full md:max-w-[20rem] lg:max-w-[30rem] flex items-center justify-end gap-5">
+        <div class="flex items-center justify-end w-full gap-5 md:max-w-sm">
             <input type="search" wire:model="search" placeholder="Search..." class="flex-1 text-black rounded-lg">
-            <button class="px-5 py-1 font-bold text-black transition-all duration-300 ease-in-out rounded-md bg-button-blue hover:opacity-60">Add</button>
         </div>
     </div>
     <div class="bg-custom-gradient w-full h-[2px] -z-10 my-10"></div>
