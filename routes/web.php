@@ -27,10 +27,12 @@ Route::get('/', function () {
 });
 
 Route::group(['middleware' => 'auth'], function () {
-    Route::view('clients', 'clients')
-        ->name('clients');
-    Route::view('users', 'users')
-        ->name('users');
+    Route::middleware('role:admin')->group(function () {
+        Route::view('clients', 'clients')
+            ->name('clients');
+        Route::view('users', 'users')
+            ->name('users');
+    });
 });
 
 
