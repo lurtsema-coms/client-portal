@@ -9,14 +9,21 @@ new class extends Component {
 
 <div class="flex flex-col items-center justify-center w-full">
     <div class="flex flex-col w-full md:flex-row md:justify-between">
-        <select name="client_type" id="client-type" class="w-full bg-transparent border-none outline-none lg:text-3xl md:max-w-52">
-            @foreach ($clientTypes as $clientType)
-                <option class="text-black" value="{{ $clientType }}">{{ ucwords($clientType) }}</option>
-            @endforeach
-        </select>
-        <div class="w-full md:max-w-[20rem] lg:max-w-[30rem] flex items-center justify-end gap-5">
-            <input type="search" wire:model="search" placeholder="Search..." class="flex-1 text-black rounded-lg">
-            <button class="px-5 py-1 font-bold text-black transition-all duration-300 ease-in-out rounded-md bg-button-blue hover:opacity-60">Add</button>
+        <div>
+            <img class="w-1/3" src="{{ asset('images/user.png') }}" alt="">
+            <div>
+                <h1>Client Name A</h1>
+                <h2>Email Address:</h2>
+                <h2>Company Cell Number:</h2>
+                <h2>Company Address:</h2>
+                <h2>Porject Manager: Jubie</h2>
+            </div>
+        </div>
+        <div>
+            <h1>Person in Contact:</h1>
+            <h2>Name:</h2>
+            <h2>Email Address:</h2>
+            <h2>Cell Number:</h2>
         </div>
     </div>
     <div class="bg-custom-gradient w-full h-[2px] -z-10 my-10"></div>

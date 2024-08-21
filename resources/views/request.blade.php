@@ -1,8 +1,7 @@
 <x-admin-layout>
-    <div class="flex flex-col items-stretch justify-start gap-5">
-        <div class="flex items-center justify-between">
-            <h1 class="text-2xl font-bold lg:text-7xl">Client Portal</h1>
-            <x-application-logo class="block w-auto h-10 text-white fill-current lg:h-20" />
+    <div class="flex flex-col items-center justify-start gap-5">
+        <div class="w-full flex justify-center">
+            <h1 class="text-2xl font-bold lg:text-7xl">Welcome to your Portal!</h1>
         </div>
         @livewire('request')
     </div>
