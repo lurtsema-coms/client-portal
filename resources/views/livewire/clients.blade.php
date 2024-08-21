@@ -42,7 +42,7 @@ new class extends Component {
                         <td class="hidden sm:table-cell">{{ date('D, F j, Y') }}</td>
                         <td class="hidden xl:table-cell">Details sent via email...</td>
                         <td class="rounded-r-lg">
-                            <button class="px-5 py-1 font-bold text-black transition-all duration-300 ease-in-out rounded-md bg-button-blue hover:opacity-60">View</button>
+                            <a href="{{ route('requests.view-request', rand(0, 100)) }}" wire:navigate class="px-5 py-1 font-bold text-black transition-all duration-300 ease-in-out rounded-md bg-button-blue hover:opacity-60">View</a>
                         </td>
                     </tr>
                 @endfor
