@@ -21,7 +21,7 @@ Route::get('/', function () {
         if (Auth::user()->role === 'admin') {
             return redirect()->route('clients');
         } else if (Auth::user()->role === 'client') {
-            return redirect()->route('requests');
+            return redirect()->route('request');
         }
     }
     return redirect()->route('login');
@@ -34,7 +34,9 @@ Route::group(['middleware' => 'auth'], function () {
         Route::view('users', 'users')->name('users');
     });
 
-    Route::middleware('role:client')->group(function () {});
+    Route::middleware('role:client')->group(function () {
+        Route::view('request', 'request')->name('request');
+    });
 });
 
 
