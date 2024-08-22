@@ -164,7 +164,12 @@ new class extends Component {
 
     public function removePersonInContact($index)
     {
-        PersonInContact::find($this->person_in_contact[$index]['id'])->delete();
+        $person_in_contact = PersonInContact::find($this->person_in_contact[$index]['id']);
+
+        if($person_in_contact){
+            $person_in_contact->delete();
+        }
+        
         unset($this->person_in_contact[$index]);
         $this->person_in_contact = array_values($this->person_in_contact);
     }
