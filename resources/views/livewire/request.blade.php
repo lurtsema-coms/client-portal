@@ -8,19 +8,19 @@ new class extends Component {
 }; ?>
 
 <div class="flex flex-col items-center justify-center w-full">
-    <div class="flex flex-col w-full md:flex-row md:justify-between">
-        <div>
-            <img class="w-1/3" src="{{ asset('images/user.png') }}" alt="">
-            <div>
-                <h1>Client Name A</h1>
-                <h2>Email Address:</h2>
-                <h2>Company Cell Number:</h2>
-                <h2>Company Address:</h2>
-                <h2>Porject Manager: Jubie</h2>
+    <div class="flex flex-col  gap-20 md:flex-row">
+        <div class="flex w-full gap-10 px-8 py-8 border rounded-3xl">
+            <img class="w-auto h-[12rem]" src="{{ asset('images/user.png') }}" alt="">
+            <div class="flex flex-col justify-center ">
+                <h1 class=" text-4xl font-bold mb-2">Client Name A</h1>
+                <h2 class=" text-lg">Email Address:</h2>
+                <h2 class=" text-lg">Company Cell Number:</h2>
+                <h2 class=" text-lg mb-6">Company Address:</h2>
+                <h2 class=" text-lg">Porject Manager: Jubie</h2>
             </div>
         </div>
-        <div>
-            <h1>Person in Contact:</h1>
+        <div class=" flex flex-col justify-center ">
+            <h1 class=" text-4xl font-bold mb-2">Person in Contact:</h1>
             <h2>Name:</h2>
             <h2>Email Address:</h2>
             <h2>Cell Number:</h2>
