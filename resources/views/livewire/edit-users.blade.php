@@ -155,6 +155,7 @@ new class extends Component {
     public function addPersonInContact()
     {
         $this->person_in_contact[] = [
+            'id' => '',
             'name' => '',
             'cell_number' => '',
             'email' => '',
