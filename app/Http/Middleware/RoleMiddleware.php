@@ -16,11 +16,12 @@ class RoleMiddleware
      */
     public function handle(Request $request, Closure $next, $role): Response
     {
+        $role = explode('|', $role);
         if (!Auth::check()) {
             return redirect('/');
         }
         $user = Auth::user();
-        if ($user->role != $role) {
+        if (!in_array($user->role, $role)) {
             abort(401);
         }
         return $next($request);
