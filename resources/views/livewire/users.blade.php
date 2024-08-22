@@ -25,7 +25,7 @@ new class extends Component {
 
             })
             ->orderBy('id', 'desc')
-            ->paginate(5);
+            ->paginate(7);
 
         return $query;
     }
