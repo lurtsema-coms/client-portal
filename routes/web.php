@@ -2,6 +2,7 @@
 
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
+use Livewire\Volt\Volt;
 
 /*
 |--------------------------------------------------------------------------
@@ -28,14 +29,12 @@ Route::get('/', function () {
 
 Route::group(['middleware' => 'auth'], function () {
     Route::middleware('role:admin')->group(function () {
-        Route::view('clients', 'clients')
-            ->name('clients');
-        Route::view('users', 'users')
-            ->name('users');
-        Route::view('add-users', 'add-users')
-            ->name('add-users');
-        Route::view('edit-users/{id}', 'edit-users')
-            ->name('edit-users');
+        Route::view('clients', 'clients')->name('clients');
+        Volt::route('requests/{request}', 'requests.view-request')->name('requests.view-request');
+        Volt::route('clients/{client}', 'clients.view-client')->name('clients.view-client');
+        Route::view('users', 'users')->name('users');
+        Route::view('add-users', 'add-users')->name('add-users');
+        Route::view('edit-users/{id}', 'edit-users')->name('edit-users');
     });
 
     Route::middleware('role:client')->group(function () {

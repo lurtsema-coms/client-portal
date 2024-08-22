@@ -23,12 +23,13 @@ new class extends Component
             <div class="flex">
                 <!-- Logo -->
                 <div class="flex items-center shrink-0">
-                    <a href="{{ route('clients') }}" wire:navigate>
+                    <a href="/" wire:navigate>
                         <x-application-logo class="block w-auto text-white fill-current h-9" />
                     </a>
                 </div>
 
                 <!-- Navigation Links -->
+                @role('admin')
                 <div class="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex">
                     <x-nav-link :href="route('clients')" :active="request()->routeIs('clients')" wire:navigate>
                         {{ __('Clients') }}
@@ -39,6 +40,14 @@ new class extends Component
                         {{ __('Users') }}
                     </x-nav-link>
                 </div>
+                @endrole
+                @role('client')
+                <div class="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex">
+                    <x-nav-link :href="route('request')" :active="request()->routeIs('request')" wire:navigate>
+                        {{ __('Requests') }}
+                    </x-nav-link>
+                </div>
+                @endrole
             </div>
 
             <!-- Settings Dropdown -->
@@ -85,6 +94,7 @@ new class extends Component
 
     <!-- Responsive Navigation Menu -->
     <div :class="{'block': open, 'hidden': ! open}" class="hidden sm:hidden">
+        @role('admin')
         <div class="pt-2 pb-3 space-y-1">
             <x-responsive-nav-link :href="route('clients')" :active="request()->routeIs('clients')" wire:navigate>
                 {{ __('Clients') }}
@@ -95,6 +105,14 @@ new class extends Component
                 {{ __('Users') }}
             </x-responsive-nav-link>
         </div>
+        @endrole
+        @role('client')
+        <div class="pt-2 pb-3 space-y-1">
+            <x-responsive-nav-link :href="route('request')" :active="request()->routeIs('request')" wire:navigate>
+                {{ __('Requests') }}
+            </x-responsive-nav-link>
+        </div>
+        @endrole
 
         <!-- Responsive Settings Options -->
         <div class="pt-4 pb-1 border-t border-gray-200">
