@@ -11,6 +11,7 @@ new class extends Component {
         return [
             'clients' => User::where('role', 'client')
                 ->orderBy('created_at', 'desc')
+                ->whereNull('deleted_at')
                 ->get(),
         ];
     }
