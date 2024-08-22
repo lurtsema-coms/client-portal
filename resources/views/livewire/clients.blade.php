@@ -5,6 +5,7 @@ use App\Models\User;
 
 new class extends Component {
     public $clientTypes = ['all', 'business', 'political'];
+    public  $clientType = 'all';
     public $search = '';
 
     public function with(): array {
@@ -18,7 +19,7 @@ new class extends Component {
 }; ?>
 <div class="flex flex-col items-center justify-center w-full">
     <div class="flex flex-col w-full md:flex-row md:justify-between">
-        <select name="client_type" id="client-type" class="w-full bg-transparent border-none outline-none lg:text-3xl md:max-w-52">
+        <select wire:model="clientType" name="client_type" id="client-type" class="w-full bg-transparent border-none outline-none lg:text-3xl md:max-w-52">
             @foreach ($clientTypes as $clientType)
                 <option class="text-black" value="{{ $clientType }}">{{ ucwords($clientType) }}</option>
             @endforeach
