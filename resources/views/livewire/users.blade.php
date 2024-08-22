@@ -70,7 +70,9 @@ new class extends Component {
                         <td class="hidden xl:table-cell">{{ $user->role }}</td>
                         <td class="hidden sm:table-cell">{{ Carbon::parse($user->created_at)->format('D, F j, Y')}}</td>
                         <td class="rounded-r-lg">
-                            <button class="px-5 py-1 font-bold text-black transition-all duration-300 ease-in-out rounded-md bg-button-blue hover:opacity-60">View</button>
+                            <a href="{{ route('edit-users', $user->id) }}">                                
+                                <button class="px-5 py-1 font-bold text-black transition-all duration-300 ease-in-out rounded-md bg-button-blue hover:opacity-60">Edit</button>
+                            </a>
                         </td>
                     </tr>
                 @endforeach

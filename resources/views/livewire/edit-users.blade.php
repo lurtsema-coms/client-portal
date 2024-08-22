@@ -5,6 +5,7 @@ use App\Models\PersonInContact;
 use Livewire\WithFileUploads;
 use Livewire\Attributes\Validate;
 use Illuminate\Support\Str;
+use Illuminate\Validation\Rule;
 use Illuminate\Support\Facades\Hash;
 use Livewire\Volt\Component;
 
@@ -12,6 +13,7 @@ new class extends Component {
 
     use WithFileUploads;
     
+    public $user;
     public $name = '';
     public $company_cell = '';
     public $company_address = '';
@@ -20,36 +22,61 @@ new class extends Component {
     public $client_type = '';
     public $project_manager = '';
     public $password = '';
+    public $img_path = '';
     public $photo;
     public $person_in_contact = [];
 
     public function mount()
     {
-        $this->person_in_contact = [
-            [
-                'name' => '',
-                'cell_number' => '',
-                'email_address' => '',
-            ]
-        ];
+        $user_id = request()->route('id');
+        
+        $user = User::with('personInContact')->find($user_id);
+        $this->user = $user;
+        
+        $this->name = $user->name;
+        $this->company_cell = $user->company_cell_number;
+        $this->company_address = $user->company_address;
+        $this->email = $user->email;
+        $this->role = $user->role;
+        $this->client_type = $user->client_type;
+        $this->project_manager = $user->project_manager;
+        $this->img_path = str_replace(public_path(), '', $user->img_path);
+        
+        if (!$user->personInContact->isEmpty()) {
+
+            $contacts = $user->personInContact->map(function ($contact) {
+                return [
+                    'id' => $contact->id,
+                    'name' => $contact->name,
+                    'cell_number' => $contact->cell_number,
+                    'email' => $contact->email,
+                ];
+            });
+
+            $this->person_in_contact = $contacts->toArray();
+        }
 
     }
 
-    public function addUser()
+    public function editUser()
     {
-        $this->validate();
+        $validatedData = $this->validate();
         
         $image = $this->photo;
         $img_path = '';
-
-        if($image){            
+        
+        if($image){    
             $uuid = substr(Str::uuid()->toString(), 0, 8);
             $file_name = $uuid . '.' . $image->getClientOriginalExtension();
             $img_path = public_path('images/user-logo')."/$file_name";
             $image->storePubliclyAs('images/user-logo', $file_name, 'public');
+
+            $this->user->update([
+                'img_path' => $img_path
+            ]);
         }
 
-        $user_id = User::insertGetId([
+        $user = $this->user->update([
             'name' => $this->name,
             'role' => $this->role,
             'email' => $this->email,
@@ -57,24 +84,30 @@ new class extends Component {
             'company_address' => $this->company_address === '' ? null : $this->company_address,
             'project_manager' => $this->project_manager === '' ? null : $this->project_manager,
             'client_type' => $this->client_type === '' ? null : $this->client_type,
-            'img_path' => $img_path === '' ? null : $img_path,
-            'password' => Hash::make($this->password),
             'created_by' => auth()->user()->id,
             'created_at' => date('Y-m-d H:i:s')
         ]);
+
+        if($this->password != ''){
+            $user->update([
+                'password' => Hash::make($this->password),
+            ]);
+        }
         
         if($this->role == 'client'){                      
             foreach($this->person_in_contact as $person) {
-                PersonInContact::create([
-                    'name' => $person['name'],
-                    'user_id' => $user_id,
-                    'cell_number' => $person['cell_number'],
-                    'email' => $person['email'],
-                ]);
+                PersonInContact::updateOrCreate(
+                    ['id' => $person['id']],
+                    [
+                        'name' => $person['name'],
+                        'user_id' => $this->user->id,
+                        'cell_number' => $person['cell_number'],
+                        'email' => $person['email'],
+                    ]
+                );
             }
         }
 
-        $this->reset(['name', 'role', 'email', 'company_cell', 'company_address', 'person_in_contact', 'password', 'project_manager', 'client_type']);
         return $this->redirect('/users', navigate: true);
     }
 
@@ -83,13 +116,17 @@ new class extends Component {
         $rules = [
             'name' => 'required|min:3',
             'role' => 'required|in:admin,client',
-            'email' => 'required|email|unique:users,email',
-            'password' => 'required|min:4',
+            'email' => [
+                'required',
+                'email',
+                Rule::unique('users', 'email')->ignore($this->user),
+            ],
+            'password' => 'nullable|min:4',
         ];
 
         if ($this->role === 'client') {
             $rules = array_merge($rules, [
-                'photo' => 'required|image|max:1024',
+                'photo' => 'nullable|image|max:1024',
                 'company_cell' => 'required|min:3',
                 'company_address' => 'required|min:3',
                 'project_manager' => 'required|min:3',
@@ -111,7 +148,7 @@ new class extends Component {
             'person_in_contact.*.cell_number.required' => 'The cell number field is required for each person in contact.',
             'person_in_contact.*.cell_number.min' => 'The cell number must be at least :min characters long.',
             'person_in_contact.*.email.required' => 'The email address field is required for each person in contact.',
-            'person_in_contact.*.email.email' => 'Each email address must be a valid email address.',
+            'person_in_contact.*.email' => 'Each email address must be a valid email address.',
         ];
     }
 
@@ -120,19 +157,20 @@ new class extends Component {
         $this->person_in_contact[] = [
             'name' => '',
             'cell_number' => '',
-            'email_address' => '',
+            'email' => '',
         ];
     }
 
     public function removePersonInContact($index)
     {
+        PersonInContact::find($this->person_in_contact[$index]['id'])->delete();
         unset($this->person_in_contact[$index]);
         $this->person_in_contact = array_values($this->person_in_contact);
     }
 }; ?>
 
 <div class="w-full p-3 text-black bg-white rounded-lg lg:p-6">
-    <form action="" wire:submit="addUser">
+    <form action="" wire:submit="editUser">
         <h1 class="font-bold lg:text-3xl">Personal Information</h1>
         <div class="grid sm:grid-cols-2 sm:gap-x-8">
             <div class="mt-5 space-y-2">
@@ -213,7 +251,7 @@ new class extends Component {
             </div>
             @endif
             <div class="mt-5 space-y-2">
-                <label for="" class="block tracking-wider text-gray-600">Password</label>
+                <label for="" class="block tracking-wider text-gray-600">Change Password</label>
                 <input 
                     class="w-full text-black rounded-lg"
                     type="password"
@@ -227,8 +265,10 @@ new class extends Component {
         <div class="mt-5 space-y-2">
             @if ($photo) 
                 <img src="{{ $photo->temporaryUrl() }}" class="mb-5 rounded-lg shadow-md max-w-48">
+                @else
+                <img src="{{ $img_path }}?{{ now()->timestamp }}" class="mb-5 rounded-lg shadow-md max-w-48">
             @endif
-            <label for="" class="block tracking-wider text-gray-600">Upload Company Photo</label>
+            <label for="" class="block tracking-wider text-gray-600">Upload New Company Photo</label>
             <input 
                 class="w-full max-w-lg"
                 type="file"

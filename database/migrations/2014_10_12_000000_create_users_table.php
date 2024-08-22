@@ -20,8 +20,9 @@ return new class extends Migration
             $table->string('company_cell_number')->nullable();
             $table->text('company_address')->nullable();
             $table->string('project_manager')->nullable();
-            $table->timestamp('email_verified_at')->nullable();
+            $table->string('img_path')->nullable();
             $table->string('password');
+            $table->timestamp('email_verified_at')->nullable();
             $table->unsignedBigInteger('created_by')->length(10)->nullable();
             $table->unsignedBigInteger('updated_by')->length(10)->nullable();
             $table->rememberToken();

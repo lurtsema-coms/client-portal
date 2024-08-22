@@ -34,6 +34,8 @@ Route::group(['middleware' => 'auth'], function () {
             ->name('users');
         Route::view('add-users', 'add-users')
             ->name('add-users');
+        Route::view('edit-users/{id}', 'edit-users')
+            ->name('edit-users');
     });
 
     Route::middleware('role:client')->group(function () {
