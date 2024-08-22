@@ -20,5 +20,11 @@ class DatabaseSeeder extends Seeder
             'company_address' => '123 Street Cubao',
             'email' => 'test@example.com',
         ]);
+
+        \App\Models\User::factory()->create([
+            'name' => 'Test User',
+            'role' => 'client',
+            'email' => 'test@client.com',
+        ]);
     }
 }
