@@ -37,8 +37,9 @@ new class extends Component {
             'name' => $this->name,
             'role' => $this->role,
             'email' => $this->email,
-            'company_cell_number' => $this->company_cell,
-            'company_address' => $this->company_address,
+            'company_cell_number' => $this->company_cell === '' ? null : $this->company_cell,
+            'company_address' => $this->company_address === '' ? null : $this->company_address,
+            'project_manager' => $this->project_manager === '' ? null : $this->project_manager,
             'password' => Hash::make($this->password),
             'created_by' => auth()->user()->id,
             'created_at' => date('Y-m-d H:i:s')
@@ -64,15 +65,15 @@ new class extends Component {
         $rules = [
             'name' => 'required|min:3',
             'role' => 'required|in:admin,client',
-            'company_cell' => 'required|min:3',
-            'company_address' => 'required|min:3',
             'email' => 'required|email',
-            'project_manager' => 'required|min:3',
             'password' => 'required|min:4',
         ];
 
         if ($this->role === 'client') {
             $rules = array_merge($rules, [
+                'company_cell' => 'required|min:3',
+                'company_address' => 'required|min:3',
+                'project_manager' => 'required|min:3',
                 'person_in_contact.*.name' => 'required|min:3',
                 'person_in_contact.*.cell_number' => 'required|min:3',
                 'person_in_contact.*.email_address' => 'required|email',
@@ -123,6 +124,7 @@ new class extends Component {
                 >
                 @error('name') <p class="text-red-500">{{ $message }}</p> @enderror
             </div>
+            @if($role === 'client')
             <div class="mt-5 space-y-2">
                 <label for="" class="block tracking-wider text-gray-600">Company Cell Number</label>
                 <input 
@@ -132,6 +134,7 @@ new class extends Component {
                 >
                 @error('company_cell') <p class="text-red-500">{{ $message }}</p> @enderror
             </div>
+            @endif
             <div class="mt-5 space-y-2">
                 <label for="" class="block tracking-wider text-gray-600">Email Address</label>
                 <input 
@@ -141,6 +144,7 @@ new class extends Component {
                 >
                 @error('email') <p class="text-red-500">{{ $message }}</p> @enderror
             </div>
+            @if($role === 'client')
             <div class="mt-5 space-y-2">
                 <label for="" class="block tracking-wider text-gray-600">Project Manager</label>
                 <input 
@@ -150,6 +154,7 @@ new class extends Component {
                 >
                 @error('project_manager')<p class="text-red-500">{{ $message }}</p>@enderror
             </div>
+            @endif
             <div class="mt-5 space-y-2">
                 <label for="" class="block tracking-wider text-gray-600">Role</label>
                 <select 
@@ -162,6 +167,7 @@ new class extends Component {
                 </select>
                 @error('role')<p class="text-red-500">{{ $message }}</p>@enderror
             </div>
+            @if($role === 'client')
             <div class="mt-5 space-y-2">
                 <label for="" class="block tracking-wider text-gray-600">Company Address</label>
                 <input 
@@ -171,6 +177,7 @@ new class extends Component {
                 >
                 @error('company_address')<p class="text-red-500">{{ $message }}</p>@enderror
             </div>
+            @endif
             <div class="mt-5 space-y-2">
                 <label for="" class="block tracking-wider text-gray-600">Password</label>
                 <input 
