@@ -5,7 +5,8 @@ use Livewire\Volt\Component;
 
 new class extends Component {
     
-
+    public $search = '';
+    
     public function with() : array
     {
         return [
@@ -15,7 +16,16 @@ new class extends Component {
 
     public function loadUsers()
     {
-        $query = User::paginate(5);
+        $query = User::
+            where(function ($query) {
+                $query->orWhere('name', 'like', '%' . $this->search . '%')
+                    ->orWhere('email', 'like', '%' . $this->search . '%')
+                    ->orWhere('role', 'like', '%' . $this->search . '%')
+                    ->orWhereRaw("DATE_FORMAT(created_at, '%a, %M %e, %Y') LIKE ?", ['%' . $this->search . '%']);
+
+            })
+            ->orderBy('id', 'desc')
+            ->paginate(5);
 
         return $query;
     }
@@ -26,7 +36,12 @@ new class extends Component {
         <a href="{{ route('add-users') }}" wire:navigate>
             <button class="px-5 py-1 font-bold text-black transition-all duration-300 ease-in-out rounded-md bg-button-blue hover:opacity-60">Add</button>
         </a>
-        <input type="search" wire:model="search" placeholder="Search..." class="w-full text-black rounded-lg max-w-96">
+        <input 
+            class="w-full text-black rounded-lg max-w-96"
+            type="search"
+            placeholder="Search..." 
+            wire:model.live.debounce.250ms="search"
+        >
     </div>
     <div class="w-full p-3 text-black bg-white rounded-lg lg:p-6">
         <h1 class="font-bold lg:text-3xl">Users</h1>

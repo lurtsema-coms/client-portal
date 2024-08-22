@@ -41,6 +41,7 @@ new class extends Component {
             'company_address' => $this->company_address,
             'password' => Hash::make($this->password),
             'created_by' => auth()->user()->id,
+            'created_at' => date('Y-m-d H:i:s')
         ]);
         
         if($this->role == 'client'){            
