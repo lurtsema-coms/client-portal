@@ -21,6 +21,7 @@ return new class extends Migration
             $table->text('remarks');
             $table->integer('updated_by')->nullable();
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 
