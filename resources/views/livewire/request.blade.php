@@ -8,9 +8,9 @@ new class extends Component {
 }; ?>
 
 <div class="flex flex-col items-center justify-center w-full">
-    <div class="flex flex-col  gap-20 md:flex-row">
-        <div class="flex w-full gap-10 px-8 py-8 border rounded-3xl">
-            <img class="w-auto h-[12rem]" src="{{ asset('images/user.png') }}" alt="">
+    <div class="flex flex-col gap-20 md:ml-24 md:flex-row">
+        <div class="flex flex-1 flex-col gap-10 px-8 py-8 border rounded-3xl md:flex-row md:w-[47rem]">
+            <img class="w-auto h-[15rem] md:h-[12rem]" src="{{ asset('images/user.png') }}" alt="">
             <div class="flex flex-col justify-center ">
                 <h1 class=" text-4xl font-bold mb-2">Client Name A</h1>
                 <h2 class=" text-lg">Email Address:</h2>
@@ -19,11 +19,12 @@ new class extends Component {
                 <h2 class=" text-lg">Porject Manager: Jubie</h2>
             </div>
         </div>
-        <div class=" flex flex-col justify-center ">
+        <div class=" flex flex-1 flex-col justify-center ">
             <h1 class=" text-4xl font-bold mb-2">Person in Contact:</h1>
-            <h2>Name:</h2>
-            <h2>Email Address:</h2>
-            <h2>Cell Number:</h2>
+            <h2 class=" text-lg">Name:</h2>
+            <h2 class=" text-lg">Email Address:</h2>
+            <h2 class=" text-lg mb-6">Cell Number:</h2>
+            <button class=" py-1 w-28 text-lg tracking-wide text-black transition-all duration-300 ease-in-out rounded-xl bg-white hover:opacity-60">View More</button>
         </div>
     </div>
     <div class="bg-custom-gradient w-full h-[2px] -z-10 my-10"></div>
