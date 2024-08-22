@@ -94,6 +94,7 @@ new class extends Component
 
     <!-- Responsive Navigation Menu -->
     <div :class="{'block': open, 'hidden': ! open}" class="hidden sm:hidden">
+        @role('admin')
         <div class="pt-2 pb-3 space-y-1">
             <x-responsive-nav-link :href="route('clients')" :active="request()->routeIs('clients')" wire:navigate>
                 {{ __('Clients') }}
@@ -104,6 +105,14 @@ new class extends Component
                 {{ __('Users') }}
             </x-responsive-nav-link>
         </div>
+        @endrole
+        @role('client')
+        <div class="pt-2 pb-3 space-y-1">
+            <x-responsive-nav-link :href="route('request')" :active="request()->routeIs('request')" wire:navigate>
+                {{ __('Requests') }}
+            </x-responsive-nav-link>
+        </div>
+        @endrole
 
         <!-- Responsive Settings Options -->
         <div class="pt-4 pb-1 border-t border-gray-200">
