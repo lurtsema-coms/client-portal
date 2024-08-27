@@ -14,7 +14,7 @@ new class extends Component {
 
     public function mount()
     {
-        $this->person_in_contact = [
+        $this->request_info = [
             [
                 'title' => '',
                 'needed_at' => '',
@@ -58,9 +58,9 @@ new class extends Component {
     public function messages()
     {
         return [
-            'person_in_contact.*.title.required' => 'The name field is required.',
-            'person_in_contact.*.needed_at.required' => 'The needed date field is required.',
-            'person_in_contact.*.remarks.required' => 'The remarks field is required.',
+            'request_info.*.title.required' => 'The name field is required.',
+            'request_info.*.needed_at.required' => 'The needed date field is required.',
+            'request_info.*.remarks.required' => 'The remarks field is required.',
         ];
     }
 
