@@ -75,7 +75,9 @@ new class extends Component {
         }
 
         $this->reset(['name', 'role', 'email', 'company_cell', 'company_address', 'person_in_contact', 'password', 'project_manager', 'client_type']);
-        return $this->redirect('/users', navigate: true);
+        
+        session()->flash('status', 'User Successfully added');
+        $this->redirect('/users', navigate: true);
     }
 
     public function rules()
