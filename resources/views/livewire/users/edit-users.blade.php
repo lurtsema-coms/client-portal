@@ -179,7 +179,6 @@ new class extends Component {
 <div class="w-full p-3 text-black bg-white rounded-lg lg:p-6">
     <form action="" wire:submit="editUser">
         <h1 class="font-bold lg:text-3xl">Personal Information</h1>
-        <svg data-name="Layer 1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 120" preserveAspectRatio="none" class=" bg-customDarkBg2"><path d="M1200 0L0 0 598.97 114.72 1200 0z" class="shape-fill custom-bg-dark1"></path></svg>
         <div class="grid sm:grid-cols-2 sm:gap-x-8">
             <div class="mt-5 space-y-2">
                 <label for="" class="block tracking-wider text-gray-600">Name</label>
