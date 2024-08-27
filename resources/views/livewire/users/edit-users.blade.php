@@ -268,14 +268,15 @@ new class extends Component {
             </div>
         </div>
         
-        @if($role === 'client')
         <div class="mt-5 space-y-2">
             @if ($photo) 
                 <img src="{{ $photo->temporaryUrl() }}" class="mb-5 rounded-lg shadow-md max-w-48">
                 @else
-                <img src="{{ $img_path }}?{{ now()->timestamp }}" class="mb-5 rounded-lg shadow-md max-w-48">
+                @if($img_path)
+                    <img src="{{ $img_path }}?{{ now()->timestamp }}" class="mb-5 rounded-lg shadow-md max-w-48">
+                @endif
             @endif
-            <label for="" class="block tracking-wider text-gray-600">Upload New Company Photo</label>
+            <label for="" class="block tracking-wider text-gray-600">Upload Logo</label>
             <input 
                 class="w-full max-w-lg"
                 type="file"
@@ -283,7 +284,6 @@ new class extends Component {
             >
             @error('photo')<p class="text-red-500">{{ $message }}</p>@enderror
         </div>
-        @endif
         
         @if($role == 'client')
             @foreach ($person_in_contact as $index => $contact)
