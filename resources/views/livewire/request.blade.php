@@ -48,7 +48,7 @@ new class extends Component {
             </span>
             <input type="search" wire:model="search" placeholder="Search..." class="pl-10 text-black rounded-lg w-full">
         </div>
-        <a class="px-5 py-1 font-bold text-black text-center flex items-center justify-center transition-all duration-300 ease-in-out rounded-md bg-button-blue cursor-pointer hover:opacity-60" href="{{ route('create-request') }}" wire:navigate>
+        <a class="px-5 py-1 font-bold text-black text-center flex items-center justify-center transition-all duration-300 ease-in-out rounded-md bg-button-blue cursor-pointer hover:opacity-60" href="{{ route('add-request') }}" wire:navigate>
             Add New Request
         </a>
     </div>
