@@ -5,8 +5,7 @@ use App\Models\User;
 use App\Models\PersonInContact;
 
 new class extends Component {
-    public $clientTypes = ['all', 'business', 'political'];
-    public $search = '';
+
 
     public function with(): array {
         $personInContacts = PersonInContact::where('user_id', auth()->user()->id);
@@ -49,9 +48,9 @@ new class extends Component {
             </span>
             <input type="search" wire:model="search" placeholder="Search..." class="pl-10 text-black rounded-lg w-full">
         </div>
-        <button class="px-5 py-1 font-bold text-black transition-all duration-300 ease-in-out rounded-md bg-button-blue hover:opacity-60">
+        <a class="px-5 py-1 font-bold text-black text-center flex items-center justify-center transition-all duration-300 ease-in-out rounded-md bg-button-blue cursor-pointer hover:opacity-60" href="{{ route('create-request') }}" wire:navigate>
             Add New Request
-        </button>
+        </a>
     </div>
     
     
