@@ -181,6 +181,18 @@ new class extends Component {
         <h1 class="font-bold lg:text-3xl">Personal Information</h1>
         <div class="grid sm:grid-cols-2 sm:gap-x-8">
             <div class="mt-5 space-y-2">
+                <label for="" class="block tracking-wider text-gray-600">Role</label>
+                <select 
+                    class="w-full text-black rounded-lg"
+                    wire:model.change="role"
+                >
+                    <option value="" disabled>Select Role</option>
+                    <option value="admin">Admin</option>
+                    <option value="client">Client</option>
+                </select>
+                @error('role')<p class="text-red-500">{{ $message }}</p>@enderror
+            </div>
+            <div class="mt-5 space-y-2">
                 <label for="" class="block tracking-wider text-gray-600">Name</label>
                 <input 
                     class="w-full text-black rounded-lg"
@@ -220,18 +232,6 @@ new class extends Component {
                 @error('project_manager')<p class="text-red-500">{{ $message }}</p>@enderror
             </div>
             @endif
-            <div class="mt-5 space-y-2">
-                <label for="" class="block tracking-wider text-gray-600">Role</label>
-                <select 
-                    class="w-full text-black rounded-lg"
-                    wire:model.change="role"
-                >
-                    <option value="" disabled>Select Role</option>
-                    <option value="admin">Admin</option>
-                    <option value="client">Client</option>
-                </select>
-                @error('role')<p class="text-red-500">{{ $message }}</p>@enderror
-            </div>
             @if($role === 'client')
             <div class="mt-5 space-y-2">
                 <label for="" class="block tracking-wider text-gray-600">Client Type</label>
