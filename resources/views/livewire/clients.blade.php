@@ -5,21 +5,26 @@ use App\Models\User;
 
 new class extends Component {
     public $clientTypes = ['all', 'business', 'political'];
-    public  $clientType = 'all';
+    public $clientType = 'all';
     public $search = '';
 
     public function with(): array {
+        $query = User::where('role', 'client')
+            ->whereNull('deleted_at')
+            ->orderBy('created_at', 'desc');
+
+        if ($this->clientType !== 'all') {
+            $query->where('client_type', $this->clientType);
+        }
+
         return [
-            'clients' => User::where('role', 'client')
-                ->orderBy('created_at', 'desc')
-                ->whereNull('deleted_at')
-                ->get(),
+            'clients' => $query->get(),
         ];
     }
 }; ?>
 <div class="flex flex-col items-center justify-center w-full">
     <div class="flex flex-col w-full md:flex-row md:justify-between">
-        <select wire:model="clientType" name="client_type" id="client-type" class="w-full bg-transparent border-none outline-none lg:text-3xl md:max-w-52">
+        <select wire:model.change="clientType" name="client_type" id="client-type" class="w-full bg-transparent border-none outline-none lg:text-3xl md:max-w-52">
             @foreach ($clientTypes as $clientType)
                 <option class="text-black" value="{{ $clientType }}">{{ ucwords($clientType) }}</option>
             @endforeach
