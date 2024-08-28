@@ -2,6 +2,7 @@
 
 use Livewire\Volt\Component;
 use App\Models\User;
+use App\Models\ClientRequest;
 
 new class extends Component {
     public $clientTypes = ['all', 'business', 'political'];
@@ -9,16 +10,22 @@ new class extends Component {
     public $search = '';
 
     public function with(): array {
-        $query = User::where('role', 'client')
+        $clientQuery = User::where('role', 'client')
             ->whereNull('deleted_at')
             ->orderBy('created_at', 'desc');
+        $requestQuery = ClientRequest::whereNull('deleted_at')
+            ->orderBy('created_at', 'desc')->with('user');
 
         if ($this->clientType !== 'all') {
-            $query->where('client_type', $this->clientType);
+            $clientQuery->where('client_type', $this->clientType);
+            $requestQuery->whereHas('user', function($query) {
+                $query->where('client_type', $this->clientType);
+            });
         }
 
         return [
-            'clients' => $query->get(),
+            'clients' => $clientQuery->paginate(10),
+            'clientRequests' => $requestQuery->paginate(10),
         ];
     }
 }; ?>
@@ -42,30 +49,35 @@ new class extends Component {
                     <th class="font-thin text-left text-gray-500">Deliverable Request</th>
                     <th class="hidden font-thin text-left text-gray-500 md:table-cell">Client</th>
                     <th class="hidden font-thin text-left text-gray-500 sm:table-cell">As Needed By</th>
-                    <th class="hidden font-thin text-left text-gray-500 xl:table-cell">Remarks</th>
+                    <th class="hidden font-thin text-left text-gray-500 xl:table-cell">Created At</th>
                     <th class="font-thin text-left text-gray-500">Action</th>
                 </tr>
             </thead>
             <tbody>
-                @for ($i = 0; $i < 5; $i++)
+                @foreach ($clientRequests as $clientRequest)
                     <tr class="border-b">
                         <td class="px-3 py-5">
-                            <p class="font-bold">Mass Texting</p>
-                            <p class="italic text-gray-700 md:hidden">Client Name A</p>
-                            <p class="text-sm text-gray-500 sm:hidden">{{ date('D, F j, Y') }}</p>
+                            <p class="font-bold">{{ $clientRequest->title }}</p>
+                            <p class="italic text-gray-700 md:hidden">{{ $clientRequest->user->name }}</p>
+                            <p class="text-sm text-gray-500 sm:hidden">Needed: {{ (new DateTime($clientRequest->needed_at))->format('D, F j, Y') }}</p>
+                            <p class="text-sm text-gray-500 sm:hidden">Created: {{ (new DateTime($clientRequest->created_at))->format('D, F j, Y h:i a') }}</p>
                         </td>
-                        <td class="hidden md:table-cell">Client Name A</td>
-                        <td class="hidden sm:table-cell">{{ date('D, F j, Y') }}</td>
-                        <td class="hidden xl:table-cell">Details sent via email...</td>
+                        <td class="hidden md:table-cell">{{ $clientRequest->user->name }}</td>
+                        <td class="hidden sm:table-cell">{{ (new DateTime($clientRequest->needed_at))->format('D, F j, Y') }}</td>
+                        <td class="hidden xl:table-cell">{{ (new DateTime($clientRequest->created_at))->format('D, F j, Y h:i a') }}</td>
                         <td class="rounded-r-lg">
-                            <a href="{{ route('requests.view-request', rand(0, 100)) }}" wire:navigate class="px-5 py-1 font-bold text-black transition-all duration-300 ease-in-out rounded-md bg-button-blue hover:opacity-60">View</a>
+                            <a href="{{ route('requests.view-request', ['client' => rand(), 'request' => rand()]) }}" wire:navigate class="px-5 py-1 font-bold text-black transition-all duration-300 ease-in-out rounded-md bg-button-blue hover:opacity-60">View</a>
                         </td>
                     </tr>
-                @endfor
+                @endforeach
             </tbody>
         </table>
+        @if ($clientRequests->isEmpty())
+        <p class="mt-5 text-center text-gray-500">No client requests found.</p>
+        @endif
     </div>
-    <div class="grid w-full grid-cols-2 gap-8 mt-20 place-content-center md:grid-cols-3 xl:grid-cols-4">
+    <h2 class="self-start mt-16 text-3xl font-bold text-left">Clients</h2>
+    <div class="grid w-full grid-cols-2 gap-8 mt-5 place-content-center md:grid-cols-3 xl:grid-cols-4">
         @foreach ($clients as $client)
         <a href="{{ route('clients.view-client', $client) }}" wire:navigate class="flex flex-col items-start justify-start hover:opacity-60">
             <div class="relative w-full border-2 border-gray-300 aspect-square">
