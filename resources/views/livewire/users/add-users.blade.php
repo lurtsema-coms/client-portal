@@ -6,9 +6,11 @@ use Livewire\WithFileUploads;
 use Livewire\Attributes\Validate;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Hash;
+use Livewire\Attributes\Layout;
 use Livewire\Volt\Component;
 
-new class extends Component {
+new #[Layout('layouts.admin')] 
+class extends Component {
 
     use WithFileUploads;
     
@@ -45,7 +47,7 @@ new class extends Component {
         if($image){            
             $uuid = substr(Str::uuid()->toString(), 0, 8);
             $file_name = $uuid . '.' . $image->getClientOriginalExtension();
-            $img_path = public_path('images/user-logo')."/$file_name";
+            $img_path = url('images/user-logo/' . $file_name);
             $image->storePubliclyAs('images/user-logo', $file_name, 'public');
         }
 
@@ -288,11 +290,13 @@ new class extends Component {
                 Add more person in contact
             </button>
         @endif
-        <button 
-            class="float-right px-4 py-2 mt-5 text-right text-white bg-blue-500 border rounded-lg hover:bg-blue-600"
-            type="Submit" 
-        >
-            Submit
-        </button>
+        <div class="flex justify-end">            
+            <button 
+                class="px-4 py-2 mt-5 text-right text-white bg-blue-500 border rounded-lg hover:bg-blue-600"
+                type="Submit" 
+            >
+                Submit
+            </button>
+        </div>
     </form>
 </div>
