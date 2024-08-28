@@ -70,7 +70,7 @@ class extends Component {
         if($image){    
             $uuid = substr(Str::uuid()->toString(), 0, 8);
             $file_name = $uuid . '.' . $image->getClientOriginalExtension();
-            $img_path = asset('images/user-logo/' . $file_name);
+            $img_path = url('images/user-logo/' . $file_name);
             $image->storePubliclyAs('images/user-logo', $file_name, 'public');
 
             $this->user->update([
