@@ -12,7 +12,25 @@
         <link href="https://fonts.bunny.net/css?family=figtree:400,500,600&display=swap" rel="stylesheet" />
 
         <!-- Scripts -->
+        <link rel="stylesheet" type="text/css" href="https://unpkg.com/trix@2.0.8/dist/trix.css">
+        <script type="text/javascript" src="https://unpkg.com/trix@2.0.8/dist/trix.umd.min.js"></script>
         @vite(['resources/css/app.css', 'resources/js/app.js'])
+
+        <style>
+            .trix ul {
+                list-style-type: disc;
+                padding-left: 2.5rem;
+            }
+
+            .trix ol {
+                list-style-type: decimal;
+                padding-left: 2.5rem;
+            }
+
+            trix-editor{
+                border: 1px solid #818793;
+            }
+        </style>
     </head>
     <body class="pt-16 font-sans antialiased text-white bg-custom-blue">
         <div class="fixed w-full h-full background-effect-gradient -left-1/2 -z-50"></div>

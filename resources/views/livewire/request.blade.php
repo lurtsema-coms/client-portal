@@ -39,22 +39,32 @@ new class extends Component {
         </div>
     </div>
     <div class="bg-custom-gradient w-full h-[2px] -z-10 my-10"></div>
-    <div class="flex flex-col-reverse justify-center w-full gap-5 mb-10 md:flex-row">
+    <div class="flex flex-col-reverse justify-center w-full gap-5 md:flex-row">
         <div class="relative md:w-[25rem]">
             <span class="absolute inset-y-0 left-0 flex items-center pl-3">
                 <svg class="w-5 h-5 text-gray-500" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 20" aria-hidden="true">
                     <path fill-rule="evenodd" d="M8.5 2a6.5 6.5 0 104.5 11.29l3.85 3.85a.75.75 0 001.06-1.06l-3.85-3.85A6.5 6.5 0 008.5 2zm-5 6.5a5 5 0 1110 0 5 5 0 01-10 0z" clip-rule="evenodd" />
                 </svg>
             </span>
-            <input type="search" wire:model="search" placeholder="Search..." class="pl-10 text-black rounded-lg w-full">
+            <input type="search" wire:model="search" placeholder="Search..." class="w-full pl-10 text-black rounded-lg">
         </div>
-        <a class="px-5 py-1 font-bold text-black text-center flex items-center justify-center transition-all duration-300 ease-in-out rounded-md bg-button-blue cursor-pointer hover:opacity-60" href="{{ route('add-request') }}" wire:navigate>
+        <a class="flex items-center justify-center px-5 py-1 font-bold text-center text-black transition-all duration-300 ease-in-out rounded-md cursor-pointer bg-button-blue hover:opacity-60" href="{{ route('add-request') }}" wire:navigate>
             Add New Request
         </a>
     </div>
+    @if (session('status'))
+        <div 
+            x-data="{ show: true }"
+            x-init="setTimeout(() => show = false, 6000)" 
+            x-show="show"
+            class="mt-10 text-green-400"
+        >
+            {{ session('status') }}
+        </div>
+    @endif
     
     
-    <div class="w-full p-3 mb-16 text-black bg-white rounded-lg lg:p-6">
+    <div class="w-full p-3 mt-10 mb-16 text-black bg-white rounded-lg lg:p-6">
         <h1 class="font-bold lg:text-3xl">Client Requests</h1>
         <table class="w-full mt-5 border-collapse">
             <thead>
