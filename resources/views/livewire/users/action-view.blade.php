@@ -13,7 +13,7 @@ class extends Component {
     {
         $url_segment = request()->segment(1);
 
-        if($url_segment == 'add-users') {
+        $url_segment == 'add-users'
             $this->title = 'Add users';
             $this->livewire_content = 'users.add-users';
         } elseif($url_segment == 'edit-users'){

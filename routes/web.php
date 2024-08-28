@@ -39,6 +39,8 @@ Route::group(['middleware' => 'auth'], function () {
 
     Route::middleware('role:client')->group(function () {
         Route::view('request', 'request')->name('request');
+        Volt::route('add-request', 'requests.add-request')->name('add-request');
+
     });
 });
 
