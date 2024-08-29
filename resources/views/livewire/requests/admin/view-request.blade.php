@@ -32,11 +32,25 @@ class extends Component {
     $this->date_need = $clientRequest->needed_at;
     $this->status = $clientRequest->status;
     $this->remarks = $clientRequest->remarks;
+    $this->img_path = $clientRequest->img_path;
   }
 
   public function handleSave()
     {
         $this->validate();
+
+        $image = $this->photo;
+        
+        if ($image) {    
+            $uuid = substr(Str::uuid()->toString(), 0, 8);
+            $file_name = $uuid . '.' . $image->getClientOriginalExtension();
+            $this->img_path = url('images/client-request/' . $file_name);
+            $image->storePubliclyAs('images/client-request', $file_name, 'public');
+
+            $this->clientRequest->update([
+                'img_path' => $this->img_path
+            ]);
+        }
 
         $user_id = $this->clientRequest->update([
             'title' => $this->title,
