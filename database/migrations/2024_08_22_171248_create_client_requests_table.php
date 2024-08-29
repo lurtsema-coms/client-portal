@@ -19,6 +19,7 @@ return new class extends Migration
             $table->foreignIdFor(User::class);
             $table->date('needed_at');
             $table->text('remarks');
+            $table->string('img_path')->nullable();
             $table->integer('updated_by')->nullable();
             $table->timestamps();
             $table->softDeletes();
