@@ -2,16 +2,27 @@
 
 use App\Models\User;
 use App\Models\ClientRequest;
-use Livewire\Attributes\Url;
 use App\Models\PersonInContact;
+use Livewire\Attributes\Url;
+use Livewire\WithPagination;
 use Livewire\Volt\Component;
 
 new class extends Component {
+
+    use WithPagination;
     
     #[Url]
     public $search;
+    public $person_in_contact;
 
-    public function with(): array {
+    public function mount()
+    {
+        $user = User::with('personInContact')->find(auth()->user()->id);
+        $this->person_in_contact = $user->personInContact;
+    }
+
+    public function with(): array 
+    {
         $personInContacts = PersonInContact::where('user_id', auth()->user()->id);
         $userRequests = ClientRequest::with('user')
             ->where('user_id', auth()->user()->id)
@@ -24,23 +35,26 @@ new class extends Component {
                 });
             })
             ->paginate(5);
-        // $delirables = ClientRequest::with('user')
-        //     ->where('user_id', auth()->user()->id)
-        //     ->where('status', '!=', 'PENDING')
-        //     ->when($this->search, function ($query) {
-        //         $query->where(function ($query) {
-        //             $query->where('title', 'like', '%' . $this->search . '%')
-        //                 ->orWhere('remarks', 'like', '%' . $this->search . '%')
-        //                 ->orWhereRaw("DATE_FORMAT(needed_at, '%a, %M %e, %Y') LIKE ?", ['%' . $this->search . '%']);
-        //         });
-        //     })
-        //     ->paginate(5);
+        $deliverables = ClientRequest::with('user', 'updatedBy')
+            ->where('user_id', auth()->user()->id)
+            ->where('status', '!=', 'PENDING')
+            ->when($this->search, function ($query) {
+                $query->where(function ($query) {
+                    $query->where('title', 'like', '%' . $this->search . '%')
+                        ->orWhere('status', 'like', '%' . $this->search . '%')
+                        ->orWhere('remarks', 'like', '%' . $this->search . '%')
+                        ->orWhereRaw("DATE_FORMAT(created_at, '%a, %M %e, %Y') LIKE ?", ['%' . $this->search . '%'])
+                        ->orWhereRaw("DATE_FORMAT(needed_at, '%a, %M %e, %Y') LIKE ?", ['%' . $this->search . '%']);
+                });
+            })
+            ->paginate(5);
         
         return [
             'personInContacts' => (clone $personInContacts)->get(),
             'personInContact' => (clone $personInContacts)->first(),
             'userRequests' => $userRequests,
-    ];
+            'deliverables' => $deliverables,
+        ];
     }
 }; ?>
 
@@ -62,7 +76,59 @@ new class extends Component {
             <h2 class="text-lg">Email Address: <span class="text-gray-500">{{ $personInContact?->email }}</span></h2>
             <h2 class="mb-6 text-lg">Cell Number: <span class="text-gray-500">{{ $personInContact?->cell_number }}</span></h2>
             @if ($personInContacts->count() > 1)
-            <button class="py-1 text-black transition-all duration-300 ease-in-out bg-white text-lgtracking-wide w-28 rounded-xl hover:opacity-60">View More</button>
+                <div 
+                    x-data="{isOpen: false}"
+                    x-init="$watch('isOpen', value => document.body.style.overflow = value ? 'hidden' : 'auto')"
+                >
+                    <button 
+                        class="py-1 text-black transition-all duration-300 ease-in-out bg-white text-lgtracking-wide w-28 rounded-xl hover:opacity-60"
+                        @click="isOpen=true"
+                    >
+                        View More
+                    </button>
+                
+                    <div x-show="isOpen" 
+                        class="fixed inset-0 z-50 flex bg-black bg-opacity-75"
+                        x-cloak
+                    >
+                        <!-- Close Button -->
+                        <button @click="isOpen=false" 
+                                class="absolute text-xl font-bold text-white top-5 right-5">
+                            &times;
+                        </button>
+                        
+                        <!-- Zoomed Image -->
+                        <div class="flex w-full p-5">
+                            <div 
+                                class="w-full max-w-4xl p-10 m-auto text-black bg-white shadow-lg rounded-2xl"
+                                @click.outside="isOpen=false"
+                            >
+                                <div class="space-y-5 overflow-auto max-h-96">
+                                    @if ($person_in_contact)
+                                        @foreach ($person_in_contact as $index => $contact)
+                                            <div wire:key="contact-users-{{ $index }}">
+                                                <h1 class="mb-4 font-bold lg:text-xl">Person in Contact {{ $index !== 0 ? $index : '' }}</h1>
+                                                <div>
+                                                    <p>
+                                                        <span class="text-gray-600">Name:</span> {{ $contact->name }}
+                                                    </p>
+                                                    <p>
+                                                        <span class="text-gray-600">Cell Number:</span> {{ $contact->cell_number }}
+                                                    </p>
+                                                    <p>
+                                                        <span class="text-gray-600">Email:</span> {{ $contact->email }}
+                                                    </p>
+                                                </div>
+                                            </div>
+                                        @endforeach
+                                    @endif
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+
+                </div>
             @endif
         </div>
     </div>
@@ -102,31 +168,21 @@ new class extends Component {
             <thead>
                 <tr class="border-b">
                     <th class="px-3 font-thin text-left text-gray-500 whitespace-nowrap">Deliverable Request</th>
+                    <th class="hidden px-6 font-thin text-left text-gray-500 xl:table-cell whitespace-nowrap">Requested At</th>
                     <th class="hidden px-6 font-thin text-left text-gray-500 sm:table-cell whitespace-nowrap">As Needed By</th>
-                    <th class="hidden px-6 font-thin text-left text-gray-500 xl:table-cell whitespace-nowrap">Remarks</th>
                     <th class="pl-6 font-thin text-left text-gray-500 whitespace-nowrap">Action</th>
                 </tr>
             </thead>
             <tbody>
                 @foreach ($userRequests as $request)
-                    @php
-                        // Strip HTML tags and decode HTML entities
-                        $plainText = strip_tags($request->remarks);
-                        
-                        // Convert the plain text into an array of words
-                        $words = explode(' ', $plainText);
-                        
-                        // Truncate the text if it exceeds 25 words
-                        $truncatedText = count($words) > 50 ? implode(' ', array_slice($words, 0, 50)) . '...' : $plainText;
-                    @endphp
                     <tr class="border-b">
                         <td class="px-3 py-5">
                             <p class="font-bold">{{ $request->title }}</p>
                             <p class="italic text-gray-700 md:hidden">{{ $request->user->name }}</p>
                             <p class="text-sm text-gray-500 sm:hidden">{{ date('D, F j, Y', strtotime($request->needed_at)) }}</p>
                         </td>
+                        <td class="hidden px-6 py-5 sm:table-cell whitespace-nowrap">{{ date('D, F j, Y', strtotime($request->created_at)) }}</td>
                         <td class="hidden px-6 py-5 sm:table-cell whitespace-nowrap">{{ date('D, F j, Y', strtotime($request->needed_at)) }}</td>
-                        <td class="hidden px-6 py-5 xl:table-cell">{{ $truncatedText }}</td>
                         <td class="py-5 pl-6 rounded-r-lg">
                             <a href="{{ route('edit-request', $request->id) }}" wire:navigate>
                                 <button class="px-5 py-1 font-bold text-black transition-all duration-300 ease-in-out rounded-md bg-button-blue hover:opacity-60">View</button>
@@ -145,30 +201,33 @@ new class extends Component {
         <table class="w-full mt-5 border-collapse">
             <thead>
                 <tr class="border-b">
-                    <th class="font-thin text-left text-gray-500">Title</th>
-                    <th class="hidden font-thin text-left text-gray-500 sm:table-cell">Status</th>
-                    <th class="hidden font-thin text-left text-gray-500 xl:table-cell">Last Update</th>
-                    <th class="hidden font-thin text-left text-gray-500 xl:table-cell">Remarks</th>
-                    <th class="font-thin text-left text-gray-500">Action</th>
+                    <th class="px-3 font-thin text-left text-gray-500 whitespace-nowrap">Title</th>
+                    <th class="hidden px-6 font-thin text-left text-gray-500 sm:table-cell whitespace-nowrap">Status</th>
+                    <th class="hidden px-6 font-thin text-left text-gray-500 xl:table-cell whitespace-nowrap">Last Update</th>
+                    <th class="hidden px-6 font-thin text-left text-gray-500 xl:table-cell whitespace-nowrap">Updated By</th>
+                    <th class="pl-6 font-thin text-left text-gray-500 whitespace-nowrap">Action</th>
                 </tr>
             </thead>
             <tbody>
-                @for ($i = 0; $i < 5; $i++)
+                @foreach ($deliverables as $deliverable)
                     <tr class="border-b">
                         <td class="px-3 py-5">
-                            <p class="font-bold">Mass Texting</p>
+                            <p class="font-bold">{{ $deliverable->title }}</p>
                             <p class="italic text-gray-700 md:hidden">Client Name A</p>
                             <p class="text-sm text-gray-500 sm:hidden">{{ date('D, F j, Y') }}</p>
                         </td>
-                        <td class="hidden xl:table-cell">In-Progress</td>
-                        <td class="hidden sm:table-cell">{{ date('D, F j, Y') }}</td>
-                        <td class="hidden xl:table-cell">For Review (Sent to client)</td>
-                        <td class="rounded-r-lg">
-                            <button class="px-5 py-1 font-bold text-black transition-all duration-300 ease-in-out rounded-md bg-button-blue hover:opacity-60">View</button>
+                        <td class="hidden px-6 py-5 sm:table-cell whitespace-nowrap">{{ $deliverable->status }}</td>
+                        <td class="hidden px-6 py-5 xl:table-cell whitespace-nowrap">{{ date('D, F j, Y', strtotime($deliverable->updated_at)) }}</td>
+                        <td class="hidden px-6 py-5 xl:table-cell">{{ $deliverable->updatedBy->name }}</td>
+                        <td class="py-5 pl-6 rounded-r-lg">
+                            <a href="{{ route('view-deliverables', $deliverable->id) }}" wire:navigate>
+                                <button class="px-5 py-1 font-bold text-black transition-all duration-300 ease-in-out rounded-md bg-button-blue hover:opacity-60">View</button>
+                            </a>
                         </td>
                     </tr>
-                @endfor
+                @endforeach
             </tbody>
         </table>
     </div>
+
 </div>

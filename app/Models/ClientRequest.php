@@ -14,4 +14,9 @@ class ClientRequest extends Model
     {
         return $this->belongsTo(User::class);
     }
+
+    public function updatedBy()
+    {
+        return $this->belongsTo(User::class, 'updated_by');
+    }
 }
