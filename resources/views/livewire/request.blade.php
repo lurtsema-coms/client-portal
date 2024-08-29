@@ -13,7 +13,7 @@ new class extends Component {
 
     public function with(): array {
         $personInContacts = PersonInContact::where('user_id', auth()->user()->id);
-        $userRequests = ClientRequest::with('createdBy')
+        $userRequests = ClientRequest::with('user')
             ->where('user_id', auth()->user()->id)
             ->where('status', 'PENDING')
             ->when($this->search, function ($query) {
@@ -24,6 +24,17 @@ new class extends Component {
                 });
             })
             ->paginate(5);
+        // $delirables = ClientRequest::with('user')
+        //     ->where('user_id', auth()->user()->id)
+        //     ->where('status', '!=', 'PENDING')
+        //     ->when($this->search, function ($query) {
+        //         $query->where(function ($query) {
+        //             $query->where('title', 'like', '%' . $this->search . '%')
+        //                 ->orWhere('remarks', 'like', '%' . $this->search . '%')
+        //                 ->orWhereRaw("DATE_FORMAT(needed_at, '%a, %M %e, %Y') LIKE ?", ['%' . $this->search . '%']);
+        //         });
+        //     })
+        //     ->paginate(5);
         
         return [
             'personInContacts' => (clone $personInContacts)->get(),
@@ -111,7 +122,7 @@ new class extends Component {
                     <tr class="border-b">
                         <td class="px-3 py-5">
                             <p class="font-bold">{{ $request->title }}</p>
-                            <p class="italic text-gray-700 md:hidden">{{ $request->createdBy->name }}</p>
+                            <p class="italic text-gray-700 md:hidden">{{ $request->user->name }}</p>
                             <p class="text-sm text-gray-500 sm:hidden">{{ date('D, F j, Y', strtotime($request->needed_at)) }}</p>
                         </td>
                         <td class="hidden px-6 py-5 sm:table-cell whitespace-nowrap">{{ date('D, F j, Y', strtotime($request->needed_at)) }}</td>
