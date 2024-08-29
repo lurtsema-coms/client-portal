@@ -30,7 +30,7 @@ Route::get('/', function () {
 Route::group(['middleware' => 'auth'], function () {
     Route::middleware('role:admin')->group(function () {
         Route::view('clients', 'clients')->name('clients');
-        Volt::route('requests/{request}', 'requests.view-request')->name('requests.view-request');
+        Volt::route('clients/{client}/{request}', 'requests.view-request')->name('requests.view-request');
         Volt::route('clients/{client}', 'clients.view-client')->name('clients.view-client');
         Route::view('users', 'users')->name('users');
         Volt::route('add-users', 'users.add-users')->name('add-users');
@@ -41,7 +41,6 @@ Route::group(['middleware' => 'auth'], function () {
         Route::view('request', 'request')->name('request');
         Volt::route('add-request', 'requests.add-request')->name('add-request');
         Volt::route('edit-request/{id}', 'requests.view-request')->name('edit-request');
-
     });
 });
 

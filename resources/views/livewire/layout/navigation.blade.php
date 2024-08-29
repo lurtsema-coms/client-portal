@@ -31,19 +31,19 @@ new class extends Component
                 <!-- Navigation Links -->
                 @role('admin')
                 <div class="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex">
-                    <x-nav-link :href="route('clients')" :active="request()->routeIs('clients')" wire:navigate>
+                    <x-nav-link :href="route('clients')" :active="str_starts_with(request()->path(), 'clients')" wire:navigate>
                         {{ __('Clients') }}
                     </x-nav-link>
                 </div>
                 <div class="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex">
-                    <x-nav-link :href="route('users')" :active="request()->routeIs('users')" wire:navigate>
+                    <x-nav-link :href="route('users')" :active="str_starts_with(request()->path(), 'users')" wire:navigate>
                         {{ __('Users') }}
                     </x-nav-link>
                 </div>
                 @endrole
                 @role('client')
                 <div class="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex">
-                    <x-nav-link :href="route('request')" :active="request()->routeIs('request')" wire:navigate>
+                    <x-nav-link :href="route('request')" :active="str_starts_with(request()->path(), 'request')" wire:navigate>
                         {{ __('Requests') }}
                     </x-nav-link>
                 </div>
@@ -96,19 +96,19 @@ new class extends Component
     <div :class="{'block': open, 'hidden': ! open}" class="hidden sm:hidden">
         @role('admin')
         <div class="pt-2 pb-3 space-y-1">
-            <x-responsive-nav-link :href="route('clients')" :active="request()->routeIs('clients')" wire:navigate>
+            <x-responsive-nav-link :href="route('clients')" :active="str_starts_with(request()->path(), 'clients')" wire:navigate>
                 {{ __('Clients') }}
             </x-responsive-nav-link>
         </div>
         <div class="pt-2 pb-3 space-y-1">
-            <x-responsive-nav-link :href="route('users')" :active="request()->routeIs('users')" wire:navigate>
+            <x-responsive-nav-link :href="route('users')" :active="str_starts_with(request()->path(), 'users')" wire:navigate>
                 {{ __('Users') }}
             </x-responsive-nav-link>
         </div>
         @endrole
         @role('client')
         <div class="pt-2 pb-3 space-y-1">
-            <x-responsive-nav-link :href="route('request')" :active="request()->routeIs('request')" wire:navigate>
+            <x-responsive-nav-link :href="route('request')" :active="str_starts_with(request()->path(), 'request')" wire:navigate>
                 {{ __('Requests') }}
             </x-responsive-nav-link>
         </div>

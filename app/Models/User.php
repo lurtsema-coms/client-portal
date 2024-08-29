@@ -57,6 +57,6 @@ class User extends Authenticatable
 
     public function clientRequest()
     {
-        return $this->hasmany(ClientRequest::class, 'user_id');
+        return $this->hasMany(ClientRequest::class, 'user_id');
     }
 }
