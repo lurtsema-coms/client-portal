@@ -54,4 +54,9 @@ class User extends Authenticatable
     {
         return $this->hasMany(PersonInContact::class, 'user_id');
     }
+
+    public function clientRequest()
+    {
+        return $this->hasmany(ClientRequest::class, 'user_id');
+    }
 }

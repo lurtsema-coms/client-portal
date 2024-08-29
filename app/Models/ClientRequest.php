@@ -9,4 +9,9 @@ class ClientRequest extends Model
 {
     use HasFactory;
     protected $guarded = [];
+
+    public function createdBy()
+    {
+        return $this->belongsTo(User::class, 'user_id');
+    }
 }
