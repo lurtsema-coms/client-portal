@@ -71,29 +71,29 @@ class extends Component {
   @endif
   <div class="py-12">
     <form action="" wire:submit="handleSave">
-      <div class="mx-auto space-y-6">
-          <div class="p-4 bg-white shadow sm:p-8 sm:rounded-lg">
-          <h1 class="font-bold text-black lg:text-3xl">Deliverable Form</h1>
+        <div class="mx-auto space-y-6">
+            <div class="p-4 bg-white shadow sm:p-8 sm:rounded-lg">
+            <h1 class="font-bold text-black lg:text-3xl">Deliverable Form</h1>
             <div class="grid sm:grid-cols-2 sm:gap-x-8">
-              <div class="mt-5 space-y-2">
-                  <label for="" class="block tracking-wider text-gray-600">Created By</label>
-                  <input 
-                      class="w-full text-black rounded-lg"
-                      type="text"
-                      value="{{ $client->name }}"
-                      readonly
-                  >
-              </div>
-              <div class="mt-5 space-y-2">
-                  <label for="" class="block tracking-wider text-gray-600">Created At</label>
-                  <input 
-                      class="w-full text-black rounded-lg"
-                      type="text"
-                      value="{{ (new DateTime($clientRequest->created_at))->format('D, F j, Y h:i a') }}"
-                      readonly
-                  >
-              </div>
-              <div class="mt-5 space-y-2">
+                <div class="mt-5 space-y-2">
+                    <label for="" class="block tracking-wider text-gray-600">Created By</label>
+                    <input 
+                        class="w-full text-black rounded-lg"
+                        type="text"
+                        value="{{ $client->name }}"
+                        readonly
+                    >
+                </div>
+                <div class="mt-5 space-y-2">
+                    <label for="" class="block tracking-wider text-gray-600">Created At</label>
+                    <input 
+                        class="w-full text-black rounded-lg"
+                        type="text"
+                        value="{{ (new DateTime($clientRequest->created_at))->format('D, F j, Y h:i a') }}"
+                        readonly
+                    >
+                </div>
+                <div class="mt-5 space-y-2">
                 <label for="" class="block tracking-wider text-gray-600">Title</label>
                 <input 
                     class="w-full text-black rounded-lg"
@@ -103,15 +103,15 @@ class extends Component {
                 @error('title') <p class="text-red-500">{{ $message }}</p> @enderror
             </div>
             <div class="mt-5 space-y-2">
-              <label for="" class="block tracking-wider text-gray-600">Date Need</label>
-              <input 
-                  class="w-full text-black rounded-lg"
-                  type="date"
-                  wire:model="date_need"
-              >
-              @error('date_need')<p class="text-red-500">{{ $message }}</p>@enderror
-          </div>
-              <div class="mt-5 space-y-2">
+                <label for="" class="block tracking-wider text-gray-600">Date Need</label>
+                <input 
+                    class="w-full text-black rounded-lg"
+                    type="date"
+                    wire:model="date_need"
+                >
+                @error('date_need')<p class="text-red-500">{{ $message }}</p>@enderror
+            </div>
+            <div class="mt-5 space-y-2">
                 <label for="" class="block tracking-wider text-gray-600">Status</label>
                 <select 
                     class="w-full text-black rounded-lg"
@@ -119,48 +119,44 @@ class extends Component {
                 >
                     <option value="" disabled selected>Select status</option>
                     @foreach (config('global.deliverable_statuses') as $deliverableStatus)
-                      <option value="{{ $deliverableStatus }}">{{ $deliverableStatus }}</option>
+                        <option value="{{ $deliverableStatus }}">{{ $deliverableStatus }}</option>
                     @endforeach
                 </select>
                 @error('status')<p class="text-red-500">{{ $message }}</p>@enderror
-              </div>
-              <div class="mt-5 space-y-2">
-                  @if ($photo) 
-                  <img src="{{ $photo->temporaryUrl() }}" class="mb-5 rounded-lg shadow-md max-w-48">
-                  @elseif($img_path)
-                      <img src="{{ $img_path }}?{{ now()->timestamp }}" class="mb-5 rounded-lg shadow-md max-w-48">
-                  @endif
-              <label for="" class="block tracking-wider text-gray-600">Upload Photo</label>
-              <input 
-                  class="w-full max-w-lg"
-                  type="file"
-                  wire:model="photo"
-              >
-              @error('photo')<p class="text-red-500">{{ $message }}</p>@enderror
             </div>
-            <div class="w-full col-span-2 mt-5 space-y-2" wire:ignore>
-              <label for="" class="block tracking-wider text-gray-600">Remarks</label>
-              <trix-editor
-                  class="text-black trix"
-                  x-data
-                  x-on:trix-change="$dispatch('input', event.target.value)"
-                  x-ref="trix"
-                  wire:model.debounce.60s="remarks"
-                  wire:key="uniqueKey"
-              ></trix-editor>
-              @error('remarks')<p class="mt-2 text-red-500">{{ $message }}</p>@enderror
+            <div class="mt-5 space-y-2">
+                    @if ($photo) 
+                    <img src="{{ $photo->temporaryUrl() }}" class="mb-5 rounded-lg shadow-md max-w-48">
+                    @elseif($img_path)
+                        <img src="{{ $img_path }}?{{ now()->timestamp }}" class="mb-5 rounded-lg shadow-md max-w-48">
+                    @endif
+                <label for="" class="block tracking-wider text-gray-600">Upload Photo</label>
+                <input 
+                    class="w-full max-w-lg"
+                    type="file"
+                    wire:model="photo"
+                >
+                @error('photo')<p class="text-red-500">{{ $message }}</p>@enderror
             </div>
-          </div>
-          <button 
-              class="px-4 py-2 mt-5 text-right text-white bg-blue-500 border rounded-lg hover:bg-blue-600"
-              type="Submit" 
-          >
-          Submit
-        </button>
-        </div>
-
-      </div>
-      
+            <div class="w-full mt-5 space-y-2 sm:col-span-2" wire:ignore>
+                <label for="" class="block tracking-wider text-gray-600">Remarks</label>
+                <trix-editor
+                    class="text-black trix"
+                    x-data
+                    x-on:trix-change="$dispatch('input', event.target.value)"
+                    x-ref="trix"
+                    wire:model.debounce.60s="remarks"
+                    wire:key="uniqueKey"
+                ></trix-editor>
+                @error('remarks')<p class="mt-2 text-red-500">{{ $message }}</p>@enderror
+            </div>
+            </div>
+            <button 
+                class="px-4 py-2 mt-5 text-right text-white bg-blue-500 border rounded-lg hover:bg-blue-600"
+                type="Submit" 
+            >
+            Submit
+        </button>      
     </form>
 </div>
 </div>
