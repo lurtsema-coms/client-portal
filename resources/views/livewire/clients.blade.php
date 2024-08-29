@@ -3,8 +3,10 @@
 use Livewire\Volt\Component;
 use App\Models\User;
 use App\Models\ClientRequest;
+use Livewire\WithPagination;
 
 new class extends Component {
+    use WithPagination;
     public $clientTypes = ['all', 'business', 'political'];
     public $clientType = 'all';
     public $search = '';
@@ -14,6 +16,7 @@ new class extends Component {
             ->whereNull('deleted_at')
             ->orderBy('created_at', 'desc');
         $requestQuery = ClientRequest::whereNull('deleted_at')
+            ->where('status', 'PENDING')
             ->orderBy('created_at', 'desc')->with('user');
 
         if ($this->clientType !== 'all') {
@@ -23,9 +26,28 @@ new class extends Component {
             });
         }
 
+        if (strlen($this->search)) {
+            $clientQuery->where(function($query) {
+                $query->orWhere('name', 'like', '%' . $this->search . '%')
+                    ->orWhere('email', 'like', '%' . $this->search . '%')
+                    ->orWhere('role', 'like', '%' . $this->search . '%')
+                    ->orWhereRaw("DATE_FORMAT(created_at, '%a, %M %e, %Y') LIKE ?", ['%' . $this->search . '%']);
+            });
+
+            $requestQuery->where(function($query) {
+                $query->orWhereHas('user', function($innerQuery) {
+                    $innerQuery->where('name', 'like', '%' . $this->search . '%');
+                })
+                    ->orWhere('title', 'like', '%' . $this->search . '%')
+                    ->orWhere('status', 'like', '%' . $this->search . '%')
+                    ->orWhereRaw("DATE_FORMAT(created_at, '%a, %M %e, %Y') LIKE ?", ['%' . $this->search . '%'])
+                    ->orWhereRaw("DATE_FORMAT(needed_at, '%a, %M %e, %Y') LIKE ?", ['%' . $this->search . '%']);
+            });
+        }
+
         return [
-            'clients' => $clientQuery->paginate(10),
-            'clientRequests' => $requestQuery->paginate(10),
+            'clients' => $clientQuery->paginate(12, pageName: 'clients-page'),
+            'clientRequests' => $requestQuery->paginate(5, pageName: 'client-requests-page'),
         ];
     }
 }; ?>
@@ -37,13 +59,13 @@ new class extends Component {
             @endforeach
         </select>
         <div class="flex items-center justify-end w-full gap-5 md:max-w-sm">
-            <input type="search" wire:model="search" placeholder="Search..." class="flex-1 text-black rounded-lg">
+            <input type="search" wire:model.live.debounce.250ms="search" placeholder="Search..." class="flex-1 text-black rounded-lg">
         </div>
     </div>
     <div class="bg-custom-gradient w-full h-[2px] -z-10 my-10"></div>
     <div class="w-full p-3 text-black bg-white rounded-lg lg:p-6">
         <h1 class="font-bold lg:text-3xl">Client Requests</h1>
-        <table class="w-full mt-5 border-collapse">
+        <table class="w-full my-5 border-collapse">
             <thead>
                 <tr class="border-b">
                     <th class="font-thin text-left text-gray-500">Deliverable Request</th>
@@ -75,9 +97,10 @@ new class extends Component {
         @if ($clientRequests->isEmpty())
         <p class="mt-5 text-center text-gray-500">No client requests found.</p>
         @endif
+        {{ $clientRequests->links() }}
     </div>
     <h2 class="self-start mt-16 text-3xl font-bold text-left">Clients</h2>
-    <div class="grid w-full grid-cols-2 gap-8 mt-5 place-content-center md:grid-cols-3 xl:grid-cols-4">
+    <div class="grid w-full grid-cols-2 gap-8 my-5 place-content-center md:grid-cols-3 xl:grid-cols-4">
         @foreach ($clients as $client)
         <a href="{{ route('clients.view-client', $client) }}" wire:navigate class="flex flex-col items-start justify-start hover:opacity-60">
             <div class="relative w-full border-2 border-gray-300 aspect-square">
@@ -88,6 +111,9 @@ new class extends Component {
             <p class="text-gray-500">{{ $client->email }}</p>
         </a>
         @endforeach
+    </div>
+    <div class="w-full place-self-start">
+        {{ $clients->links() }}
     </div>
     <div>
         
