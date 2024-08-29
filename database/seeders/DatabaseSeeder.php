@@ -24,6 +24,7 @@ class DatabaseSeeder extends Seeder
         \App\Models\User::factory()->create([
             'name' => 'Test Client',
             'role' => 'client',
+            'client_type' => 'business',
             'company_cell_number' => '123-456-789',
             'company_address' => '123 Street Cubao',
             'email' => 'test@client.com',
