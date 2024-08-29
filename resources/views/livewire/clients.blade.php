@@ -66,7 +66,7 @@ new class extends Component {
                         <td class="hidden sm:table-cell">{{ (new DateTime($clientRequest->needed_at))->format('D, F j, Y') }}</td>
                         <td class="hidden xl:table-cell">{{ (new DateTime($clientRequest->created_at))->format('D, F j, Y h:i a') }}</td>
                         <td class="rounded-r-lg">
-                            <a href="{{ route('requests.view-request', ['client' => rand(), 'request' => rand()]) }}" wire:navigate class="px-5 py-1 font-bold text-black transition-all duration-300 ease-in-out rounded-md bg-button-blue hover:opacity-60">View</a>
+                            <a href="{{ route('requests.view-request', ['client' => $clientRequest->user->id, 'clientRequest' => $clientRequest->id]) }}" wire:navigate class="px-5 py-1 font-bold text-black transition-all duration-300 ease-in-out rounded-md bg-button-blue hover:opacity-60">View</a>
                         </td>
                     </tr>
                 @endforeach
