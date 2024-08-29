@@ -104,7 +104,7 @@ new class extends Component {
         @foreach ($clients as $client)
         <a href="{{ route('clients.view-client', $client) }}" wire:navigate class="flex flex-col items-start justify-start hover:opacity-60">
             <div class="relative w-full border-2 border-gray-300 aspect-square">
-                <img class="absolute object-cover min-w-full min-h-full" src="{{ $client->img_path }}" alt="">
+                <img class="absolute object-cover min-w-full min-h-full" src="{{ $client->img_path ?? asset('images/user.png') }}" alt="">
                 <span class="bg-button-blue text-white text-xs font-medium me-2 px-2.5 py-0.5 rounded-full absolute left-2 top-2">{{ ucwords($client->client_type) }}</span>
             </div>
             <h3 class="mt-3 font-bold text-md">{{ $client->name }}</h3>
