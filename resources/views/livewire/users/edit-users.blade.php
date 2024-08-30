@@ -19,7 +19,7 @@ class extends Component {
     public $name = '';
     public $company_cell = '';
     public $company_address = '';
-    public $url_sharepoint = null;
+    public $url_sharepoint = '';
     public $email = '';
     public $role = '';
     public $client_type = '';
@@ -86,6 +86,7 @@ class extends Component {
             'email' => $this->email,
             'company_cell_number' => $this->company_cell === '' ? null : $this->company_cell,
             'company_address' => $this->company_address === '' ? null : $this->company_address,
+            'url_sharepoint' => $this->url_sharepoint === '' ? null : $this->url_sharepoint,
             'project_manager' => $this->project_manager === '' ? null : $this->project_manager,
             'client_type' => $this->client_type === '' ? null : $this->client_type,
             'created_by' => auth()->user()->id,

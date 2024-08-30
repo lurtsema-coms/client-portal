@@ -151,22 +151,33 @@ class extends Component {
         </div>
     </div>
     <div class="bg-custom-gradient w-full h-[2px] -z-10 my-10"></div>
-    <div class="flex flex-col-reverse justify-center w-full gap-5 md:flex-row">
-        <div class="relative md:w-[25rem]">
-            <span class="absolute inset-y-0 left-0 flex items-center pl-3">
-                <svg class="w-5 h-5 text-gray-500" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 20" aria-hidden="true">
-                    <path fill-rule="evenodd" d="M8.5 2a6.5 6.5 0 104.5 11.29l3.85 3.85a.75.75 0 001.06-1.06l-3.85-3.85A6.5 6.5 0 008.5 2zm-5 6.5a5 5 0 1110 0 5 5 0 01-10 0z" clip-rule="evenodd" />
-                </svg>
-            </span>
-            <input 
-                type="search" 
-                wire:model.live.debounce.250ms="search" 
-                placeholder="Search..." 
-                class="w-full pl-10 text-black rounded-lg">
+    <div class="flex flex-col w-full gap-5 lg:items-center lg:justify-between lg:flex-row">
+        <div class="flex flex-col-reverse flex-1 gap-5 shrink-0 lg:flex-row">
+            <div class="relative w-full max-w-sm">
+                <span class="absolute inset-y-0 left-0 flex items-center pl-3">
+                    <svg class="w-5 h-5 text-gray-500" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 20" aria-hidden="true">
+                        <path fill-rule="evenodd" d="M8.5 2a6.5 6.5 0 104.5 11.29l3.85 3.85a.75.75 0 001.06-1.06l-3.85-3.85A6.5 6.5 0 008.5 2zm-5 6.5a5 5 0 1110 0 5 5 0 01-10 0z" clip-rule="evenodd" />
+                    </svg>
+                </span>
+                <input 
+                    type="search" 
+                    wire:model.live.debounce.250ms="search" 
+                    placeholder="Search..." 
+                    class="w-full max-w-sm pl-10 text-black rounded-lg h-11">
+            </div>
+            <a href="{{ route('requests.add-deliverable', $client->id) }}" class="max-w-60" wire:navigate>
+                <div class="flex items-center justify-center px-5 py-1 font-bold text-center text-black transition-all duration-300 ease-in-out rounded-md cursor-pointer h-11 bg-button-blue hover:opacity-60">
+                    Add Deliverable
+                </div>
+            </a>
         </div>
-        <a class="flex items-center justify-center px-5 py-1 font-bold text-center text-black transition-all duration-300 ease-in-out rounded-md cursor-pointer bg-button-blue hover:opacity-60" href="{{ route('requests.add-deliverable', $client->id) }}" wire:navigate>
-            Add Deliverable
+        @if ($client->url_sharepoint)
+        <a href="{{ $client->url_sharepoint }}" class="" target="_blank">
+            <div class="inline-block px-4 py-1 text-sm font-bold border rounded-full border-sky-600 hover:opacity-70">
+                DOWNLOAD FILES HERE
+            </div>
         </a>
+        @endif
     </div>
     @if (session('status') ?? session('success'))
         <div 
@@ -253,7 +264,16 @@ class extends Component {
         </div>
     </div>
     <div class="w-full p-3 text-black bg-white rounded-lg lg:p-6">
-        <h1 class="font-bold lg:text-3xl">Completed</h1>
+        <div class="flex flex-col gap-4 md:items-center md:flex-row md:justify-between">
+            <h1 class="font-bold lg:text-3xl">Completed</h1>
+            @if ($client->url_sharepoint)
+            <a href="{{ $client->url_sharepoint }}" class="" target="_blank">
+                <div class="inline-block px-4 py-1 text-sm font-bold text-black border rounded-full border-sky-600 hover:opacity-70">
+                    DOWNLOAD FILES HERE
+                </div>
+            </a>
+            @endif
+        </div>
         <table class="w-full mt-5 border-collapse">
             <thead>
                 <tr class="border-b">
