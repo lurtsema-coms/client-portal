@@ -165,7 +165,7 @@ new class extends Component {
         </div>
         @if (auth()->user()->url_sharepoint)
         <a href="{{ auth()->user()->url_sharepoint }}" class="" target="_blank">
-            <div class="inline-block px-4 py-1 text-sm font-bold border rounded-full border-sky-600">
+            <div class="inline-block px-4 py-1 text-sm font-bold border rounded-full border-sky-600 hover:opacity-70">
                 DOWNLOAD YOUR FILES HERE
             </div>
         </a>
@@ -259,12 +259,12 @@ new class extends Component {
             {{ $deliverables->links() }}
         </div>
     </div>
-    <div class="w-full p-3 mt-10 text-black bg-white rounded-lg lg:p-6">
+    <div class="w-full p-3 mt-16 text-black bg-white rounded-lg lg:p-6">
         <div class="flex flex-col gap-4 md:items-center md:flex-row md:justify-between">
             <h1 class="font-bold lg:text-3xl">Completed</h1>
             @if (auth()->user()->url_sharepoint)
             <a href="{{ auth()->user()->url_sharepoint }}" class="" target="_blank">
-                <div class="inline-block px-4 py-1 text-sm font-bold text-black border rounded-full border-sky-600">
+                <div class="inline-block px-4 py-1 text-sm font-bold text-black border rounded-full border-sky-600 hover:opacity-70">
                     DOWNLOAD YOUR FILES HERE
                 </div>
             </a>
