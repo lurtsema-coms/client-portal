@@ -56,7 +56,6 @@ new class extends Component {
             'updated_by' => auth()->user()->id,
             'needed_at' => $this->date_need,
             'remarks' => $this->remarks,
-            'created_at' => date('Y-m-d H:i:s')
         ]);
 
         $this->reset(['title', 'date_need', 'remarks']);
