@@ -119,7 +119,7 @@ new class extends Component {
                                     @if ($person_in_contact)
                                         @foreach ($person_in_contact as $index => $contact)
                                             <div wire:key="contact-users-{{ $index }}">
-                                                <h1 class="mb-4 font-bold lg:text-xl">Person in Contact {{ $index !== 0 ? $index : '' }}</h1>
+                                                <h1 class="mb-4 font-bold lg:text-xl">Person in Contact</h1>
                                                 <div>
                                                     <p>
                                                         <span class="text-gray-600">Name:</span> {{ $contact->name }}
@@ -288,7 +288,7 @@ new class extends Component {
                         </td>
                         <td class="hidden px-6 py-5 xl:table-cell whitespace-nowrap">{{ date('D, F j, Y', strtotime($complete->needed_at)) }}</td>
                         <td class="py-5 pl-6 rounded-r-lg">
-                            <a href="{{ route('view-deliverables', $complete->id) }}" wire:navigate>
+                            <a href="{{ route('view-completed', $complete->id) }}" wire:navigate>
                                 <button class="px-5 py-1 font-bold text-black transition-all duration-300 ease-in-out rounded-md bg-button-blue hover:opacity-60">View</button>
                             </a>
                         </td>
