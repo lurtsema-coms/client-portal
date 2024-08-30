@@ -34,7 +34,7 @@ new class extends Component {
                         ->orWhereRaw("DATE_FORMAT(needed_at, '%a, %M %e, %Y') LIKE ?", ['%' . $this->search . '%']);
                 });
             })
-            ->paginate(5);
+            ->paginate(5, pageName: 'user-requests-page');
         $deliverables = ClientRequest::with('user', 'updatedBy')
             ->where('user_id', auth()->user()->id)
             ->whereNotIn('status', ['PENDING', 'COMPLETED'])
@@ -47,7 +47,7 @@ new class extends Component {
                         ->orWhereRaw("DATE_FORMAT(needed_at, '%a, %M %e, %Y') LIKE ?", ['%' . $this->search . '%']);
                 });
             })
-            ->paginate(5);
+            ->paginate(5, pageName: 'deliverables-page');
         $completed = ClientRequest::with('user', 'updatedBy')
             ->where('user_id', auth()->user()->id)
             ->where('status', 'COMPLETED')
@@ -58,7 +58,7 @@ new class extends Component {
                         ->orWhereRaw("DATE_FORMAT(needed_at, '%a, %M %e, %Y') LIKE ?", ['%' . $this->search . '%']);
                 });
             })
-            ->paginate(5);
+            ->paginate(5, pageName: 'completed-page');
         
         return [
             'personInContacts' => (clone $personInContacts)->get(),

@@ -38,10 +38,10 @@ class extends Component {
                         ->orWhereRaw("DATE_FORMAT(needed_at, '%a, %M %e, %Y') LIKE ?", ['%' . $this->search . '%']);
                 });
             })
-            ->paginate(5);
+            ->paginate(5, pageName: 'user-requests-page');
         $deliverables = ClientRequest::with('user', 'updatedBy')
             ->where('user_id', $this->client->id)
-            ->where('status', '!=', 'PENDING')
+            ->whereNotIn('status', ['PENDING', 'COMPLETED'])
             ->when($this->search, function ($query) {
                 $query->where(function ($query) {
                     $query->where('title', 'like', '%' . $this->search . '%')
@@ -51,13 +51,27 @@ class extends Component {
                         ->orWhereRaw("DATE_FORMAT(needed_at, '%a, %M %e, %Y') LIKE ?", ['%' . $this->search . '%']);
                 });
             })
-            ->paginate(5);
+            ->paginate(5, pageName: 'deliverables-page');
+        $completed = ClientRequest::with('user', 'updatedBy')
+            ->where('user_id', $this->client->id)
+            ->where('status', 'COMPLETED')
+            ->when($this->search, function ($query) {
+                $query->where(function ($query) {
+                    $query->where('title', 'like', '%' . $this->search . '%')
+                        ->orWhere('status', 'like', '%' . $this->search . '%')
+                        ->orWhere('remarks', 'like', '%' . $this->search . '%')
+                        ->orWhereRaw("DATE_FORMAT(created_at, '%a, %M %e, %Y') LIKE ?", ['%' . $this->search . '%'])
+                        ->orWhereRaw("DATE_FORMAT(needed_at, '%a, %M %e, %Y') LIKE ?", ['%' . $this->search . '%']);
+                });
+            })
+            ->paginate(5, pageName: 'completed-page');
         
         return [
             'personInContacts' => (clone $personInContacts)->get(),
             'personInContact' => (clone $personInContacts)->first(),
             'userRequests' => $userRequests,
             'deliverables' => $deliverables,
+            'completed' => $completed,
         ];
     }
 }; ?>
@@ -194,11 +208,14 @@ class extends Component {
                 @endforeach
             </tbody>
         </table>
+        @if ($userRequests->isEmpty())
+        <p class="mt-5 text-center text-gray-500">No data.</p>
+        @endif
         <div class="mt-5">
             {{ $userRequests->links() }}
         </div>
     </div>
-    <div class="w-full p-3 text-black bg-white rounded-lg lg:p-6">
+    <div class="w-full p-3 mb-16 text-black bg-white rounded-lg lg:p-6">
         <h1 class="font-bold lg:text-3xl">Deliverables</h1>
         <table class="w-full mt-5 border-collapse">
             <thead>
@@ -228,6 +245,49 @@ class extends Component {
                 @endforeach
             </tbody>
         </table>
+        @if ($deliverables->isEmpty())
+        <p class="mt-5 text-center text-gray-500">No data.</p>
+        @endif
+        <div class="mt-5">
+            {{ $deliverables->links() }}
+        </div>
+    </div>
+    <div class="w-full p-3 text-black bg-white rounded-lg lg:p-6">
+        <h1 class="font-bold lg:text-3xl">Completed</h1>
+        <table class="w-full mt-5 border-collapse">
+            <thead>
+                <tr class="border-b">
+                    <th class="px-3 font-thin text-left text-gray-500 whitespace-nowrap">Title</th>
+                    <th class="hidden px-6 font-thin text-left text-gray-500 sm:table-cell whitespace-nowrap">Status</th>
+                    <th class="hidden px-6 font-thin text-left text-gray-500 xl:table-cell whitespace-nowrap">Last Update</th>
+                    <th class="hidden px-6 font-thin text-left text-gray-500 xl:table-cell whitespace-nowrap">Updated By</th>
+                    <th class="pl-6 font-thin text-left text-gray-500 whitespace-nowrap">Action</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach ($completed as $complete)
+                    <tr class="border-b">
+                        <td class="px-3 py-5">
+                            <p class="font-bold">{{ $complete->title }}</p>
+                            <p class="italic text-gray-700 md:hidden">Client Name A</p>
+                            <p class="text-sm text-gray-500 sm:hidden">{{ date('D, F j, Y') }}</p>
+                        </td>
+                        <td class="hidden px-6 py-5 sm:table-cell whitespace-nowrap">{{ $complete->status }}</td>
+                        <td class="hidden px-6 py-5 xl:table-cell whitespace-nowrap">{{ date('D, F j, Y', strtotime($complete->updated_at)) }}</td>
+                        <td class="hidden px-6 py-5 xl:table-cell">{{ $complete->updatedBy?->name }}</td>
+                        <td class="py-5 pl-6 rounded-r-lg">
+                            <a href="{{ route('requests.view-deliverable', ['client' => $complete->user->id, 'clientRequest' => $complete->id]) }}" wire:navigate class="px-5 py-1 font-bold text-black transition-all duration-300 ease-in-out rounded-md bg-button-blue hover:opacity-60">View</a>
+                        </td>
+                    </tr>
+                @endforeach
+            </tbody>
+        </table>
+        @if ($completed->isEmpty())
+        <p class="mt-5 text-center text-gray-500">No data.</p>
+        @endif
+        <div class="mt-5">
+            {{ $completed->links() }}
+        </div>
     </div>
 
 </div>
