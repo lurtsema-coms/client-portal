@@ -134,19 +134,19 @@ new class extends Component {
 				>
 				@error('photo')<p class="text-red-500">{{ $message }}</p>@enderror
 			</div>
-			<div class="w-full mt-5 space-y-2 sm:col-span-2" wire:ignore>
-				<label for="" class="block tracking-wider text-gray-600">Remarks</label>
-				<trix-editor
-					class="text-black trix"
-					x-data
-					x-on:trix-change="$dispatch('input', event.target.value)"
-					x-ref="trix"
-					wire:model.debounce.60s="remarks"
-					wire:key="uniqueKey"
-				></trix-editor>
-				@error('remarks')<p class="mt-2 text-red-500">{{ $message }}</p>@enderror
-			</div>
-			</div>
+		</div>
+		<div class="w-full mt-5 space-y-2" wire:ignore>
+			<label for="" class="block tracking-wider text-gray-600">Remarks</label>
+			<trix-editor
+				class="text-black trix"
+				x-data
+				x-on:trix-change="$dispatch('input', event.target.value)"
+				x-ref="trix"
+				wire:model.debounce.60s="remarks"
+				wire:key="uniqueKey"
+			></trix-editor>
+			@error('remarks')<p class="mt-2 text-red-500">{{ $message }}</p>@enderror
+		</div>
 			<button 
 				class="px-4 py-2 mt-5 text-right text-white bg-blue-500 border rounded-lg hover:bg-blue-600"
 				type="Submit" 
