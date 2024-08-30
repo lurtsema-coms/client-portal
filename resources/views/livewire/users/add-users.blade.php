@@ -21,6 +21,7 @@ class extends Component {
     public $role = '';
     public $client_type = '';
     public $project_manager = '';
+    public $url_sharepoint = '';
     public $password = '';
     public $photo;
     public $person_in_contact = [];
@@ -57,6 +58,7 @@ class extends Component {
             'email' => $this->email,
             'company_cell_number' => $this->company_cell === '' ? null : $this->company_cell,
             'company_address' => $this->company_address === '' ? null : $this->company_address,
+            'url_sharepoint' => $this->url_sharepoint === '' ? null : $this->url_sharepoint,
             'project_manager' => $this->project_manager === '' ? null : $this->project_manager,
             'client_type' => $this->client_type === '' ? null : $this->client_type,
             'img_path' => $img_path === '' ? null : $img_path,
@@ -98,6 +100,7 @@ class extends Component {
                 'company_address' => 'required|min:3',
                 'project_manager' => 'required|min:3',
                 'client_type' => 'required|in:business,political',
+                'url_sharepoint' => 'required|url',
                 'person_in_contact.*.name' => 'required|min:3',
                 'person_in_contact.*.cell_number' => 'required|min:3',
                 'person_in_contact.*.email' => 'required|email',
@@ -214,6 +217,17 @@ class extends Component {
                     wire:model="company_address"
                 >
                 @error('company_address')<p class="text-red-500">{{ $message }}</p>@enderror
+            </div>
+            @endif
+            @if($role === 'client')
+            <div class="mt-5 space-y-2">
+                <label for="" class="block tracking-wider text-gray-600">Url Sharepoint</label>
+                <input 
+                    class="w-full text-black rounded-lg"
+                    type="text"
+                    wire:model="url_sharepoint"
+                >
+                @error('url_sharepoint')<p class="text-red-500">{{ $message }}</p>@enderror
             </div>
             @endif
             <div class="mt-5 space-y-2">

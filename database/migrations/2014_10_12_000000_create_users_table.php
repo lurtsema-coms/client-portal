@@ -21,6 +21,7 @@ return new class extends Migration
             $table->text('company_address')->nullable();
             $table->string('project_manager')->nullable();
             $table->string('img_path')->nullable();
+            $table->string('url_sharepoint')->nullable();
             $table->string('password');
             $table->timestamp('email_verified_at')->nullable();
             $table->unsignedBigInteger('created_by')->length(10)->nullable();

@@ -37,7 +37,7 @@ new class extends Component {
             ->paginate(5);
         $deliverables = ClientRequest::with('user', 'updatedBy')
             ->where('user_id', auth()->user()->id)
-            ->where('status', '!=', 'PENDING')
+            ->whereNotIn('status', ['PENDING', 'COMPLETED'])
             ->when($this->search, function ($query) {
                 $query->where(function ($query) {
                     $query->where('title', 'like', '%' . $this->search . '%')
@@ -48,12 +48,24 @@ new class extends Component {
                 });
             })
             ->paginate(5);
+        $completed = ClientRequest::with('user', 'updatedBy')
+            ->where('user_id', auth()->user()->id)
+            ->where('status', 'COMPLETED')
+            ->when($this->search, function ($query) {
+                $query->where(function ($query) {
+                    $query->where('title', 'like', '%' . $this->search . '%')
+                        ->orWhere('status', 'like', '%' . $this->search . '%')
+                        ->orWhereRaw("DATE_FORMAT(needed_at, '%a, %M %e, %Y') LIKE ?", ['%' . $this->search . '%']);
+                });
+            })
+            ->paginate(5);
         
         return [
             'personInContacts' => (clone $personInContacts)->get(),
             'personInContact' => (clone $personInContacts)->first(),
             'userRequests' => $userRequests,
             'deliverables' => $deliverables,
+            'completed' => $completed,
         ];
     }
 }; ?>
@@ -61,7 +73,7 @@ new class extends Component {
 <div class="flex flex-col items-center justify-center w-full mx-auto">
     <div class="flex flex-col items-stretch justify-center max-w-screen-xl gap-10 lg:flex-row">
         <div class="flex flex-col items-center justify-center flex-grow gap-10 px-8 py-8 border sm:flex-row rounded-3xl">
-            <img class="w-auto max-h-[12rem]" src="{{ asset('images/user.png') }}" alt="">
+            <img class="w-auto max-h-[12rem]" src="{{ asset(auth()->user()->img_path ? auth()->user()->img_path : 'images/user.png') }}" alt="">
             <div class="flex flex-col justify-center ">
                 <h1 class="mb-2 text-4xl font-bold ">{{ auth()->user()->name }}</h1>
                 <h2 class="text-lg">Email: <span class="text-gray-500">{{ auth()->user()->email }}</span></h2>
@@ -126,28 +138,35 @@ new class extends Component {
                             </div>
                         </div>
                     </div>
-
-
                 </div>
             @endif
         </div>
     </div>
     <div class="bg-custom-gradient w-full h-[2px] -z-10 my-10"></div>
-    <div class="flex flex-col-reverse justify-center w-full gap-5 md:flex-row">
-        <div class="relative md:w-[25rem]">
-            <span class="absolute inset-y-0 left-0 flex items-center pl-3">
-                <svg class="w-5 h-5 text-gray-500" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 20" aria-hidden="true">
-                    <path fill-rule="evenodd" d="M8.5 2a6.5 6.5 0 104.5 11.29l3.85 3.85a.75.75 0 001.06-1.06l-3.85-3.85A6.5 6.5 0 008.5 2zm-5 6.5a5 5 0 1110 0 5 5 0 01-10 0z" clip-rule="evenodd" />
-                </svg>
-            </span>
-            <input 
-                type="search" 
-                wire:model.live.debounce.250ms="search" 
-                placeholder="Search..." 
-                class="w-full pl-10 text-black rounded-lg">
+    <div class="flex flex-col w-full gap-5 lg:items-center lg:justify-between lg:flex-row">
+        <div class="flex flex-col-reverse flex-1 gap-5 shrink-0 lg:flex-row">
+            <div class="relative w-full max-w-sm">
+                <span class="absolute inset-y-0 left-0 flex items-center pl-3">
+                    <svg class="w-5 h-5 text-gray-500" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 20" aria-hidden="true">
+                        <path fill-rule="evenodd" d="M8.5 2a6.5 6.5 0 104.5 11.29l3.85 3.85a.75.75 0 001.06-1.06l-3.85-3.85A6.5 6.5 0 008.5 2zm-5 6.5a5 5 0 1110 0 5 5 0 01-10 0z" clip-rule="evenodd" />
+                    </svg>
+                </span>
+                <input 
+                    type="search" 
+                    wire:model.live.debounce.250ms="search" 
+                    placeholder="Search..." 
+                    class="w-full max-w-sm pl-10 text-black rounded-lg h-11">
+            </div>
+            <a href="{{ route('add-request') }}" class="max-w-60" wire:navigate>
+                <div class="flex items-center justify-center px-5 py-1 font-bold text-center text-black transition-all duration-300 ease-in-out rounded-md cursor-pointer h-11 bg-button-blue hover:opacity-60">
+                    Add New Request
+                </div>
+            </a>
         </div>
-        <a class="flex items-center justify-center px-5 py-1 font-bold text-center text-black transition-all duration-300 ease-in-out rounded-md cursor-pointer bg-button-blue hover:opacity-60" href="{{ route('add-request') }}" wire:navigate>
-            Add New Request
+        <a href="{{ auth()->user()->url_sharepoint }}" class="" target="_blank">
+            <div class="inline-block px-4 py-1 text-sm font-bold border rounded-full border-sky-600">
+                DOWNLOAD YOUR FILES HERE
+            </div>
         </a>
     </div>
     @if (session('status'))
@@ -213,7 +232,7 @@ new class extends Component {
                     <tr class="border-b">
                         <td class="px-3 py-5">
                             <p class="font-bold">{{ $deliverable->title }}</p>
-                            <p class="italic text-gray-700 md:hidden">Client Name A</p>
+                            <p class="italic text-gray-700 md:hidden">{{ $deliverable->user->name }}</p>
                             <p class="text-sm text-gray-500 sm:hidden">{{ date('D, F j, Y') }}</p>
                         </td>
                         <td class="hidden px-6 py-5 sm:table-cell whitespace-nowrap">{{ $deliverable->status }}</td>
@@ -228,6 +247,47 @@ new class extends Component {
                 @endforeach
             </tbody>
         </table>
+        <div class="mt-5">
+            {{ $deliverables->links() }}
+        </div>
     </div>
-
+    <div class="w-full p-3 mt-10 text-black bg-white rounded-lg lg:p-6">
+        <div class="flex flex-col gap-4 md:items-center md:flex-row md:justify-between">
+            <h1 class="font-bold lg:text-3xl">Completed</h1>
+            <a href="{{ auth()->user()->url_sharepoint }}" class="" target="_blank">
+                <div class="inline-block px-4 py-1 text-sm font-bold text-black border rounded-full border-sky-600">
+                    DOWNLOAD YOUR FILES HERE
+                </div>
+            </a>
+        </div>
+        <table class="w-full mt-5 border-collapse">
+            <thead>
+                <tr class="border-b">
+                    <th class="px-3 font-thin text-left text-gray-500 whitespace-nowrap">Deliverable Request</th>
+                    <th class="hidden px-6 font-thin text-left text-gray-500 sm:table-cell whitespace-nowrap">Due Date</th>
+                    <th class="pl-6 font-thin text-left text-gray-500 whitespace-nowrap">Action</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach ($completed as $complete)
+                    <tr class="border-b">
+                        <td class="px-3 py-5">
+                            <p class="font-bold">{{ $complete->title }}</p>
+                            <p class="italic text-gray-700 md:hidden">{{ $complete->user->name }}</p>
+                            <p class="text-sm text-gray-500 sm:hidden">{{ date('D, F j, Y') }}</p>
+                        </td>
+                        <td class="hidden px-6 py-5 xl:table-cell whitespace-nowrap">{{ date('D, F j, Y', strtotime($complete->needed_at)) }}</td>
+                        <td class="py-5 pl-6 rounded-r-lg">
+                            <a href="{{ route('view-deliverables', $complete->id) }}" wire:navigate>
+                                <button class="px-5 py-1 font-bold text-black transition-all duration-300 ease-in-out rounded-md bg-button-blue hover:opacity-60">View</button>
+                            </a>
+                        </td>
+                    </tr>
+                @endforeach
+            </tbody>
+        </table>
+        <div class="mt-5">
+            {{ $completed->links() }}
+        </div>
+    </div>
 </div>

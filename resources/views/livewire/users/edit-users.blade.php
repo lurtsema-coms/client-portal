@@ -19,6 +19,7 @@ class extends Component {
     public $name = '';
     public $company_cell = '';
     public $company_address = '';
+    public $url_sharepoint = '';
     public $email = '';
     public $role = '';
     public $client_type = '';
@@ -38,6 +39,7 @@ class extends Component {
         $this->name = $user->name;
         $this->company_cell = $user->company_cell_number;
         $this->company_address = $user->company_address;
+        $this->url_sharepoint = $user->url_sharepoint;
         $this->email = $user->email;
         $this->role = $user->role;
         $this->client_type = $user->client_type;
@@ -132,6 +134,7 @@ class extends Component {
                 'photo' => 'nullable|image|max:1024',
                 'company_cell' => 'required|min:3',
                 'company_address' => 'required|min:3',
+                'url_sharepoint' => 'required|url',
                 'project_manager' => 'required|min:3',
                 'client_type' => 'required|in:business,political',
                 'person_in_contact.*.name' => 'required|min:3',
@@ -257,6 +260,17 @@ class extends Component {
                     wire:model="company_address"
                 >
                 @error('company_address')<p class="text-red-500">{{ $message }}</p>@enderror
+            </div>
+            @endif
+            @if($role === 'client')
+            <div class="mt-5 space-y-2">
+                <label for="" class="block tracking-wider text-gray-600">Url Sharepoint</label>
+                <input 
+                    class="w-full text-black rounded-lg"
+                    type="text"
+                    wire:model="url_sharepoint"
+                >
+                @error('url_sharepoint')<p class="text-red-500">{{ $message }}</p>@enderror
             </div>
             @endif
             <div class="mt-5 space-y-2">
