@@ -30,7 +30,9 @@ Route::get('/', function () {
 Route::group(['middleware' => 'auth'], function () {
     Route::middleware('role:admin')->group(function () {
         Route::view('clients', 'clients')->name('clients');
-        Volt::route('clients/{client}/{clientRequest}', 'requests.admin.view-request')->name('requests.view-request');
+        Volt::route('clients/{client}/requests/{clientRequest}', 'requests.admin.view-request')->name('requests.view-request');
+        Volt::route('clients/{client}/deliverable/add', 'requests.admin.add-deliverable')->name('requests.add-deliverable');
+        Volt::route('clients/{client}/deliverables/{clientRequest}', 'requests.admin.view-deliverable')->name('requests.view-deliverable');
         Volt::route('clients/{client}', 'clients.view-client')->name('clients.view-client');
         Route::view('users', 'users')->name('users');
         Volt::route('add-users', 'users.add-users')->name('add-users');

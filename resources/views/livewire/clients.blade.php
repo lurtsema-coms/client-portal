@@ -58,8 +58,13 @@ new class extends Component {
                 <option class="text-black" value="{{ $clientType }}">{{ ucwords($clientType) }}</option>
             @endforeach
         </select>
-        <div class="flex items-center justify-end w-full gap-5 md:max-w-sm">
-            <input type="search" wire:model.live.debounce.250ms="search" placeholder="Search..." class="flex-1 text-black rounded-lg">
+        <div class="flex relative items-center justify-end w-full gap-5 md:max-w-sm">
+            <span class="absolute inset-y-0 left-0 flex items-center pl-3">
+                <svg class="w-5 h-5 text-gray-500" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 20" aria-hidden="true">
+                    <path fill-rule="evenodd" d="M8.5 2a6.5 6.5 0 104.5 11.29l3.85 3.85a.75.75 0 001.06-1.06l-3.85-3.85A6.5 6.5 0 008.5 2zm-5 6.5a5 5 0 1110 0 5 5 0 01-10 0z" clip-rule="evenodd" />
+                </svg>
+            </span>
+            <input type="search" wire:model.live.debounce.250ms="search" placeholder="Search..." class="flex-1 w-full pl-10 text-black rounded-lg">
         </div>
     </div>
     <div class="bg-custom-gradient w-full h-[2px] -z-10 my-10"></div>
