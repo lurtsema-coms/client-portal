@@ -19,7 +19,7 @@ class extends Component {
     public $name = '';
     public $company_cell = '';
     public $company_address = '';
-    public $url_sharepoint = '';
+    public $url_sharepoint = null;
     public $email = '';
     public $role = '';
     public $client_type = '';
@@ -134,7 +134,7 @@ class extends Component {
                 'photo' => 'nullable|image|max:1024',
                 'company_cell' => 'required|min:3',
                 'company_address' => 'required|min:3',
-                'url_sharepoint' => 'required|url',
+                'url_sharepoint' => 'nullable|url',
                 'project_manager' => 'required|min:3',
                 'client_type' => 'required|in:business,political',
                 'person_in_contact.*.name' => 'required|min:3',
@@ -264,7 +264,7 @@ class extends Component {
             @endif
             @if($role === 'client')
             <div class="mt-5 space-y-2">
-                <label for="" class="block tracking-wider text-gray-600">Url Sharepoint</label>
+                <label for="" class="block tracking-wider text-gray-600">URL Sharepoint</label>
                 <input 
                     class="w-full text-black rounded-lg"
                     type="text"

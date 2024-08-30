@@ -100,7 +100,7 @@ class extends Component {
                 'company_address' => 'required|min:3',
                 'project_manager' => 'required|min:3',
                 'client_type' => 'required|in:business,political',
-                'url_sharepoint' => 'required|url',
+                'url_sharepoint' => 'nullable|url',
                 'person_in_contact.*.name' => 'required|min:3',
                 'person_in_contact.*.cell_number' => 'required|min:3',
                 'person_in_contact.*.email' => 'required|email',
@@ -221,7 +221,7 @@ class extends Component {
             @endif
             @if($role === 'client')
             <div class="mt-5 space-y-2">
-                <label for="" class="block tracking-wider text-gray-600">Url Sharepoint</label>
+                <label for="" class="block tracking-wider text-gray-600">URL Sharepoint</label>
                 <input 
                     class="w-full text-black rounded-lg"
                     type="text"
