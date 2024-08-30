@@ -58,7 +58,7 @@ new class extends Component {
                 <option class="text-black" value="{{ $clientType }}">{{ ucwords($clientType) }}</option>
             @endforeach
         </select>
-        <div class="flex relative items-center justify-end w-full gap-5 md:max-w-sm">
+        <div class="relative flex items-center justify-end w-full gap-5 md:max-w-sm">
             <span class="absolute inset-y-0 left-0 flex items-center pl-3">
                 <svg class="w-5 h-5 text-gray-500" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 20" aria-hidden="true">
                     <path fill-rule="evenodd" d="M8.5 2a6.5 6.5 0 104.5 11.29l3.85 3.85a.75.75 0 001.06-1.06l-3.85-3.85A6.5 6.5 0 008.5 2zm-5 6.5a5 5 0 1110 0 5 5 0 01-10 0z" clip-rule="evenodd" />
@@ -108,7 +108,7 @@ new class extends Component {
     <div class="grid w-full grid-cols-2 gap-8 my-5 place-content-center md:grid-cols-3 xl:grid-cols-4">
         @foreach ($clients as $client)
         <a href="{{ route('clients.view-client', $client) }}" wire:navigate class="flex flex-col items-start justify-start hover:opacity-60">
-            <div class="relative w-full border-2 border-gray-300 aspect-square">
+            <div class="relative w-full overflow-hidden border-2 border-gray-300 aspect-square">
                 <img class="absolute object-cover min-w-full min-h-full" src="{{ $client->img_path ?? asset('images/user.png') }}" alt="">
                 <span class="bg-button-blue text-white text-xs font-medium me-2 px-2.5 py-0.5 rounded-full absolute left-2 top-2">{{ ucwords($client->client_type) }}</span>
             </div>
