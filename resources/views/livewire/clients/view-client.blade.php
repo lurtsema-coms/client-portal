@@ -151,7 +151,7 @@ class extends Component {
                 class="w-full pl-10 text-black rounded-lg">
         </div>
         <a class="flex items-center justify-center px-5 py-1 font-bold text-center text-black transition-all duration-300 ease-in-out rounded-md cursor-pointer bg-button-blue hover:opacity-60" href="{{ route('requests.add-deliverable', $client->id) }}" wire:navigate>
-            Add New Deliverable
+            Add Deliverable
         </a>
     </div>
     @if (session('status'))
