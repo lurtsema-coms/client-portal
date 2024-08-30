@@ -31,7 +31,7 @@ class extends Component {
 
 <div class="flex flex-col items-stretch justify-start gap-5">
     <div class="flex items-center justify-between">
-        <h1 class="text-2xl font-bold lg:text-7xl">Deliverables</h1>
+        <h1 class="text-2xl font-bold lg:text-7xl">Completed</h1>
         <x-application-logo class="block w-auto h-10 text-white fill-current lg:h-20" />
     </div>
     <div class="w-full p-3 text-black bg-white rounded-lg lg:p-6">

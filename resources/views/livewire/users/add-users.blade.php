@@ -257,7 +257,7 @@ class extends Component {
         @if($role == 'client')
             @foreach ($person_in_contact as $index => $contact)
                 <div wire:key="add-users-{{ $index }}">
-                    <h1 class="mt-10 font-bold lg:text-3xl">Person in Contact {{ $index !== 0 ? $index : '' }}</h1>
+                    <h1 class="mt-10 font-bold lg:text-3xl">Person in Contact</h1>
                     <div class="mt-5 space-y-2">
                         <label for="" class="block tracking-wider text-gray-600">Name</label>
                         <input 
