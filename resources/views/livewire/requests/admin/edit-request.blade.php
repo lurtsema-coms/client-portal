@@ -60,8 +60,8 @@ new class extends Component {
 
         $this->reset(['title', 'date_need', 'remarks']);
         
-        session()->flash('success', 'Request successfully updated.');
-        $this->redirect(url()->previous(), navigate: true);
+        session()->flash('success', 'Data has been updated.');
+        $this->redirect(route('clients.view-client', $this->client->id), navigate: true);
     }
 }; ?>
 

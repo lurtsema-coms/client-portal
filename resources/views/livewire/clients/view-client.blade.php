@@ -168,14 +168,14 @@ class extends Component {
             Add Deliverable
         </a>
     </div>
-    @if (session('status'))
+    @if (session('status') ?? session('success'))
         <div 
             x-data="{ show: true }"
             x-init="setTimeout(() => show = false, 6000)" 
             x-show="show"
             class="mt-10 text-green-400"
         >
-            {{ session('status') }}
+            {{ session('status') ?? session('success') }}
         </div>
     @endif
     
