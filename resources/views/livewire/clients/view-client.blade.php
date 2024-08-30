@@ -108,7 +108,7 @@ class extends Component {
                                 @click.outside="isOpen=false"
                             >
                                 <div class="space-y-5 overflow-auto max-h-96">
-                                    @if ($person_in_contact)
+                                    @if ($person_in_contact->count() > 1)
                                         @foreach ($person_in_contact as $index => $contact)
                                             <div wire:key="contact-users-{{ $index }}">
                                                 <h1 class="mb-4 font-bold lg:text-xl">Person in Contact {{ $index !== 0 ? $index : '' }}</h1>
@@ -150,8 +150,8 @@ class extends Component {
                 placeholder="Search..." 
                 class="w-full pl-10 text-black rounded-lg">
         </div>
-        <a class="flex items-center justify-center px-5 py-1 font-bold text-center text-black transition-all duration-300 ease-in-out rounded-md cursor-pointer bg-button-blue hover:opacity-60" href="{{ route('add-request') }}" wire:navigate>
-            Add New Request
+        <a class="flex items-center justify-center px-5 py-1 font-bold text-center text-black transition-all duration-300 ease-in-out rounded-md cursor-pointer bg-button-blue hover:opacity-60" href="{{ route('requests.add-deliverable', $client->id) }}" wire:navigate>
+            Add New Deliverable
         </a>
     </div>
     @if (session('status'))
@@ -220,7 +220,7 @@ class extends Component {
                         </td>
                         <td class="hidden px-6 py-5 sm:table-cell whitespace-nowrap">{{ $deliverable->status }}</td>
                         <td class="hidden px-6 py-5 xl:table-cell whitespace-nowrap">{{ date('D, F j, Y', strtotime($deliverable->updated_at)) }}</td>
-                        <td class="hidden px-6 py-5 xl:table-cell">{{ $deliverable->updatedBy->name }}</td>
+                        <td class="hidden px-6 py-5 xl:table-cell">{{ $deliverable->updatedBy?->name }}</td>
                         <td class="py-5 pl-6 rounded-r-lg">
                             <a href="{{ route('requests.view-deliverable', ['client' => $deliverable->user->id, 'clientRequest' => $deliverable->id]) }}" wire:navigate class="px-5 py-1 font-bold text-black transition-all duration-300 ease-in-out rounded-md bg-button-blue hover:opacity-60">View</a>
                         </td>
