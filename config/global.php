@@ -1,12 +1,14 @@
 <?php
 return [
   'deliverable_statuses' => [
-    'REQUESTED',
     'PENDING',
+    'CLIENT REVIEW',
+    'SENT VIA EMAIL',
     'IN-PROGRESS',
     'COMPLETED',
-    'CANCELLED',
-    'REJECTED',
-    'REJECTED-BY-CLIENT',
+    'POSTED',
+    'SCHEDULED',
+    'ON-HOLD',
+    'REPORTED',
   ],
 ];
