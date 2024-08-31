@@ -31,7 +31,7 @@ class extends Component {
 
 <div class="flex flex-col items-stretch justify-start gap-5">
     <div class="flex items-center justify-between">
-        <h1 class="text-2xl font-bold lg:text-7xl">Completed</h1>
+        <h1 class="text-2xl font-bold lg:text-7xl">Deliverables</h1>
         <x-application-logo class="block w-auto h-10 text-white fill-current lg:h-20" />
     </div>
     <div class="w-full p-3 text-black bg-white rounded-lg lg:p-6">
@@ -58,7 +58,7 @@ class extends Component {
         </div>
         <div class="w-full mt-5 space-y-2" wire:ignore>
             <label for="" class="block tracking-wider text-gray-600">Remarks</label>
-            <div class="trix">
+            <div>
                 {!! $remarks !!}
             </div>
         </div>
@@ -66,10 +66,17 @@ class extends Component {
             x-data="{ isOpen: false }" 
             x-init="$watch('isOpen', value => document.body.style.overflow = value ? 'hidden' : 'auto')"
         >
+            @php
+                $extension = pathinfo($request->img_path, PATHINFO_EXTENSION);
+            @endphp
             @if($request->img_path)
                 <div class="mt-4 space-y-2">
                     <label for="" class="block tracking-wider text-gray-600">Update</label>
-                    <img @click="isOpen = true" class="w-full max-w-3xl cursor-pointer" src="{{ $request->img_path }}" alt="">
+                    @if(in_array($extension, ['jpg', 'jpeg', 'png', 'bmp', 'gif', 'svg']))
+                        <img @click="isOpen = true" class="w-full max-w-3xl cursor-pointer" src="{{ $request->img_path }}" alt="">
+                        @else
+                        <a href="{{ $request->img_path }}" target="_blank" class="inline-block text-blue-500 underline hover:opacity-70">View PDF</a>
+                    @endif
                 </div>
 
                 <!-- Modal -->

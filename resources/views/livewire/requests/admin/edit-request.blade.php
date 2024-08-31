@@ -8,42 +8,42 @@ use Livewire\WithFileUploads;
 
 
 new class extends Component {
-  use WithFileUploads;
+	use WithFileUploads;
 
-  public $client;
-  public $clientRequest;
-  public $role;
-  public $photo;
-  public $img_path = '';
-  #[Validate('required')] 
-  public $title = '';
-  #[Validate('required')] 
-  public $date_need = '';
-  #[Validate('required')] 
-  public $status = '';
-  public $remarks = '';
+	public $client;
+	public $clientRequest;
+	public $role;
+	public $photo;
+	public $img_path = '';
+	#[Validate('required')] 
+	public $title = '';
+	#[Validate('required')] 
+	public $date_need = '';
+	#[Validate('required')] 
+	public $status = '';
+	public $remarks = '';
 
-  public function mount(User $client, ClientRequest $clientRequest) {
-    $this->client = $client;
-    $this->clientRequest = $clientRequest;
-    $this->title = $clientRequest->title;
-    $this->date_need = $clientRequest->needed_at;
-    $this->status = $clientRequest->status;
-    $this->remarks = $clientRequest->remarks;
-    $this->img_path = $clientRequest->img_path;
-  }
+	public function mount(User $client, ClientRequest $clientRequest) {
+		$this->client = $client;
+		$this->clientRequest = $clientRequest;
+		$this->title = $clientRequest->title;
+		$this->date_need = $clientRequest->needed_at;
+		$this->status = $clientRequest->status;
+		$this->remarks = $clientRequest->remarks;
+		$this->img_path = $clientRequest->img_path;
+	}
 
-  public function handleSave()
+	public function handleSave()
     {
         $this->validate();
 
-        $image = $this->photo;
+        $file = $this->photo;
         
-        if ($image) {    
+        if ($file) {    
             $uuid = substr(Str::uuid()->toString(), 0, 8);
-            $file_name = $uuid . '.' . $image->getClientOriginalExtension();
+            $file_name = $uuid . '.' . $file->getClientOriginalExtension();
             $this->img_path = url('images/client-request/' . $file_name);
-            $image->storePubliclyAs('images/client-request', $file_name, 'public');
+            $file->storePubliclyAs('images/client-request', $file_name, 'public');
 
             $this->clientRequest->update([
                 'img_path' => $this->img_path
@@ -58,8 +58,6 @@ new class extends Component {
             'remarks' => $this->remarks,
         ]);
 
-        $this->reset(['title', 'date_need', 'remarks']);
-        
         session()->flash('success', 'Data has been updated.');
         $this->redirect(route('clients.view-client', $this->client->id), navigate: true);
     }
@@ -121,17 +119,27 @@ new class extends Component {
 				@error('status')<p class="text-red-500">{{ $message }}</p>@enderror
 			</div>
 			<div class="mt-5 space-y-2">
-					@if ($photo) 
-					<img src="{{ $photo->temporaryUrl() }}" class="mb-5 rounded-lg shadow-md max-w-48">
-					@elseif($img_path)
-						<img src="{{ $img_path }}?{{ now()->timestamp }}" class="mb-5 rounded-lg shadow-md max-w-48">
-					@endif
-				<label for="" class="block tracking-wider text-gray-600">Upload Photo</label>
+				@php
+					$extension = pathinfo($img_path, PATHINFO_EXTENSION);
+				@endphp
+				<label for="" class="block tracking-wider text-gray-600">Upload Photo/PDF</label>
 				<input 
-					class="w-full max-w-lg"
+					class="w-full max-w-lg text-black"
 					type="file"
 					wire:model="photo"
 				>
+				@if ($photo)
+					@if (in_array($photo->extension(), ['jpg', 'jpeg', 'png', 'bmp', 'gif', 'svg'])) 
+						<img src="{{ $photo->temporaryUrl() }}" class="mb-5 rounded-lg shadow-md max-w-48">
+					@endif
+				@endif
+				@if ($img_path)
+					@if (in_array($extension, ['jpg', 'jpeg', 'png', 'bmp', 'gif', 'svg']))
+						<img src="{{ $img_path }}?{{ now()->timestamp }}" class="mb-5 rounded-lg shadow-md max-w-48">
+					@elseif ($extension === 'pdf')
+						<a href="{{ $img_path }}" target="_blank" class="block text-blue-500 underline hover:opacity-70">View PDF</a>
+					@endif
+				@endif
 				@error('photo')<p class="text-red-500">{{ $message }}</p>@enderror
 			</div>
 		</div>

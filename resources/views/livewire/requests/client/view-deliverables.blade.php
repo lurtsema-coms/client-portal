@@ -69,7 +69,13 @@ class extends Component {
             @if($request->img_path)
                 <div class="mt-4 space-y-2">
                     <label for="" class="block tracking-wider text-gray-600">Update</label>
-                    <img @click="isOpen = true" class="w-full max-w-3xl cursor-pointer" src="{{ $request->img_path }}" alt="">
+                    @if ($img_path)
+                        @if (in_array($extension, ['jpg', 'jpeg', 'png', 'bmp', 'gif', 'svg']))
+                            <img @click="isOpen = true" class="w-full max-w-3xl cursor-pointer" src="{{ $request->img_path }}" alt="">
+                        @elseif ($extension === 'pdf')
+                            <a href="{{ $img_path }}" target="_blank" class="block text-blue-500 underline">View PDF</a>
+                        @endif
+                    @endif
                 </div>
 
                 <!-- Modal -->
