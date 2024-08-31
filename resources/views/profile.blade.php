@@ -19,11 +19,13 @@
                 </div>
             </div>
 
+            @role('admin')
             <div class="p-4 bg-white shadow sm:p-8 sm:rounded-lg">
                 <div class="max-w-xl">
                     <livewire:profile.delete-user-form />
                 </div>
             </div>
+            @endrole
         </div>
     </div>
 </x-admin-layout>
