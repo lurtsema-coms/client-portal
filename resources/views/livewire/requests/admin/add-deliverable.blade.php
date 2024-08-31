@@ -32,7 +32,7 @@ class extends Component {
     {
         $this->validate();
 
-        $image = $this->photo;
+        $file = $this->photo;
         $clientRequest = ClientRequest::create([
             'title' => $this->title,
             'status' => $this->status,
@@ -42,19 +42,17 @@ class extends Component {
             'updated_by' => auth()->user()->id,
         ]);
 
-        if ($image) {    
+        if ($file) {    
             $uuid = substr(Str::uuid()->toString(), 0, 8);
-            $file_name = $uuid . '.' . $image->getClientOriginalExtension();
+            $file_name = $uuid . '.' . $file->getClientOriginalExtension();
             $this->img_path = url('images/client-request/' . $file_name);
-            $image->storePubliclyAs('images/client-request', $file_name, 'public');
+            $file->storePubliclyAs('images/client-request', $file_name, 'public');
 
             $clientRequest->update([
                 'img_path' => $this->img_path
             ]);
         }
 
-        $this->reset(['title', 'date_need', 'remarks']);
-        
         session()->flash('success', 'Deliverable added successfully.');
         $this->redirect(route('clients.view-client', $this->client->id), navigate: true);
     }
@@ -122,17 +120,20 @@ class extends Component {
           @error('status')<p class="text-red-500">{{ $message }}</p>@enderror
         </div>
         <div class="mt-5 space-y-2">
-            @if ($photo) 
-            <img src="{{ $photo->temporaryUrl() }}" class="mb-5 rounded-lg shadow-md max-w-48">
-            @elseif($img_path)
-              <img src="{{ $img_path }}?{{ now()->timestamp }}" class="mb-5 rounded-lg shadow-md max-w-48">
-            @endif
-          <label for="" class="block tracking-wider text-gray-600">Upload Photo</label>
+          @php
+            $extension = pathinfo($img_path, PATHINFO_EXTENSION);
+          @endphp
+          <label for="" class="block tracking-wider text-gray-600">Upload Photo/PDF</label>
           <input 
-            class="w-full max-w-lg"
+            class="w-full max-w-lg text-black"
             type="file"
             wire:model="photo"
           >
+          @if ($photo)
+            @if (in_array($photo->extension(), ['jpg', 'jpeg', 'png', 'bmp', 'gif', 'svg'])) 
+              <img src="{{ $photo->temporaryUrl() }}" class="mb-5 rounded-lg shadow-md max-w-48">
+            @endif
+          @endif
           @error('photo')<p class="text-red-500">{{ $message }}</p>@enderror
         </div>
       </div>
