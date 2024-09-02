@@ -72,16 +72,16 @@ class extends Component {
             @if($request->img_path)
                 <div class="mt-4 space-y-2">
                     <label for="" class="block tracking-wider text-gray-600">Update</label>
-                    @if(in_array($extension, ['jpg', 'jpeg', 'png', 'bmp', 'gif', 'svg']))
-                        <img @click="isOpen = true" class="w-full max-w-3xl cursor-pointer" src="{{ $request->img_path }}" alt="">
-                        @else
-                        <a href="{{ $request->img_path }}" target="_blank" class="inline-block text-blue-500 underline hover:opacity-70">View PDF</a>
+                    @if (in_array($extension, ['jpg', 'jpeg', 'png', 'bmp', 'gif', 'svg']))
+                        <img @click="isOpen = true" class="max-w-3xl cursor-pointer max-h-96" src="{{ $request->img_path }}" alt="">
+                    @elseif ($extension === 'pdf')
+                        <a href="{{ $request->img_path }}" target="_blank" class="block text-blue-500 underline">View PDF</a>
                     @endif
                 </div>
 
                 <!-- Modal -->
                 <div x-show="isOpen" 
-                    class="fixed inset-0 z-50 flex bg-black bg-opacity-75"
+                    class="fixed inset-0 z-50 flex overflow-auto bg-black bg-opacity-75"
                     x-cloak
                 >
                     
@@ -94,7 +94,7 @@ class extends Component {
                     <!-- Zoomed Image -->
                     <div class="p-5 m-auto">
                         <img 
-                            class="w-full max-w-4xl" src="{{ $request->img_path }}" 
+                            class="w-full max-w-4xl max-h-[40rem] " src="{{ $request->img_path }}" 
                             alt=""
                             @click.outside="isOpen=false"
                         >

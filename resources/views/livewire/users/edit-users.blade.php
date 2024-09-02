@@ -94,7 +94,7 @@ class extends Component {
         ]);
 
         if($this->password != ''){
-            $user->update([
+            $this->user->update([
                 'password' => Hash::make($this->password),
             ]);
         }
