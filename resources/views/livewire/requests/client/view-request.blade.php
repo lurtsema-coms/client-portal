@@ -22,6 +22,7 @@ class extends Component {
         $id = request()->id;
 
         $request = ClientRequest::find($id);
+        $this->authorize('view', $request);
         
         $this->request = $request;
         $this->title = $request->title;
@@ -32,6 +33,7 @@ class extends Component {
     public function editRequest()
     {
         $this->validate();
+        $this->authorize('update', $this->request);
 
         $this->request->update([
             'title' => $this->title,

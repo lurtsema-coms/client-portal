@@ -13,6 +13,7 @@ class extends Component {
   public $clientRequest;
 
   public function mount(User $client, ClientRequest $clientRequest) {
+    $this->authorize('view', $clientRequest);
     $this->client = $client;
     $this->clientRequest = $clientRequest;
   }
