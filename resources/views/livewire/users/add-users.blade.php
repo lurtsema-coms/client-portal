@@ -28,13 +28,13 @@ class extends Component {
 
     public function mount()
     {
-        $this->person_in_contact = [
-            [
-                'name' => '',
-                'cell_number' => '',
-                'email_address' => '',
-            ]
-        ];
+        // $this->person_in_contact = [
+        //     [
+        //         'name' => '',
+        //         'cell_number' => '',
+        //         'email_address' => '',
+        //     ]
+        // ];
 
     }
 
@@ -66,6 +66,7 @@ class extends Component {
             'created_by' => auth()->user()->id,
             'created_at' => date('Y-m-d H:i:s')
         ]);
+
         
         if($this->role == 'client'){                      
             foreach($this->person_in_contact as $person) {
@@ -95,15 +96,15 @@ class extends Component {
 
         if ($this->role === 'client') {
             $rules = array_merge($rules, [
-                'photo' => 'required|image|max:1024',
+                'photo' => 'nullable|image|max:1024',
                 'company_cell' => 'required|min:3',
                 'company_address' => 'required|min:3',
                 'project_manager' => 'required|min:3',
                 'client_type' => 'required|in:business,political',
                 'url_sharepoint' => 'nullable|url',
-                'person_in_contact.*.name' => 'required|min:3',
-                'person_in_contact.*.cell_number' => 'required|min:3',
-                'person_in_contact.*.email' => 'required|email',
+                'person_in_contact.*.name' => 'nullable|min:3',
+                'person_in_contact.*.cell_number' => 'nullable|min:3',
+                'person_in_contact.*.email' => 'nullable|email',
             ]);
         }
 
