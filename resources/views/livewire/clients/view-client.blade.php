@@ -79,7 +79,9 @@ class extends Component {
 <div class="flex flex-col items-center justify-center w-full mx-auto">
     <div class="flex flex-col items-stretch justify-center max-w-screen-xl gap-10 lg:flex-row">
         <div class="flex flex-col items-center justify-center flex-grow gap-10 px-8 py-8 border sm:flex-row rounded-3xl">
-            <img class="w-auto max-h-[12rem]" src="{{ $client->img_path ?? asset('images/user.png') }}" alt="">
+            <div class="relative flex items-center justify-center w-full p-3 overflow-hidden bg-white border-2 max-w-64 border-whbg-white sm:p-5 aspect-square">
+                <img class="object-center max-w-full max-h-full" src="{{ $client->img_path ?? asset('images/user.png') }}" alt="">
+            </div>
             <div class="flex flex-col justify-center ">
                 <h1 class="mb-2 text-4xl font-bold ">{{ $client->name }}</h1>
                 <h2 class="text-lg">Email: <span class="text-gray-500">{{ $client->email }}</span></h2>
