@@ -2,8 +2,10 @@
 
 use App\Models\User;
 use Livewire\Volt\Component;
+use Livewire\WithPagination;
 
 new class extends Component {
+    use WithPagination;
     
     public $search = '';
     
