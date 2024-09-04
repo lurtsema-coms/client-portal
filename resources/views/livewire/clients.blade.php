@@ -17,7 +17,7 @@ new class extends Component {
             ->orderBy('name', 'asc');
         $requestQuery = ClientRequest::whereNull('deleted_at')
             ->where('status', 'PENDING')
-            ->orderBy('name', 'asc')->with('user');
+            ->orderBy('created_at', 'desc')->with('user');
 
         if ($this->clientType !== 'all') {
             $clientQuery->where('client_type', $this->clientType);
