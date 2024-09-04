@@ -14,10 +14,10 @@ new class extends Component {
     public function with(): array {
         $clientQuery = User::where('role', 'client')
             ->whereNull('deleted_at')
-            ->orderBy('created_at', 'desc');
+            ->orderBy('name', 'asc');
         $requestQuery = ClientRequest::whereNull('deleted_at')
             ->where('status', 'PENDING')
-            ->orderBy('created_at', 'desc')->with('user');
+            ->orderBy('name', 'asc')->with('user');
 
         if ($this->clientType !== 'all') {
             $clientQuery->where('client_type', $this->clientType);

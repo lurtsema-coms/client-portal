@@ -26,7 +26,7 @@ new class extends Component {
                     ->orWhereRaw("DATE_FORMAT(created_at, '%a, %M %e, %Y') LIKE ?", ['%' . $this->search . '%']);
 
             })
-            ->orderBy('id', 'desc')
+            ->orderBy('name', 'asc')
             ->paginate(7);
 
         return $query;
