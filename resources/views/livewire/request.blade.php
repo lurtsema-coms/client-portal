@@ -72,12 +72,13 @@ new class extends Component {
 
 <div class="flex flex-col items-center justify-center w-full mx-auto">
     <div class="flex flex-col items-stretch justify-center max-w-screen-xl gap-10 lg:flex-row">
-        <div class="flex flex-col items-center justify-center flex-grow gap-10 px-8 py-8 border sm:flex-row rounded-3xl">
+        <div class="flex flex-col items-center justify-center flex-grow max-w-screen-md gap-10 px-8 py-8 border sm:flex-row rounded-3xl">
             <div class="relative flex items-center justify-center w-full p-3 overflow-hidden bg-white border-2 max-w-64 border-whbg-white sm:p-5 aspect-square">
                 <img class="object-center max-w-full max-h-full" src="{{ auth()->user()->img_path ?? asset('images/user.png') }}" alt="">
             </div>
             <div class="flex flex-col justify-center ">
                 <h1 class="mb-2 text-4xl font-bold ">{{ auth()->user()->name }}</h1>
+                <hr class="my-3">
                 <h2 class="text-lg">Email: <span class="text-gray-500">{{ auth()->user()->email }}</span></h2>
                 <h2 class="text-lg">Company Cell Number: <span class="text-gray-500">{{ auth()->user()->company_cell_number }}</span></h2>
                 <h2 class="text-lg">Company Address: <span class="text-gray-500">{{ auth()->user()->company_address }}</span></h2>
