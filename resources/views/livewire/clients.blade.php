@@ -113,7 +113,6 @@ new class extends Component {
                 <span class="bg-button-blue text-white text-xs font-medium me-2 px-2.5 py-0.5 rounded-full absolute left-2 top-2">{{ ucwords($client->client_type) }}</span>
             </div>
             <h3 class="mt-3 font-bold text-md">{{ $client->name }}</h3>
-            <p class="text-gray-500 break-all">{{ $client->email }}</p>
         </a>
         @endforeach
     </div>
