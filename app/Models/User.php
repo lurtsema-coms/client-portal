@@ -25,6 +25,7 @@ class User extends Authenticatable
         'role',
         'client_type',
         'img_path',
+        'url_sharepoint',
         'project_manager',
         'password',
         'created_by',
