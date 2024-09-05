@@ -37,6 +37,7 @@ Route::group(['middleware' => 'auth'], function () {
         Route::view('users', 'users')->name('users');
         Volt::route('add-users', 'users.add-users')->name('add-users');
         Volt::route('edit-users/{id}', 'users.edit-users')->name('edit-users');
+        Route::view('more-info', 'more-info')->name('more-info');
     });
 
     Route::middleware('role:client')->group(function () {
