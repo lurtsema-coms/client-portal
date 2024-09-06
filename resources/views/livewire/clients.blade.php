@@ -108,7 +108,7 @@ new class extends Component {
     <div class="grid w-full grid-cols-2 gap-8 my-5 place-content-center md:grid-cols-3 xl:grid-cols-4">
         @foreach ($clients as $client)
         <a href="{{ route('clients.view-client', $client) }}" wire:navigate class="flex flex-col items-start justify-start hover:opacity-60">
-            <div class="relative flex items-center justify-center w-full p-3 overflow-hidden bg-white border-2 border-whbg-white sm:p-5 aspect-square">
+            <div class="relative flex items-center justify-center w-full p-3 overflow-hidden bg-white border-2 rounded-lg border-whbg-white sm:p-5 aspect-square">
                 <img class="object-center max-w-full max-h-full" src="{{ $client->img_path ?? asset('images/user.png') }}" alt="">
                 <span class="bg-button-blue text-white text-xs font-medium me-2 px-2.5 py-0.5 rounded-full absolute left-2 top-2">{{ ucwords($client->client_type) }}</span>
             </div>
