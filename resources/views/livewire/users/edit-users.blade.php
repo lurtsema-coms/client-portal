@@ -2,6 +2,8 @@
 
 use App\Models\User;
 use App\Models\PersonInContact;
+use App\Models\MoreInfoValue;
+use App\Models\MoreInfo;
 use Livewire\WithFileUploads;
 use Livewire\Attributes\Validate;
 use Illuminate\Support\Str;
@@ -28,6 +30,11 @@ class extends Component {
     public $img_path = '';
     public $photo;
     public $person_in_contact = [];
+    public $more_info_business = [];
+    public $more_info_political = [];
+    public $moreInfo = [];
+    public $moreInfoValuesBusiness = [];
+    public $moreInfoValuesPolitical = [];
 
     public function mount()
     {
@@ -60,6 +67,29 @@ class extends Component {
             $this->person_in_contact = $contacts->toArray();
         }
 
+        $moreInfoBusiness = MoreInfo::where('client_type', 'business')->get();
+        $moreInfoPolitical = MoreInfo::where('client_type', 'political')->get();
+        $this->more_info_business = $moreInfoBusiness;
+        $this->more_info_political = $moreInfoPolitical;
+
+        $moreInfoValuesBusiness = MoreInfoValue::where('user_id', $user_id)
+            ->whereHas('moreInfo', function ($query) {
+            $query->where('client_type', 'business');
+        })->get();
+
+        foreach ($moreInfoValuesBusiness as $value) {
+            $this->moreInfoValuesBusiness[$value->moreInfo->id] = $value->text_value ?? $value->paragraph_value ?? $value->date_value;
+        }
+
+        $moreInfoValuesPolitical = MoreInfoValue::where('user_id', $user_id)
+            ->whereHas('moreInfo', function ($query) {
+            $query->where('client_type', 'political');
+        })->get();
+
+        
+        foreach ($moreInfoValuesPolitical as $value) {
+            $this->moreInfoValuesPolitical[$value->moreInfo->id] = $value->text_value ?? $value->paragraph_value ?? $value->date_value;
+        }
     }
 
     public function editUser()
@@ -111,6 +141,41 @@ class extends Component {
                     ]
                 );
             }
+
+            if ($this->client_type === 'business') {
+                $moreInfos = $this->more_info_business;
+                $moreInfoValues = $this->moreInfoValuesBusiness;
+            } else if ($this->client_type === 'political') {
+                $moreInfos = $this->more_info_political;
+                $moreInfoValues = $this->moreInfoValuesPolitical;
+            }
+
+            MoreInfoValue::where('user_id', $this->user->id)->forceDelete();
+
+            foreach ($moreInfos as $moreInfo) {
+                $id = $moreInfo->id;
+                $data_type =  $moreInfo->data_type;
+                $value = $moreInfoValues[$id];
+                $dataToInsert = [
+                    'user_id' => $this->user->id,
+                    'more_info_id' => $id,
+                ];
+                if ($data_type === 'text') {
+                    $dataToInsert['text_value'] = $value;
+                    $dataToInsert['paragraph_value'] = null;
+                    $dataToInsert['date_value'] = null;
+                } else if ($data_type === 'paragraph') {
+                    $dataToInsert['text_value'] = null;
+                    $dataToInsert['paragraph_value'] = $value;
+                    $dataToInsert['date_value'] = null;
+                } else if ($data_type === 'date') {
+                    $dataToInsert['text_value'] = null;
+                    $dataToInsert['paragraph_value'] = null;
+                    $dataToInsert['date_value'] = $value;
+                }
+
+                MoreInfoValue::create($dataToInsert);
+            }
         }
 
         session()->flash('status', 'User Successfully updated');
@@ -142,9 +207,23 @@ class extends Component {
                 'person_in_contact.*.cell_number' => 'required|min:3',
                 'person_in_contact.*.email' => 'required|email',
             ]);
+
+            $moreRules = [];
+
+            foreach ($this->more_info_business as $moreInfo) {
+                if ($moreInfo->data_type === 'date') {
+                    $moreRules['moreInfoValuesBusiness.'.$moreInfo->id] = 'nullable|date';
+                } 
+            }
+
+            foreach ($this->more_info_political as $moreInfo) {
+                if ($moreInfo->data_type === 'date') {
+                    $moreRules['moreInfoValuesPolitical.'.$moreInfo->id] = 'nullable|date';
+                } 
+            }
         }
 
-        return $rules;
+        return array_merge($rules, $moreRules);
     }
 
     public function messages()
@@ -156,6 +235,8 @@ class extends Component {
             'person_in_contact.*.cell_number.min' => 'The cell number must be at least :min characters long.',
             'person_in_contact.*.email.required' => 'The email address field is required for each person in contact.',
             'person_in_contact.*.email' => 'Each email address must be a valid email address.',
+            'moreInfoValuesPolitical.*.date' => 'The date must be a valid date.',
+            'moreInfoValuesBusiness.*.date' => 'The date must be a valid date.',
         ];
     }
 
@@ -351,6 +432,44 @@ class extends Component {
             >
                 Add more person in contact
             </button>
+             {{-- more Info --}}
+             @php
+             if ($client_type === 'business') {
+               $moreInfo = $more_info_business;
+             } else if ($client_type === 'political') {
+               $moreInfo = $more_info_political;
+             }
+             $errorClientType = ucwords($client_type);
+           @endphp
+           @if ($moreInfo)
+           <div>
+               <h1 class="mt-10 font-bold lg:text-3xl">More Info</h1>
+               @foreach ($moreInfo as $index => $info)
+               <div class="mt-5 space-y-2">
+                   <label for="" class="block tracking-wider text-gray-600">{{ $info->label }}</label>
+                   @if ($info->data_type === 'text')
+                   <input 
+                       class="w-full max-w-lg text-black rounded-lg"
+                       type="text"
+                       wire:model="moreInfoValues{{ ucwords($client_type) }}.{{ $info->id }}"
+                   >
+                   @elseif ($info->data_type === 'date')
+                   <input 
+                       class="w-full max-w-lg text-black rounded-lg"
+                       type="date"
+                       wire:model="moreInfoValues{{ ucwords($client_type) }}.{{ $info->id }}"
+                   >
+                   @elseif ($info->data_type === 'paragraph')
+                   <textarea 
+                       class="w-full max-w-lg text-black rounded-lg"
+                       wire:model="moreInfoValues{{ ucwords($client_type) }}.{{ $info->id }}"
+                   ></textarea>
+                   @endif
+                   @error("moreInfoValues$errorClientType.$info->id") <p class="text-red-500">{{ $message }}</p> @enderror
+               </div>
+               @endforeach
+           </div>
+           @endif
         @endif
         <div class="flex justify-end">
             <button 
