@@ -11,6 +11,7 @@ new #[Layout('layouts.admin')]
 class extends Component {
     public $clientType;
     public $moreInfos = [];
+    public $validDataTypes = ['text', 'paragraph', 'date'];
 
     public function mount($clientType) {
         $this->clientType = $clientType;
@@ -23,6 +24,7 @@ class extends Component {
             'id' => '',
             'client_type' => $this->clientType,
             'label' => '',
+            'data_type' => '',
         ];
     }
 
@@ -41,6 +43,7 @@ class extends Component {
                 MoreInfo::create([
                     'client_type' => $this->clientType,
                     'label' => $moreInfo['label'],
+                    'data_type' => $moreInfo['data_type'],
                     'created_by' => auth()->user()->id,
                     'deleted_at' => null,
             ]);
@@ -48,6 +51,7 @@ class extends Component {
                 MoreInfo::withTrashed()->where('id', $moreInfo['id'])->update([
                     'client_type' => $this->clientType,
                     'label' => $moreInfo['label'],
+                    'data_type' => $moreInfo['data_type'],
                     'updated_by' => auth()->user()->id,
                     'deleted_at' => null,
                 ]);
@@ -63,6 +67,7 @@ class extends Component {
     {
         return [
             'moreInfos.*.label' => 'required|min:3',
+            'moreInfos.*.data_type' => 'required|min:3|'.'in:'.implode(',', $this->validDataTypes),
         ];
     }
 
@@ -70,6 +75,8 @@ class extends Component {
     {
         return [
             'moreInfos.*.label.required' => 'This field is required.',
+            'moreInfos.*.data_type.required' => 'This field is required.',
+            'moreInfos.*.data_type.in' => 'The selected data type is invalid.',
         ];
     }
 
@@ -98,6 +105,19 @@ class extends Component {
                             >
                             @error("moreInfos.$index.label") <p class="text-red-500">{{ $message }}</p> @enderror
                         </div>
+                        <div class="mt-5 space-y-2">
+                            <label for="" class="block tracking-wider text-gray-600">Data Type</label>
+                            <select 
+                                class="w-full max-w-lg text-black rounded-lg"
+                                wire:model.change="moreInfos.{{ $index }}.data_type"
+                            >
+                            <option value="" selected disabled>Select data type</option>
+                            @foreach ($validDataTypes as $dataType)
+                                <option value="{{ $dataType }}">{{ ucwords($dataType) }}</option>
+                            @endforeach
+                            </select>
+                            @error("moreInfos.$index.data_type") <p class="text-red-500">{{ $message }}</p> @enderror
+                        </div>
                         <button 
                             class="px-2 py-1 mt-5 text-white bg-red-500 border rounded-lg hover:bg-red-600"
                             type="button"
@@ -105,6 +125,7 @@ class extends Component {
                             >
                             Delete
                         </button>
+                        <hr class="mt-5">
                     </div>
                 @endforeach
             <div class="flex flex-row w-full gap-5">

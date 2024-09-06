@@ -15,6 +15,7 @@ return new class extends Migration
             $table->id();
             $table->string('client_type')->length(10);
             $table->string('label')->length(100);
+            $table->string('data_type')->length(20);
             $table->smallInteger('order')->unsigned()->nullable();
             $table->smallInteger('created_by')->unsigned();
             $table->smallInteger('updated_by')->unsigned()->nullable();
