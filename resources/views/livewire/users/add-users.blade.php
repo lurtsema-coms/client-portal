@@ -93,6 +93,7 @@ class extends Component {
             foreach ($moreInfos as $moreInfo) {
                 $id = $moreInfo->id;
                 $data_type =  $moreInfo->data_type;
+                if (!isset($moreInfoValues[$id])) continue;
                 $value = $moreInfoValues[$id];
                 $dataToInsert = [
                     'user_id' => $user_id,
