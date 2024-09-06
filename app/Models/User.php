@@ -60,4 +60,9 @@ class User extends Authenticatable
     {
         return $this->hasMany(ClientRequest::class, 'user_id');
     }
+
+    public function moreInfo()
+    {
+        return $this->hasMany(MoreInfoValue::class, 'user_id');
+    }
 }
