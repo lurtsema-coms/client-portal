@@ -1,6 +1,7 @@
 <?php
 
 use App\Models\User;
+use App\Models\MoreInfoValue;
 use App\Models\ClientRequest;
 use App\Models\PersonInContact;
 use Livewire\Attributes\Url;
@@ -59,6 +60,8 @@ new class extends Component {
                 });
             })
             ->paginate(5, pageName: 'completed-page');
+
+        $moreInfo = MoreInfoValue::where('user_id', auth()->user()->id)->get();
         
         return [
             'personInContacts' => (clone $personInContacts)->get(),
@@ -66,6 +69,7 @@ new class extends Component {
             'userRequests' => $userRequests,
             'deliverables' => $deliverables,
             'completed' => $completed,
+            'moreInfo' => $moreInfo,
         ];
     }
 }; ?>
@@ -83,6 +87,51 @@ new class extends Component {
                 <h2 class="text-lg">Company Cell Number: <span class="text-gray-500">{{ auth()->user()->company_cell_number }}</span></h2>
                 <h2 class="text-lg">Company Address: <span class="text-gray-500">{{ auth()->user()->company_address }}</span></h2>
                 <h2 class="text-lg">Project Manager: <span class="text-gray-500">{{ auth()->user()->project_manager }}</span></h2>
+                @if ($moreInfo->count() > 0)
+                <div 
+                    x-data="{isOpen: false}"
+                    x-init="$watch('isOpen', value => document.body.style.overflow = value ? 'hidden' : 'auto')"
+                >
+                    <button 
+                        class="py-1 mt-3 text-black transition-all duration-300 ease-in-out bg-white text-lgtracking-wide w-28 rounded-xl hover:opacity-60"
+                        @click="isOpen=true"
+                    >
+                        View More
+                    </button>
+                
+                    <div x-show="isOpen" 
+                        class="fixed inset-0 z-50 flex bg-black bg-opacity-75"
+                        x-cloak
+                    >
+                        <!-- Close Button -->
+                        <button @click="isOpen=false" 
+                                class="absolute text-xl font-bold text-white top-5 right-5">
+                            &times;
+                        </button>
+                        
+                        <!-- Zoomed Image -->
+                        <div class="flex w-full p-5">
+                            <div 
+                                class="w-full max-w-4xl p-10 m-auto text-black bg-white shadow-lg rounded-2xl"
+                                @click.outside="isOpen=false"
+                            >
+                                <div class="space-y-5 overflow-auto max-h-96">
+                                    <h1 class="mb-4 font-bold lg:text-xl">More Info</h1>
+                                    @foreach ($moreInfo as $info)
+                                    <hr>
+                                    <div class="">
+                                        <p class="font-bold">{{ $info->moreInfo->label }}</p>
+                                        <p class="">{{ $info->text_value ?? $info->paragraph_value ?? date('D, F j, Y', strtotime($info->date_value))  }}</p>
+
+                                    </div>
+                                    @endforeach
+                                            
+                                </div>
+                            </div>
+                        </div>
+                    </div> 
+                </div>
+                @endif
             </div>
         </div>
         <div class="flex flex-col justify-center">
