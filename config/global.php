@@ -11,4 +11,5 @@ return [
     'ON-HOLD',
     'REPORTED',
   ],
+  'mail_to_address' => env('MAIL_TO_ADDRESS') ? explode(',', env('MAIL_TO_ADDRESS')) : []
 ];
