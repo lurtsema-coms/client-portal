@@ -40,8 +40,8 @@
             <td style="border-bottom: 1px solid #c0c0c0; padding: 15px 100px 15px 0;">{!! $clientRequest->remarks !!}</td>
         </tr>
         <tr>
-            <td style="border-bottom: 1px solid #c0c0c0; padding: 15px 100px 15px 0;"><strong>Link:</strong></td>
-            <td style="border-bottom: 1px solid #c0c0c0; padding: 15px 100px 15px 0;">{{ route('requests.view-request', ['client' => $user->id, 'clientRequest' => $clientRequest->id]) }}</td>
+            <td style="border-bottom: 1px solid #c0c0c0; padding: 15px 100px 15px 0;"><strong>Open Request:</strong></td>
+            <td style="border-bottom: 1px solid #c0c0c0; padding: 15px 100px 15px 0;"><a href="{{ route('requests.view-request', ['client' => $user->id, 'clientRequest' => $clientRequest->id]) }}">Click here</a></td>
         </tr>
     </tbody>
 </table>
