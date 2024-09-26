@@ -4,6 +4,8 @@ use App\Models\ClientRequest;
 use Livewire\Attributes\Validate;
 use Livewire\Volt\Component;
 use Livewire\Attributes\Layout;
+use Illuminate\Support\Facades\Mail;
+use App\Mail\NewRequestMail;
 
 new #[Layout('layouts.admin')] 
 class extends Component {
@@ -19,7 +21,7 @@ class extends Component {
     {
         $this->validate();
 
-        $user_id = ClientRequest::insertGetId([
+        $clientRequest = ClientRequest::create([
             'title' => $this->title,
             'status' => 'PENDING',
             'user_id' => auth()->user()->id,
@@ -27,6 +29,19 @@ class extends Component {
             'remarks' => $this->remarks,
             'created_at' => date('Y-m-d H:i:s')
         ]);
+
+        $mailAdresses = config('global.mail_to_address');
+        if ($mailAdresses) {
+            try {
+                $details = [
+                    'user' => auth()->user(),
+                    'clientRequest' => $clientRequest,
+                ];
+                Mail::to($mailAdresses)->send(new NewRequestMail($details));
+            } catch (\Throwable $th) {
+                //throw $th;
+            }
+        }
 
         $this->reset(['title', 'date_need', 'remarks']);
         
