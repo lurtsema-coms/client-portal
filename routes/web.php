@@ -21,7 +21,7 @@ Route::get('/', function () {
         if (Auth::user()->role === 'admin') {
             return redirect()->route('clients');
         } else if (Auth::user()->role === 'client') {
-            return redirect()->route('request');
+            return redirect()->route('deliverables');
         }
     }
     return redirect()->route('login');
@@ -42,7 +42,7 @@ Route::group(['middleware' => 'auth'], function () {
     });
 
     Route::middleware('role:client')->group(function () {
-        Route::view('request', 'request')->name('request');
+        Route::view('deliverables', 'deliverables')->name('deliverables');
         Volt::route('add-request', 'requests.client.add-request')->name('add-request');
         Volt::route('edit-request/{id}', 'requests.client.view-request')->name('edit-request');
         Volt::route('view-request-deliverables/{id}', 'requests.client.view-deliverables')->name('view-deliverables');

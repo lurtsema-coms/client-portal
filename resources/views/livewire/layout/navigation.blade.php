@@ -48,8 +48,8 @@ new class extends Component
                 @endrole
                 @role('client')
                 <div class="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex">
-                    <x-nav-link :href="route('request')" :active="str_starts_with(request()->path(), 'request') || str_starts_with(request()->path(), 'add-request') || str_starts_with(request()->path(), 'edit-request') || str_starts_with(request()->path(), 'view-request')" wire:navigate>
-                        {{ __('Requests') }}
+                    <x-nav-link :href="route('deliverables')" :active="request()->routeIs('deliverables') || str_starts_with(request()->path(), 'add-request') || str_starts_with(request()->path(), 'edit-request') || str_starts_with(request()->path(), 'view-request')" wire:navigate>
+                        {{ __('Deliverables') }}
                     </x-nav-link>
                 </div>
                 @endrole
@@ -118,8 +118,8 @@ new class extends Component
         @endrole
         @role('client')
         <div class="pt-2 pb-3 space-y-1">
-            <x-responsive-nav-link :href="route('request')" :active="str_starts_with(request()->path(), 'request') || str_starts_with(request()->path(), 'add-request') || str_starts_with(request()->path(), 'edit-request') || str_starts_with(request()->path(), 'view-request')" wire:navigate>
-                {{ __('Requests') }}
+            <x-responsive-nav-link :href="route('deliverables')" :active="str_starts_with(request()->path(), 'request') || str_starts_with(request()->path(), 'add-request') || str_starts_with(request()->path(), 'edit-request') || str_starts_with(request()->path(), 'view-request')" wire:navigate>
+                {{ __('Deliverables') }}
             </x-responsive-nav-link>
         </div>
         @endrole
