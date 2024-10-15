@@ -197,6 +197,11 @@ new class extends Component {
     <div class="bg-custom-gradient w-full h-[2px] -z-10 my-10"></div>
     <div class="flex flex-col w-full gap-5 lg:items-center lg:justify-between lg:flex-row">
         <div class="flex flex-col-reverse flex-1 gap-5 shrink-0 lg:flex-row">
+            <a href="{{ route('add-request') }}" class="max-w-60" wire:navigate>
+                <div class="flex items-center justify-center px-5 py-1 font-bold text-center text-black transition-all duration-300 ease-in-out rounded-md cursor-pointer h-11 bg-button-blue hover:opacity-60">
+                    Add New Request
+                </div>
+            </a>
             <div class="relative w-full max-w-sm">
                 <span class="absolute inset-y-0 left-0 flex items-center pl-3">
                     <svg class="w-5 h-5 text-gray-500" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 20" aria-hidden="true">
@@ -209,11 +214,6 @@ new class extends Component {
                     placeholder="Search..." 
                     class="w-full max-w-sm pl-10 text-black rounded-lg h-11">
             </div>
-            <a href="{{ route('add-request') }}" class="max-w-60" wire:navigate>
-                <div class="flex items-center justify-center px-5 py-1 font-bold text-center text-black transition-all duration-300 ease-in-out rounded-md cursor-pointer h-11 bg-button-blue hover:opacity-60">
-                    Add New Request
-                </div>
-            </a>
         </div>
         @if (auth()->user()->url_sharepoint)
         <a href="{{ auth()->user()->url_sharepoint }}" class="" target="_blank">
