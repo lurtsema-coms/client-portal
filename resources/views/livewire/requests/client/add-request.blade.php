@@ -46,7 +46,7 @@ class extends Component {
         $this->reset(['title', 'date_need', 'remarks']);
         
         session()->flash('status', 'Request Successfully Added');
-        $this->redirect('/request', navigate: true);
+        $this->redirect('/deliverables', navigate: true);
     }
 
 }; ?>

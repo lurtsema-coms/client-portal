@@ -42,7 +42,7 @@ class extends Component {
         ]);
 
         session()->flash('status', 'Request Successfully Edited');
-        $this->redirect('/request', navigate: true);
+        $this->redirect('/deliverables', navigate: true);
     }
 
     public function handleDelete() {
@@ -50,7 +50,7 @@ class extends Component {
         $this->request->delete();
 
         session()->flash('status', 'Request Successfully Deleted');
-        $this->redirect('/request', navigate: true);
+        $this->redirect('/deliverables', navigate: true);
     }
 
 }; ?>
