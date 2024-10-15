@@ -80,6 +80,9 @@ new class extends Component {
                 @endforeach
             </tbody>
         </table>
+        @if (!$users->count())
+            <p class="w-full text-sm italic text-center text-gray-500">No data.</p>
+        @endif
         {{ $users->links() }}
     </div>
 </div>
