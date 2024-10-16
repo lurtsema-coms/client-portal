@@ -386,35 +386,37 @@ class extends Component {
         </div>
         
         @if($role == 'client')
+        <h1 class="mt-10 font-bold lg:text-3xl">Person in Contact</h1>
             @foreach ($person_in_contact as $index => $contact)
-                <div wire:key="edit-users-{{ $index }}">
-                    <h1 class="mt-10 font-bold lg:text-3xl">Person in Contact</h1>
-                    <div class="mt-5 space-y-2">
-                        <label for="" class="block tracking-wider text-gray-600">Name</label>
-                        <input 
-                            class="w-full max-w-lg text-black rounded-lg"
-                            type="text"
-                            wire:model="person_in_contact.{{ $index }}.name"
-                        >
-                        @error("person_in_contact.$index.name") <p class="text-red-500">{{ $message }}</p> @enderror
-                    </div>
-                    <div class="mt-5 space-y-2">
-                        <label for="" class="block tracking-wider text-gray-600">Cell Number</label>
-                        <input 
-                            class="w-full max-w-lg text-black rounded-lg"
-                            type="text"
-                            wire:model="person_in_contact.{{ $index }}.cell_number"
-                        >
-                        @error("person_in_contact.$index.cell_number") <p class="text-red-500">{{ $message }}</p> @enderror
-                    </div>
-                    <div class="mt-5 space-y-2">
-                        <label for="" class="block tracking-wider text-gray-600">Email Address</label>
-                        <input 
-                            class="w-full max-w-lg text-black rounded-lg"
-                            type="text"
-                            wire:model="person_in_contact.{{ $index }}.email"
-                        >
-                        @error("person_in_contact.$index.email") <p class="text-red-500">{{ $message }}</p> @enderror
+                <div cla wire:key="edit-users-{{ $index }}">
+                    <div class="flex flex-col sm:max-w-[50%] lg:max-w-[unset] lg:flex-row lg:gap-5">
+                        <div class="flex-grow mt-5 space-y-2">
+                            <label for="" class="block tracking-wider text-gray-600">Name</label>
+                            <input 
+                                class="w-full max-w-lg text-black rounded-lg"
+                                type="text"
+                                wire:model="person_in_contact.{{ $index }}.name"
+                            >
+                            @error("person_in_contact.$index.name") <p class="text-red-500">{{ $message }}</p> @enderror
+                        </div>
+                        <div class="flex-grow mt-5 space-y-2">
+                            <label for="" class="block tracking-wider text-gray-600">Cell Number</label>
+                            <input 
+                                class="w-full max-w-lg text-black rounded-lg"
+                                type="text"
+                                wire:model="person_in_contact.{{ $index }}.cell_number"
+                            >
+                            @error("person_in_contact.$index.cell_number") <p class="text-red-500">{{ $message }}</p> @enderror
+                        </div>
+                        <div class="flex-grow mt-5 space-y-2">
+                            <label for="" class="block tracking-wider text-gray-600">Email Address</label>
+                            <input 
+                                class="w-full max-w-lg text-black rounded-lg"
+                                type="text"
+                                wire:model="person_in_contact.{{ $index }}.email"
+                            >
+                            @error("person_in_contact.$index.email") <p class="text-red-500">{{ $message }}</p> @enderror
+                        </div>
                     </div>
                     @if ($index !== 0)
                         <button 
@@ -446,30 +448,32 @@ class extends Component {
            @if ($moreInfo)
            <div>
                <h1 class="mt-10 font-bold lg:text-3xl">More Info</h1>
+               <div class="grid sm:grid-cols-2 gap-5 lg:grid-cols-3 lg:max-w-[unset] lg:gap-5">
                @foreach ($moreInfo as $index => $info)
-               <div class="mt-5 space-y-2">
-                   <label for="" class="block tracking-wider text-gray-600">{{ $info->label }}</label>
-                   @if ($info->data_type === 'text')
-                   <input 
-                       class="w-full max-w-lg text-black rounded-lg"
-                       type="text"
-                       wire:model="moreInfoValues{{ ucwords($client_type) }}.{{ $info->id }}"
-                   >
-                   @elseif ($info->data_type === 'date')
-                   <input 
-                       class="w-full max-w-lg text-black rounded-lg"
-                       type="date"
-                       wire:model="moreInfoValues{{ ucwords($client_type) }}.{{ $info->id }}"
-                   >
-                   @elseif ($info->data_type === 'paragraph')
-                   <textarea 
-                       class="w-full max-w-lg text-black rounded-lg"
-                       wire:model="moreInfoValues{{ ucwords($client_type) }}.{{ $info->id }}"
-                   ></textarea>
-                   @endif
-                   @error("moreInfoValues$errorClientType.$info->id") <p class="text-red-500">{{ $message }}</p> @enderror
-               </div>
+                <div class="flex-grow mt-5 space-y-2">
+                    <label for="" class="block tracking-wider text-gray-600">{{ $info->label }}</label>
+                    @if ($info->data_type === 'text')
+                    <input 
+                        class="w-full max-w-lg text-black rounded-lg"
+                        type="text"
+                        wire:model="moreInfoValues{{ ucwords($client_type) }}.{{ $info->id }}"
+                    >
+                    @elseif ($info->data_type === 'date')
+                    <input 
+                        class="w-full max-w-lg text-black rounded-lg"
+                        type="date"
+                        wire:model="moreInfoValues{{ ucwords($client_type) }}.{{ $info->id }}"
+                    >
+                    @elseif ($info->data_type === 'paragraph')
+                    <textarea 
+                        class="w-full max-w-lg text-black rounded-lg"
+                        wire:model="moreInfoValues{{ ucwords($client_type) }}.{{ $info->id }}"
+                    ></textarea>
+                    @endif
+                    @error("moreInfoValues$errorClientType.$info->id") <p class="text-red-500">{{ $message }}</p> @enderror
+                </div>
                @endforeach
+               </div>
            </div>
            @endif
         @endif
