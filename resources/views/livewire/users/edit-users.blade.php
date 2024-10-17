@@ -35,6 +35,8 @@ class extends Component {
     public $moreInfo = [];
     public $moreInfoValuesBusiness = [];
     public $moreInfoValuesPolitical = [];
+    public $socials = [];
+    public $assets = [];
 
     public function mount()
     {
@@ -52,6 +54,8 @@ class extends Component {
         $this->client_type = $user->client_type;
         $this->project_manager = $user->project_manager;
         $this->img_path = $user->img_path;
+        $this->socials = json_decode($user->socials, true) ?? [];
+        $this->assets = json_decode($user->assets, true) ?? [];
         
         if (!$user->personInContact->isEmpty()) {
 
@@ -119,6 +123,8 @@ class extends Component {
             'url_sharepoint' => $this->url_sharepoint === '' ? null : $this->url_sharepoint,
             'project_manager' => $this->project_manager === '' ? null : $this->project_manager,
             'client_type' => $this->client_type === '' ? null : $this->client_type,
+            'assets' => json_encode($this->assets),
+            'socials' => json_encode($this->socials),
             'created_by' => auth()->user()->id,
             'created_at' => date('Y-m-d H:i:s')
         ]);
@@ -155,9 +161,9 @@ class extends Component {
             foreach ($moreInfos as $moreInfo) {
                 $id = $moreInfo->id;
                 $data_type =  $moreInfo->data_type;
-                $value = $moreInfoValues[$id];
                 if (!isset($moreInfoValues[$id])) continue;
-                else if (!$value) continue;
+                $value = $moreInfoValues[$id];
+                if (!$value) continue;
                 $dataToInsert = [
                     'user_id' => $this->user->id,
                     'more_info_id' => $id,
@@ -197,6 +203,8 @@ class extends Component {
             'password' => 'nullable|min:4',
         ];
 
+        $moreRules = [];
+
         if ($this->role === 'client') {
             $rules = array_merge($rules, [
                 'photo' => 'nullable|image|max:1024',
@@ -208,9 +216,11 @@ class extends Component {
                 'person_in_contact.*.name' => 'required|min:3',
                 'person_in_contact.*.cell_number' => 'required|min:3',
                 'person_in_contact.*.email' => 'required|email',
+                'assets.*.label' => 'required|min:3',
+                'assets.*.link' => 'required|url',
+                'socials.*.label' => 'required|min:1',
+                'socials.*.link' => 'required|url',
             ]);
-
-            $moreRules = [];
 
             foreach ($this->more_info_business as $moreInfo) {
                 if ($moreInfo->data_type === 'date') {
@@ -239,6 +249,14 @@ class extends Component {
             'person_in_contact.*.email' => 'Each email address must be a valid email address.',
             'moreInfoValuesPolitical.*.date' => 'The date must be a valid date.',
             'moreInfoValuesBusiness.*.date' => 'The date must be a valid date.',
+            'assets.*.label.required' => 'The label field is required for each asset.',
+            'assets.*.label.min' => 'The label must be at least :min characters long.',
+            'assets.*.link.required' => 'The link field is required for each asset.',
+            'assets.*.link.url' => 'Each link must be a valid URL.',
+            'socials.*.label.required' => 'The label field is required for each social.',
+            'socials.*.label.min' => 'The label must be at least :min characters long.',
+            'socials.*.link.required' => 'The link field is required for each social.',
+
         ];
     }
 
@@ -262,6 +280,31 @@ class extends Component {
         
         unset($this->person_in_contact[$index]);
         $this->person_in_contact = array_values($this->person_in_contact);
+    }
+
+    
+    public function addAsset() {
+        $this->assets[] = [
+            'label' => '',
+            'link' => '',
+        ];
+    }
+
+    public function removeAsset($index) {
+        unset($this->assets[$index]);
+        $this->assets = array_values($this->assets);
+    }
+
+    public function addSocial() {
+        $this->socials[] = [
+            'label' => '',
+            'link' => '',
+        ];
+    }
+
+    public function removeSocial($index) {
+        unset($this->socials[$index]);
+        $this->socials = array_values($this->socials);
     }
 }; ?>
 
@@ -386,39 +429,81 @@ class extends Component {
         </div>
         
         @if($role == 'client')
-        <h1 class="mt-10 font-bold lg:text-3xl">Person in Contact</h1>
-            @foreach ($person_in_contact as $index => $contact)
-                <div cla wire:key="edit-users-{{ $index }}">
-                    <div class="flex flex-col sm:max-w-[50%] lg:max-w-[unset] lg:flex-row lg:gap-5">
-                        <div class="flex-grow mt-5 space-y-2">
-                            <label for="" class="block tracking-wider text-gray-600">Name</label>
-                            <input 
-                                class="w-full max-w-lg text-black rounded-lg"
-                                type="text"
-                                wire:model="person_in_contact.{{ $index }}.name"
-                            >
-                            @error("person_in_contact.$index.name") <p class="text-red-500">{{ $message }}</p> @enderror
-                        </div>
-                        <div class="flex-grow mt-5 space-y-2">
-                            <label for="" class="block tracking-wider text-gray-600">Cell Number</label>
-                            <input 
-                                class="w-full max-w-lg text-black rounded-lg"
-                                type="text"
-                                wire:model="person_in_contact.{{ $index }}.cell_number"
-                            >
-                            @error("person_in_contact.$index.cell_number") <p class="text-red-500">{{ $message }}</p> @enderror
-                        </div>
-                        <div class="flex-grow mt-5 space-y-2">
-                            <label for="" class="block tracking-wider text-gray-600">Email Address</label>
-                            <input 
-                                class="w-full max-w-lg text-black rounded-lg"
-                                type="text"
-                                wire:model="person_in_contact.{{ $index }}.email"
-                            >
-                            @error("person_in_contact.$index.email") <p class="text-red-500">{{ $message }}</p> @enderror
-                        </div>
+            {{-- more Info --}}
+            @php
+            if ($client_type === 'business') {
+            $moreInfo = $more_info_business;
+            } else if ($client_type === 'political') {
+            $moreInfo = $more_info_political;
+            }
+            $errorClientType = ucwords($client_type);
+            @endphp
+            @if ($moreInfo)
+            <div>
+                <hr class="my-10">
+                <h1 class="font-bold lg:text-3xl">More Info</h1>
+                <div class="grid sm:grid-cols-2 gap-5 lg:grid-cols-3 lg:max-w-[unset] lg:gap-5">
+                @foreach ($moreInfo as $index => $info)
+                    <div class="flex-grow mt-5 space-y-2">
+                        <label for="" class="block tracking-wider text-gray-600">{{ $info->label }}</label>
+                        @if ($info->data_type === 'text')
+                        <input 
+                            class="w-full max-w-lg text-black rounded-lg"
+                            type="text"
+                            wire:model="moreInfoValues{{ ucwords($client_type) }}.{{ $info->id }}"
+                        >
+                        @elseif ($info->data_type === 'date')
+                        <input 
+                            class="w-full max-w-lg text-black rounded-lg"
+                            type="date"
+                            wire:model="moreInfoValues{{ ucwords($client_type) }}.{{ $info->id }}"
+                        >
+                        @elseif ($info->data_type === 'paragraph')
+                        <textarea 
+                            class="w-full max-w-lg text-black rounded-lg"
+                            wire:model="moreInfoValues{{ ucwords($client_type) }}.{{ $info->id }}"
+                        ></textarea>
+                        @endif
+                        @error("moreInfoValues$errorClientType.$info->id") <p class="text-red-500">{{ $message }}</p> @enderror
                     </div>
-                    @if ($index !== 0)
+                @endforeach
+                </div>
+            </div>
+            @endif
+            <div>
+                <hr class="my-10">
+                <h1 class="font-bold lg:text-3xl">Person in Contact</h1>
+                @foreach ($person_in_contact as $index => $contact)
+                    <div cla wire:key="edit-users-{{ $index }}">
+                        <div class="flex flex-col sm:max-w-[50%] lg:max-w-[unset] lg:flex-row lg:gap-5">
+                            <div class="flex-grow mt-5 space-y-2">
+                                <label for="" class="block tracking-wider text-gray-600">Name</label>
+                                <input 
+                                    class="w-full max-w-lg text-black rounded-lg"
+                                    type="text"
+                                    wire:model="person_in_contact.{{ $index }}.name"
+                                >
+                                @error("person_in_contact.$index.name") <p class="text-red-500">{{ $message }}</p> @enderror
+                            </div>
+                            <div class="flex-grow mt-5 space-y-2">
+                                <label for="" class="block tracking-wider text-gray-600">Cell Number</label>
+                                <input 
+                                    class="w-full max-w-lg text-black rounded-lg"
+                                    type="text"
+                                    wire:model="person_in_contact.{{ $index }}.cell_number"
+                                >
+                                @error("person_in_contact.$index.cell_number") <p class="text-red-500">{{ $message }}</p> @enderror
+                            </div>
+                            <div class="flex-grow mt-5 space-y-2">
+                                <label for="" class="block tracking-wider text-gray-600">Email Address</label>
+                                <input 
+                                    class="w-full max-w-lg text-black rounded-lg"
+                                    type="text"
+                                    wire:model="person_in_contact.{{ $index }}.email"
+                                >
+                                @error("person_in_contact.$index.email") <p class="text-red-500">{{ $message }}</p> @enderror
+                            </div>
+                        </div>
                         <button 
                             class="px-2 py-1 mt-5 text-white bg-red-500 border rounded-lg hover:bg-red-600"
                             type="button"
@@ -426,56 +511,99 @@ class extends Component {
                         >
                             Delete
                         </button>
-                    @endif
-                </div>
-            @endforeach
-            <button 
-                class="block px-2 py-1 mt-5 text-white bg-gray-500 border rounded-lg hover:bg-gray-600"
-                type="button" 
-                wire:click="addPersonInContact"
-            >
-                Add more person in contact
-            </button>
-             {{-- more Info --}}
-             @php
-             if ($client_type === 'business') {
-               $moreInfo = $more_info_business;
-             } else if ($client_type === 'political') {
-               $moreInfo = $more_info_political;
-             }
-             $errorClientType = ucwords($client_type);
-           @endphp
-           @if ($moreInfo)
-           <div>
-               <h1 class="mt-10 font-bold lg:text-3xl">More Info</h1>
-               <div class="grid sm:grid-cols-2 gap-5 lg:grid-cols-3 lg:max-w-[unset] lg:gap-5">
-               @foreach ($moreInfo as $index => $info)
-                <div class="flex-grow mt-5 space-y-2">
-                    <label for="" class="block tracking-wider text-gray-600">{{ $info->label }}</label>
-                    @if ($info->data_type === 'text')
-                    <input 
-                        class="w-full max-w-lg text-black rounded-lg"
-                        type="text"
-                        wire:model="moreInfoValues{{ ucwords($client_type) }}.{{ $info->id }}"
-                    >
-                    @elseif ($info->data_type === 'date')
-                    <input 
-                        class="w-full max-w-lg text-black rounded-lg"
-                        type="date"
-                        wire:model="moreInfoValues{{ ucwords($client_type) }}.{{ $info->id }}"
-                    >
-                    @elseif ($info->data_type === 'paragraph')
-                    <textarea 
-                        class="w-full max-w-lg text-black rounded-lg"
-                        wire:model="moreInfoValues{{ ucwords($client_type) }}.{{ $info->id }}"
-                    ></textarea>
-                    @endif
-                    @error("moreInfoValues$errorClientType.$info->id") <p class="text-red-500">{{ $message }}</p> @enderror
-                </div>
-               @endforeach
-               </div>
-           </div>
-           @endif
+                    </div>
+                @endforeach
+                <button 
+                    class="block px-2 py-1 mt-5 text-white bg-gray-500 border rounded-lg hover:bg-gray-600"
+                    type="button" 
+                    wire:click="addPersonInContact"
+                >
+                    Add more person in contact
+                </button>
+            </div>
+            <div>
+                <hr class="my-10">
+                <h1 class="font-bold lg:text-3xl">Assets</h1>
+                @foreach ($assets as $index => $asset)
+                    <div class="flex flex-col max-w-screen-md lg:flex-row lg:gap-5">
+                        <div class="flex-grow mt-5 space-y-2">
+                            <label for="" class="block tracking-wider text-gray-600">Label</label>
+                            <input 
+                                class="w-full max-w-lg text-black rounded-lg"
+                                type="text"
+                                wire:model="assets.{{ $index }}.label"
+                            >
+                            @error("assets.$index.label") <p class="text-red-500">{{ $message }}</p> @enderror
+                        </div>
+                        <div class="flex-grow mt-5 space-y-2">
+                            <label for="" class="block tracking-wider text-gray-600">Link</label>
+                            <input 
+                                class="w-full max-w-lg text-black rounded-lg"
+                                type="text"
+                                placeholder="https://"
+                                wire:model="assets.{{ $index }}.link"
+                            >
+                            @error("assets.$index.link") <p class="text-red-500">{{ $message }}</p> @enderror
+                        </div>
+                    </div>
+                    <button 
+                            class="px-2 py-1 mt-5 text-white bg-red-500 border rounded-lg hover:bg-red-600"
+                            type="button"
+                            wire:click="removeAsset({{ $index }})"
+                        >
+                            Delete
+                        </button>
+                @endforeach
+                <button 
+                    class="block px-2 py-1 mt-5 text-white bg-gray-500 border rounded-lg hover:bg-gray-600"
+                    type="button" 
+                    wire:click="addAsset"
+                >
+                    Add more asset
+                </button>
+
+            </div>
+            <div>
+                <hr class="my-10">
+                <h1 class="font-bold lg:text-3xl">Socials</h1>
+                @foreach ($socials as $index => $social)
+                    <div class="flex flex-col max-w-screen-md lg:flex-row lg:gap-5">
+                        <div class="flex-grow mt-5 space-y-2">
+                            <label for="" class="block tracking-wider text-gray-600">Label</label>
+                            <input 
+                                class="w-full max-w-lg text-black rounded-lg"
+                                type="text"
+                                wire:model="socials.{{ $index }}.label"
+                            >
+                            @error("socials.$index.label") <p class="text-red-500">{{ $message }}</p> @enderror
+                        </div>
+                        <div class="flex-grow mt-5 space-y-2">
+                            <label for="" class="block tracking-wider text-gray-600">Link</label>
+                            <input 
+                                class="w-full max-w-lg text-black rounded-lg"
+                                type="text"
+                                placeholder="https://"
+                                wire:model="socials.{{ $index }}.link"
+                            >
+                            @error("socials.$index.link") <p class="text-red-500">{{ $message }}</p> @enderror
+                        </div>
+                    </div>
+                    <button 
+                            class="px-2 py-1 mt-5 text-white bg-red-500 border rounded-lg hover:bg-red-600"
+                            type="button"
+                            wire:click="removeSocial({{ $index }})"
+                        >
+                            Delete
+                        </button>
+                @endforeach
+                <button 
+                    class="block px-2 py-1 mt-5 text-white bg-gray-500 border rounded-lg hover:bg-gray-600"
+                    type="button" 
+                    wire:click="addSocial"
+                >
+                    Add more social
+                </button>
+            </div>
         @endif
         <div class="flex justify-end">
             <button 
