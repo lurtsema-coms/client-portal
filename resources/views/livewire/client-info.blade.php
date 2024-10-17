@@ -1,12 +1,17 @@
 <?php
 
 use Livewire\Volt\Component;
+use App\Models\MoreInfoValue;
 
 new class extends Component {
     public $client;
+    public $assets;
+    public $socials;
 
     public function mount($client) {
         $this->client = $client;
+        $this->assets = json_decode($client->assets, true) ?? [];
+        $this->socials = json_decode($client->socials, true) ?? [];
     }
 }; ?>
 
@@ -83,20 +88,26 @@ new class extends Component {
         </div>
         <hr class="w-full h-px my-10 border-0 bg-button-blue text-button-blue lg:hidden">
         <div class="flex flex-col gap-10 max-w-[500px] lg:max-w-[600px] md:pr-5">
-            <div class="">
-                <h4 class="mb-2 text-2xl font-bold md:w-56 md:text-right lg:text-left">Assets</h4>
+            <div class="md:w-56">
+                <h4 class="mb-2 text-2xl font-bold md:text-right lg:text-left">Assets</h4>
                 <div class="flex flex-col gap-2">
-                    <p class="w-40 underline md:w-56 md:text-right lg:text-left">ONBOARDING FORM</p>
-                    <p class="w-40 underline md:w-56 md:text-right lg:text-left">COMPLETED DELIVERABLES</p>
-                    <p class="w-40 underline md:w-56 md:text-right lg:text-left">BRAND ASSETS</p>
+                    @if (!count($assets))
+                    <p class="italic text-gray-400 md:text-right lg:text-left">Not available</p>
+                    @endif
+                    @foreach ($assets as $asset)
+                    <a href="{{ $asset['link'] }}" target="_blank" class="underline cursor-pointer md:text-right lg:text-left hover:text-button-blue">{{ strtoupper($asset['label']) }}</a>
+                    @endforeach
                 </div>
             </div>
-            <div class="">
-                <h4 class="mb-2 text-2xl font-bold md:w-56 md:text-right lg:text-left">Accounts</h4>
+            <div class="md:w-56">
+                <h4 class="mb-2 text-2xl font-bold md:text-right lg:text-left">Socials</h4>
                 <div class="flex flex-col gap-2">
-                    <p class="w-40 underline md:w-56 md:text-right lg:text-left">WEBSITE</p>
-                    <p class="w-40 underline md:w-56 md:text-right lg:text-left">FACEBOOK</p>
-                </div>
+                    @if (!count($socials))
+                    <p class="italic text-gray-400 md:text-right lg:text-left">Not available</p>
+                    @endif
+                    @foreach ($socials as $social)
+                    <a href="{{ $social['link'] }}" target="_blank" class="underline cursor-pointer md:text-right lg:text-left hover:text-button-blue">{{ strtoupper($social['label']) }}</a>
+                    @endforeach                </div>
             </div>
         </div>
     </div>
