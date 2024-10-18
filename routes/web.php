@@ -29,16 +29,25 @@ Route::get('/', function () {
 
 Route::group(['middleware' => 'auth'], function () {
     Route::middleware('role:admin')->group(function () {
+        // clients
         Route::view('clients', 'clients')->name('clients');
         Volt::route('clients/{client}/requests/{clientRequest}', 'requests.admin.view-request')->name('requests.view-request');
         Volt::route('clients/{client}/deliverable/add', 'requests.admin.add-deliverable')->name('requests.add-deliverable');
         Volt::route('clients/{client}/deliverables/{clientRequest}', 'requests.admin.view-deliverable')->name('requests.view-deliverable');
         Volt::route('clients/{client}', 'clients.view-client')->name('clients.view-client');
+
+        // users
         Route::view('users', 'users')->name('users');
         Volt::route('add-users', 'users.add-users')->name('add-users');
         Volt::route('edit-users/{id}', 'users.edit-users')->name('edit-users');
+
+        // more info
         Route::view('more-info', 'more-info')->name('more-info');
         Volt::route('more-info/edit/{clientType}', 'more-info.edit-more-info')->name('more-info.edit');
+
+        // invoices
+        Route::view('invoices', 'invoices')->name('invoices');
+        Volt::route('invoices/add', 'invoices.add-invoice')->name('invoices.add-invoice');
     });
 
     Route::middleware('role:client')->group(function () {
