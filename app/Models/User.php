@@ -68,4 +68,9 @@ class User extends Authenticatable
     {
         return $this->hasMany(MoreInfoValue::class, 'user_id');
     }
+
+    public function invoice()
+    {
+        return $this->hasMany(Invoice::class, 'user_id');
+    }
 }
