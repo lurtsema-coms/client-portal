@@ -3,6 +3,8 @@
 namespace App\Models;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
+
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Foundation\Auth\User as Authenticatable;
@@ -72,5 +74,10 @@ class User extends Authenticatable
     public function invoice()
     {
         return $this->hasMany(Invoice::class, 'user_id');
+    }
+
+    public function scopeClient(Builder $query)
+    {
+        return $query->where('role', 'client');
     }
 }
