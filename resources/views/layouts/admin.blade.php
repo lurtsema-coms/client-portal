@@ -16,6 +16,7 @@
         <link rel="stylesheet" type="text/css" href="https://unpkg.com/trix@2.0.8/dist/trix.css">
         <script type="text/javascript" src="https://unpkg.com/trix@2.0.8/dist/trix.umd.min.js"></script>
         <script src="https://cdn.jsdelivr.net/npm/flowbite@2.5.1/dist/flowbite.min.js"></script>
+        <script src="https://unpkg.com/pdfobject@2.3.0/pdfobject.js"></script>
         @vite(['resources/css/app.css', 'resources/js/app.js'])
 
         <style>

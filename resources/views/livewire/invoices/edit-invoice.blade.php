@@ -166,6 +166,11 @@ class extends Component {
                     @error('invoice')<p class="text-red-500">{{ $message }}</p>@enderror
                 </div>
             </div>
+            @if ($invoice->invoice_link)
+            {{-- PDF --}}
+            <div id="invoice-pdf" class="max-w-screen-md mt-5 aspect-[3/4]"></div>
+            @endif
+            
             <div class="flex gap-5 mt-10">            
                 <button 
                     class="px-4 py-2 mt-5 text-right text-white bg-blue-500 border rounded-lg hover:bg-blue-600"
@@ -180,7 +185,8 @@ class extends Component {
                 >
                     Delete
                 </button>
-            </div>    
+            </div>            
+
             <!-- Main modal -->
 		<div id="default-modal" tabindex="-1" aria-hidden="true" class="hidden overflow-y-auto overflow-x-hidden fixed top-0 right-0 left-0 z-50 justify-center items-center w-full md:inset-0 h-[calc(100%-1rem)] max-h-full bg-black bg-opacity-50">
 			<div class="relative w-full max-w-2xl max-h-full p-4">
@@ -219,5 +225,9 @@ class extends Component {
 @script
 <script>
     initFlowbite();
+    if ("{{ $invoice->invoice_link }}") {
+        PDFObject.embed("{{ $invoice->invoice_link }}", "#invoice-pdf");
+    }
+
 </script>
 @endscript
