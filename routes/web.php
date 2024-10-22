@@ -47,7 +47,8 @@ Route::group(['middleware' => 'auth'], function () {
 
         // invoices
         Route::view('invoices', 'invoices')->name('invoices');
-        Volt::route('invoices/add', 'invoices.add-invoice')->name('invoices.add-invoice');
+        Volt::route('invoices/{client}/show', 'invoices.show-invoice')->name('invoices.show-invoice');
+        Volt::route('invoices/{client}/add', 'invoices.add-invoice')->name('invoices.add-invoice');
     });
 
     Route::middleware('role:client')->group(function () {

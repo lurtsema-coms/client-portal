@@ -83,10 +83,7 @@ class extends Component {
 }; ?>
 
 <div class="flex flex-col items-stretch justify-start gap-5">
-    <div class="flex items-center justify-between">
-        <h1 class="text-2xl font-bold lg:text-7xl">More Info</h1>
-        <x-application-logo class="block w-auto h-10 text-white fill-current lg:h-20" />
-    </div>
+    <x-header-title headingTitle="More Info" />
     <div class="w-full p-3 mt-10 mb-16 text-black bg-white rounded-lg lg:p-6">
         <form class="flex flex-col items-start justify-center max-w-screen-sm" wire:submit="handleSubmit">
             <h1 class="font-bold lg:text-3xl">{{ ucwords($clientType) }}</h1>
