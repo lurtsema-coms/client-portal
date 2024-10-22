@@ -50,6 +50,17 @@ class extends Component {
             wire:model.live.debounce.250ms="search"
         >
     </div>
+    @if (session('status'))
+        <div 
+            x-data="{ show: true }"
+            x-init="setTimeout(() => show = false, 6000)" 
+            x-show="show"
+            class="mb-5 text-green-400"
+        >
+            {{ session('status') }}
+        </div>
+    @endif
+
     <div class="w-full p-3 text-black bg-white rounded-lg lg:p-6">
         <h1 class="font-bold lg:text-3xl">Client Invoices</h1>
         <p class="mt-3">{{ $client->name }}</p>

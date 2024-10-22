@@ -56,6 +56,8 @@ class extends Component {
             'created_by' => auth()->user()->id,
         ]);
 
+        session()->flash('status', 'Client Invoice Updated Successfully');
+
         $this->redirect(route('invoices.show-invoice', $this->client->id), navigate: true);
     }
 
@@ -73,6 +75,8 @@ class extends Component {
 
     public function handleDelete() {
         $this->invoice->delete();
+
+        session()->flash('status', 'Client Invoice Deleted Successfully');
 
         $this->redirect(route('invoices.show-invoice', $this->client->id), navigate: true);
     }

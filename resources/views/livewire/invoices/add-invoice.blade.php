@@ -45,6 +45,8 @@ class extends Component {
             'created_by' => auth()->user()->id,
         ]);
 
+        session()->flash('status', 'Client Invoice Added Successfully');
+
         $this->redirect(route('invoices.show-invoice', $this->client->id), navigate: true);
     }
 
