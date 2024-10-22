@@ -22,7 +22,6 @@ return new class extends Migration
             $table->date('due_date')->nullable();
             $table->string('status')->default('UNPAID')->length(20);
             $table->text('invoice_link')->nullable();
-            $table->text('invoice_img_link')->nullable();
             $table->foreignIdFor(User::class, 'created_by')->nullable();
             $table->foreignIdFor(User::class, 'updated_by')->nullable();
             $table->timestamps();
