@@ -122,6 +122,7 @@ class extends Component {
                         class="w-full text-black rounded-lg"
                         type="number"
                         wire:model="amount"
+                        step="0.01"
                     >
                     @error('amount') <p class="text-red-500">{{ $message }}</p> @enderror
                 </div>

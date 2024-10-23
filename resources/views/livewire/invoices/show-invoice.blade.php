@@ -89,11 +89,11 @@ class extends Component {
                         <td class="px-3 py-5">
                             <p class="font-bold">{{ $invoice->project }}</p>
                             <p class="italic text-gray-700 md:hidden">{{ $invoice->stripe_id }}</p>
-                            <p class="text-sm text-gray-500 sm:hidden">{{ $invoice->amount }}</p>
+                            <p class="text-sm text-gray-500 sm:hidden">{{ number_format($invoice->amount, 2) }}</p>
                             <p class="text-sm text-gray-500 sm:hidden">{!! $invoiceStatus !!}</p>
                         </td>
                         <td class="hidden md:table-cell">{{ $invoice->stripe_id }}</td>
-                        <td class="hidden xl:table-cell">{{ $invoice->amount }}</td>
+                        <td class="hidden xl:table-cell">{{ number_format($invoice->amount, 2) }}</td>
                         <td class="hidden sm:table-cell">{{ $invoice->invoice_date }}</td>
                         <td class="hidden sm:table-cell">{{ $invoice->due_date }}</td>
                         <td class="hidden sm:table-cell">{!! $invoiceStatus !!}</td>
