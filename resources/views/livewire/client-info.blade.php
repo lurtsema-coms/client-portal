@@ -7,9 +7,13 @@ new class extends Component {
     public $client;
     public $assets;
     public $socials;
+    public $paidInvoice;
+    public $unpaidInvoice;
 
     public function mount($client) {
         $this->client = $client;
+        $this->paidInvoice = $client->invoice()->byStatus('PAID')->get();
+        $this->unpaidInvoice = $client->invoice()->byStatus('UNPAID')->get();
         $this->assets = json_decode($client->assets, true) ?? [];
         $this->socials = json_decode($client->socials, true) ?? [];
     }
@@ -81,13 +85,17 @@ new class extends Component {
                 <div class="flex items-center gap-5 md:gap-10">
                     <p class="w-40 font-semibold md:w-56 md:text-right">Paid Invoice:</p>
                     <div class="flex-1">
-                        [ATTACHEMENT #3123123213, #2423123144]
+                        @foreach ($paidInvoice as $invoice)
+                        <a href="{{ $invoice->invoice_link }}" target="_blank" class="underline hover:text-button-blue">{{ strtoupper($invoice->stripe_id) }} </a> 
+                        @endforeach
                     </div>
                 </div>
-                <div class="flex items-center gap-5 md:gap-10">
+                <div class="flex items-center gap-5 mt-5 md:gap-10">
                     <p class="w-40 font-semibold md:w-56 md:text-right">Unpaid Invoice:</p>
                     <div class="flex-1">
-                        [ATTACHEMENT #3123123213, #2423123144]
+                        @foreach ($unpaidInvoice as $invoice)
+                            <a href="{{ $invoice->invoice_link }}" target="_blank" class="underline hover:text-button-blue">{{ strtoupper($invoice->stripe_id) }} </a> 
+                         @endforeach
                     </div>
                 </div>
             </div>
