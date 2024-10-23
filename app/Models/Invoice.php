@@ -21,4 +21,9 @@ class Invoice extends Model
     {
         return $this->user();
     }
+
+    public function scopeByStatus($query, $status)
+    {
+        return $query->where('status', $status);
+    }
 }
