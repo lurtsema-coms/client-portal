@@ -38,7 +38,7 @@ class extends Component {
 }; ?>
 
 <div class="flex flex-col w-full">
-    <x-header-title headingTitle="Invoice" />
+    <x-header-title headingTitle="Invoice" backButton="true" />
     <div class="flex flex-wrap items-center justify-between gap-4 my-5">
         <a href="{{ route('invoices.add-invoice', $client->id) }}" wire:navigate>
             <button class="px-5 py-1 font-bold text-black transition-all duration-300 ease-in-out rounded-md bg-button-blue hover:opacity-60">Add</button>

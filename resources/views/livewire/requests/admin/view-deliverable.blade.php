@@ -19,7 +19,7 @@ class extends Component {
 }; ?>
 
 <div class="flex flex-col items-stretch justify-start gap-5">
-  <x-header-title headingTitle="Client Deliverable" />
+  <x-header-title headingTitle="Client Deliverable" backButton="true" />
   @if (session('success'))
     <div 
         x-data="{ show: true }"

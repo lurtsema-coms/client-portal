@@ -84,7 +84,7 @@ class extends Component {
 }; ?>
 
 <div>
-    <x-header-title headingTitle="Invoice" />
+    <x-header-title headingTitle="Invoice" backButton="true" />
     <div class="w-full p-3 mt-10 text-black bg-white rounded-lg lg:p-6">
         <form action="" wire:submit="handleSubmit">
             <h1 class="font-bold lg:text-3xl">Client Invoice</h1>

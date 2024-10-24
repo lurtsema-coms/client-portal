@@ -243,306 +243,309 @@ class extends Component {
 
 }; ?>
 
-<div class="w-full p-3 text-black bg-white rounded-lg lg:p-6">
-    <form action="" wire:submit="addUser">
-        <h1 class="font-bold lg:text-3xl">Personal Information</h1>
-        <div class="grid sm:grid-cols-2 sm:gap-x-8">
-            <div class="mt-5 space-y-2">
-                <label for="" class="block tracking-wider text-gray-600">Role</label>
-                <select 
-                    class="w-full text-black rounded-lg"
-                    wire:model.change="role"
-                >
-                    <option value="" disabled>Select Role</option>
-                    <option value="admin">Admin</option>
-                    <option value="client">Client</option>
-                </select>
-                @error('role')<p class="text-red-500">{{ $message }}</p>@enderror
-            </div>
-            <div class="mt-5 space-y-2">
-                <label for="" class="block tracking-wider text-gray-600">Name</label>
-                <input 
-                    class="w-full text-black rounded-lg"
-                    type="text"
-                    wire:model="name"
-                >
-                @error('name') <p class="text-red-500">{{ $message }}</p> @enderror
-            </div>
-            @if($role === 'client')
-            <div class="mt-5 space-y-2">
-                <label for="" class="block tracking-wider text-gray-600">Company Cell Number</label>
-                <input 
-                    class="w-full text-black rounded-lg"
-                    type="text"
-                    wire:model="company_cell"
-                >
-                @error('company_cell') <p class="text-red-500">{{ $message }}</p> @enderror
-            </div>
-            @endif
-            <div class="mt-5 space-y-2">
-                <label for="" class="block tracking-wider text-gray-600">Email Address</label>
-                <input 
-                    class="w-full text-black rounded-lg"
-                    type="text"
-                    wire:model="email"
-                >
-                @error('email') <p class="text-red-500">{{ $message }}</p> @enderror
-            </div>
-            @if($role === 'client')
-            <div class="mt-5 space-y-2">
-                <label for="" class="block tracking-wider text-gray-600">Project Manager</label>
-                <input 
-                    class="w-full text-black rounded-lg"
-                    type="text"
-                    wire:model="project_manager"
-                >
-                @error('project_manager')<p class="text-red-500">{{ $message }}</p>@enderror
-            </div>
-            @endif
-            @if($role === 'client')
-            <div class="mt-5 space-y-2">
-                <label for="" class="block tracking-wider text-gray-600">Client Type</label>
-                <select 
-                    class="w-full text-black rounded-lg"
-                    wire:model.change="client_type"
-                >
-                    <option value="" disabled>Select client type</option>
-                    <option value="business">Business</option>
-                    <option value="political">Political</option>
-                </select>
-                @error('client_type')<p class="text-red-500">{{ $message }}</p>@enderror
-            </div>
-            @endif
-            @if($role === 'client')
-            <div class="mt-5 space-y-2">
-                <label for="" class="block tracking-wider text-gray-600">Company Address</label>
-                <input 
-                    class="w-full text-black rounded-lg"
-                    type="text"
-                    wire:model="company_address"
-                >
-                @error('company_address')<p class="text-red-500">{{ $message }}</p>@enderror
-            </div>
-            @endif
-            @if($role === 'client')
-            <div class="mt-5 space-y-2">
-                <label for="" class="block tracking-wider text-gray-600">URL Sharepoint</label>
-                <input 
-                    class="w-full text-black rounded-lg"
-                    type="text"
-                    wire:model="url_sharepoint"
-                >
-                @error('url_sharepoint')<p class="text-red-500">{{ $message }}</p>@enderror
-            </div>
-            @endif
-            <div class="mt-5 space-y-2">
-                <label for="" class="block tracking-wider text-gray-600">Password</label>
-                <input 
-                    class="w-full text-black rounded-lg"
-                    type="password"
-                    wire:model="password"
-                >
-                @error('password')<p class="text-red-500">{{ $message }}</p>@enderror
-            </div>
-        </div>
-        
-        <div class="mt-5 space-y-2">
-            @if ($photo) 
-                <img src="{{ $photo->temporaryUrl() }}" class="mb-5 rounded-lg shadow-md max-w-48">
-            @endif
-            <label for="" class="block tracking-wider text-gray-600">Upload Logo</label>
-            <input 
-                class="w-full max-w-lg"
-                type="file"
-                wire:model="photo"
-            >
-            @error('photo')<p class="text-red-500">{{ $message }}</p>@enderror
-        </div>
-        
-        @if($role == 'client')
-            {{-- more Info --}}
-            @php
-            if ($client_type === 'business') {
-            $moreInfo = $more_info_business;
-            } else if ($client_type === 'political') {
-            $moreInfo = $more_info_political;
-            }
-            $errorClientType = ucwords($client_type);
-            @endphp
-            @if ($moreInfo)
-            <div>
-                <hr class="my-10">
-                <h1 class="font-bold lg:text-3xl">More Info</h1>
-                <div class="grid sm:grid-cols-2 gap-5 lg:grid-cols-3 lg:max-w-[unset] lg:gap-5">
-                @foreach ($moreInfo as $index => $info)
-                    <div class="flex-grow mt-5 space-y-2">
-                        <label for="" class="block tracking-wider text-gray-600">{{ $info->label }}</label>
-                        @if ($info->data_type === 'text')
-                        <input 
-                            class="w-full max-w-lg text-black rounded-lg"
-                            type="text"
-                            wire:model="moreInfoValues{{ ucwords($client_type) }}.{{ $info->id }}"
-                        >
-                        @elseif ($info->data_type === 'date')
-                        <input 
-                            class="w-full max-w-lg text-black rounded-lg"
-                            type="date"
-                            wire:model="moreInfoValues{{ ucwords($client_type) }}.{{ $info->id }}"
-                        >
-                        @elseif ($info->data_type === 'paragraph')
-                        <textarea 
-                            class="w-full max-w-lg text-black rounded-lg"
-                            wire:model="moreInfoValues{{ ucwords($client_type) }}.{{ $info->id }}"
-                        ></textarea>
-                        @endif
-                        @error("moreInfoValues$errorClientType.$info->id") <p class="text-red-500">{{ $message }}</p> @enderror
-                    </div>
-                @endforeach
+<div>
+    <x-header-title headingTitle="Add User" backButton="true" />
+    <div class="w-full p-3 text-black bg-white rounded-lg lg:p-6">
+        <form action="" wire:submit="addUser">
+            <h1 class="font-bold lg:text-3xl">Personal Information</h1>
+            <div class="grid sm:grid-cols-2 sm:gap-x-8">
+                <div class="mt-5 space-y-2">
+                    <label for="" class="block tracking-wider text-gray-600">Role</label>
+                    <select 
+                        class="w-full text-black rounded-lg"
+                        wire:model.change="role"
+                    >
+                        <option value="" disabled>Select Role</option>
+                        <option value="admin">Admin</option>
+                        <option value="client">Client</option>
+                    </select>
+                    @error('role')<p class="text-red-500">{{ $message }}</p>@enderror
+                </div>
+                <div class="mt-5 space-y-2">
+                    <label for="" class="block tracking-wider text-gray-600">Name</label>
+                    <input 
+                        class="w-full text-black rounded-lg"
+                        type="text"
+                        wire:model="name"
+                    >
+                    @error('name') <p class="text-red-500">{{ $message }}</p> @enderror
+                </div>
+                @if($role === 'client')
+                <div class="mt-5 space-y-2">
+                    <label for="" class="block tracking-wider text-gray-600">Company Cell Number</label>
+                    <input 
+                        class="w-full text-black rounded-lg"
+                        type="text"
+                        wire:model="company_cell"
+                    >
+                    @error('company_cell') <p class="text-red-500">{{ $message }}</p> @enderror
+                </div>
+                @endif
+                <div class="mt-5 space-y-2">
+                    <label for="" class="block tracking-wider text-gray-600">Email Address</label>
+                    <input 
+                        class="w-full text-black rounded-lg"
+                        type="text"
+                        wire:model="email"
+                    >
+                    @error('email') <p class="text-red-500">{{ $message }}</p> @enderror
+                </div>
+                @if($role === 'client')
+                <div class="mt-5 space-y-2">
+                    <label for="" class="block tracking-wider text-gray-600">Project Manager</label>
+                    <input 
+                        class="w-full text-black rounded-lg"
+                        type="text"
+                        wire:model="project_manager"
+                    >
+                    @error('project_manager')<p class="text-red-500">{{ $message }}</p>@enderror
+                </div>
+                @endif
+                @if($role === 'client')
+                <div class="mt-5 space-y-2">
+                    <label for="" class="block tracking-wider text-gray-600">Client Type</label>
+                    <select 
+                        class="w-full text-black rounded-lg"
+                        wire:model.change="client_type"
+                    >
+                        <option value="" disabled>Select client type</option>
+                        <option value="business">Business</option>
+                        <option value="political">Political</option>
+                    </select>
+                    @error('client_type')<p class="text-red-500">{{ $message }}</p>@enderror
+                </div>
+                @endif
+                @if($role === 'client')
+                <div class="mt-5 space-y-2">
+                    <label for="" class="block tracking-wider text-gray-600">Company Address</label>
+                    <input 
+                        class="w-full text-black rounded-lg"
+                        type="text"
+                        wire:model="company_address"
+                    >
+                    @error('company_address')<p class="text-red-500">{{ $message }}</p>@enderror
+                </div>
+                @endif
+                @if($role === 'client')
+                <div class="mt-5 space-y-2">
+                    <label for="" class="block tracking-wider text-gray-600">URL Sharepoint</label>
+                    <input 
+                        class="w-full text-black rounded-lg"
+                        type="text"
+                        wire:model="url_sharepoint"
+                    >
+                    @error('url_sharepoint')<p class="text-red-500">{{ $message }}</p>@enderror
+                </div>
+                @endif
+                <div class="mt-5 space-y-2">
+                    <label for="" class="block tracking-wider text-gray-600">Password</label>
+                    <input 
+                        class="w-full text-black rounded-lg"
+                        type="password"
+                        wire:model="password"
+                    >
+                    @error('password')<p class="text-red-500">{{ $message }}</p>@enderror
                 </div>
             </div>
-            @endif
-            <div>
-                <hr class="my-10">
-                <h1 class="font-bold lg:text-3xl">Person in Contact</h1>
-                @foreach ($person_in_contact as $index => $contact)
-                    <div wire:key="add-users-{{ $index }}">
-                        <div class="flex flex-col sm:max-w-[50%] lg:max-w-[unset] lg:flex-row lg:gap-5">
+            
+            <div class="mt-5 space-y-2">
+                @if ($photo) 
+                    <img src="{{ $photo->temporaryUrl() }}" class="mb-5 rounded-lg shadow-md max-w-48">
+                @endif
+                <label for="" class="block tracking-wider text-gray-600">Upload Logo</label>
+                <input 
+                    class="w-full max-w-lg"
+                    type="file"
+                    wire:model="photo"
+                >
+                @error('photo')<p class="text-red-500">{{ $message }}</p>@enderror
+            </div>
+            
+            @if($role == 'client')
+                {{-- more Info --}}
+                @php
+                if ($client_type === 'business') {
+                $moreInfo = $more_info_business;
+                } else if ($client_type === 'political') {
+                $moreInfo = $more_info_political;
+                }
+                $errorClientType = ucwords($client_type);
+                @endphp
+                @if ($moreInfo)
+                <div>
+                    <hr class="my-10">
+                    <h1 class="font-bold lg:text-3xl">More Info</h1>
+                    <div class="grid sm:grid-cols-2 gap-5 lg:grid-cols-3 lg:max-w-[unset] lg:gap-5">
+                    @foreach ($moreInfo as $index => $info)
+                        <div class="flex-grow mt-5 space-y-2">
+                            <label for="" class="block tracking-wider text-gray-600">{{ $info->label }}</label>
+                            @if ($info->data_type === 'text')
+                            <input 
+                                class="w-full max-w-lg text-black rounded-lg"
+                                type="text"
+                                wire:model="moreInfoValues{{ ucwords($client_type) }}.{{ $info->id }}"
+                            >
+                            @elseif ($info->data_type === 'date')
+                            <input 
+                                class="w-full max-w-lg text-black rounded-lg"
+                                type="date"
+                                wire:model="moreInfoValues{{ ucwords($client_type) }}.{{ $info->id }}"
+                            >
+                            @elseif ($info->data_type === 'paragraph')
+                            <textarea 
+                                class="w-full max-w-lg text-black rounded-lg"
+                                wire:model="moreInfoValues{{ ucwords($client_type) }}.{{ $info->id }}"
+                            ></textarea>
+                            @endif
+                            @error("moreInfoValues$errorClientType.$info->id") <p class="text-red-500">{{ $message }}</p> @enderror
+                        </div>
+                    @endforeach
+                    </div>
+                </div>
+                @endif
+                <div>
+                    <hr class="my-10">
+                    <h1 class="font-bold lg:text-3xl">Person in Contact</h1>
+                    @foreach ($person_in_contact as $index => $contact)
+                        <div wire:key="add-users-{{ $index }}">
+                            <div class="flex flex-col sm:max-w-[50%] lg:max-w-[unset] lg:flex-row lg:gap-5">
+                                <div class="flex-grow mt-5 space-y-2">
+                                    <label for="" class="block tracking-wider text-gray-600">Name</label>
+                                    <input 
+                                        class="w-full max-w-lg text-black rounded-lg"
+                                        type="text"
+                                        wire:model="person_in_contact.{{ $index }}.name"
+                                    >
+                                    @error("person_in_contact.$index.name") <p class="text-red-500">{{ $message }}</p> @enderror
+                                </div>
+                                <div class="flex-grow mt-5 space-y-2">
+                                    <label for="" class="block tracking-wider text-gray-600">Cell Number</label>
+                                    <input 
+                                        class="w-full max-w-lg text-black rounded-lg"
+                                        type="text"
+                                        wire:model="person_in_contact.{{ $index }}.cell_number"
+                                    >
+                                    @error("person_in_contact.$index.cell_number") <p class="text-red-500">{{ $message }}</p> @enderror
+                                </div>
+                                <div class="flex-grow mt-5 space-y-2">
+                                    <label for="" class="block tracking-wider text-gray-600">Email Address</label>
+                                    <input 
+                                        class="w-full max-w-lg text-black rounded-lg"
+                                        type="text"
+                                        wire:model="person_in_contact.{{ $index }}.email"
+                                    >
+                                    @error("person_in_contact.$index.email") <p class="text-red-500">{{ $message }}</p> @enderror
+                                </div>
+                            </div>
+                            <button 
+                                class="px-2 py-1 mt-5 text-white bg-red-500 border rounded-lg hover:bg-red-600"
+                                type="button"
+                                wire:click="removePersonInContact({{ $index }})"
+                            >
+                                Delete
+                            </button>
+                        </div>
+                    @endforeach
+                    <button 
+                        class="block px-2 py-1 mt-5 text-white bg-gray-500 border rounded-lg hover:bg-gray-600"
+                        type="button" 
+                        wire:click="addPersonInContact"
+                    >
+                        Add more person in contact
+                    </button>
+                </div>
+                <div>
+                    <hr class="my-10">
+                    <h1 class="font-bold lg:text-3xl">Assets</h1>
+                    @foreach ($assets as $index => $asset)
+                        <div class="flex flex-col max-w-screen-md lg:flex-row lg:gap-5">
                             <div class="flex-grow mt-5 space-y-2">
-                                <label for="" class="block tracking-wider text-gray-600">Name</label>
+                                <label for="" class="block tracking-wider text-gray-600">Label</label>
                                 <input 
                                     class="w-full max-w-lg text-black rounded-lg"
                                     type="text"
-                                    wire:model="person_in_contact.{{ $index }}.name"
+                                    wire:model="assets.{{ $index }}.label"
                                 >
-                                @error("person_in_contact.$index.name") <p class="text-red-500">{{ $message }}</p> @enderror
+                                @error("assets.$index.label") <p class="text-red-500">{{ $message }}</p> @enderror
                             </div>
                             <div class="flex-grow mt-5 space-y-2">
-                                <label for="" class="block tracking-wider text-gray-600">Cell Number</label>
+                                <label for="" class="block tracking-wider text-gray-600">Link</label>
                                 <input 
                                     class="w-full max-w-lg text-black rounded-lg"
                                     type="text"
-                                    wire:model="person_in_contact.{{ $index }}.cell_number"
+                                    placeholder="https://"
+                                    wire:model="assets.{{ $index }}.link"
                                 >
-                                @error("person_in_contact.$index.cell_number") <p class="text-red-500">{{ $message }}</p> @enderror
-                            </div>
-                            <div class="flex-grow mt-5 space-y-2">
-                                <label for="" class="block tracking-wider text-gray-600">Email Address</label>
-                                <input 
-                                    class="w-full max-w-lg text-black rounded-lg"
-                                    type="text"
-                                    wire:model="person_in_contact.{{ $index }}.email"
-                                >
-                                @error("person_in_contact.$index.email") <p class="text-red-500">{{ $message }}</p> @enderror
+                                @error("assets.$index.link") <p class="text-red-500">{{ $message }}</p> @enderror
                             </div>
                         </div>
                         <button 
-                            class="px-2 py-1 mt-5 text-white bg-red-500 border rounded-lg hover:bg-red-600"
-                            type="button"
-                            wire:click="removePersonInContact({{ $index }})"
-                        >
-                            Delete
-                        </button>
-                    </div>
-                @endforeach
-                <button 
-                    class="block px-2 py-1 mt-5 text-white bg-gray-500 border rounded-lg hover:bg-gray-600"
-                    type="button" 
-                    wire:click="addPersonInContact"
-                >
-                    Add more person in contact
-                </button>
-            </div>
-            <div>
-                <hr class="my-10">
-                <h1 class="font-bold lg:text-3xl">Assets</h1>
-                @foreach ($assets as $index => $asset)
-                    <div class="flex flex-col max-w-screen-md lg:flex-row lg:gap-5">
-                        <div class="flex-grow mt-5 space-y-2">
-                            <label for="" class="block tracking-wider text-gray-600">Label</label>
-                            <input 
-                                class="w-full max-w-lg text-black rounded-lg"
-                                type="text"
-                                wire:model="assets.{{ $index }}.label"
+                                class="px-2 py-1 mt-5 text-white bg-red-500 border rounded-lg hover:bg-red-600"
+                                type="button"
+                                wire:click="removeAsset({{ $index }})"
                             >
-                            @error("assets.$index.label") <p class="text-red-500">{{ $message }}</p> @enderror
-                        </div>
-                        <div class="flex-grow mt-5 space-y-2">
-                            <label for="" class="block tracking-wider text-gray-600">Link</label>
-                            <input 
-                                class="w-full max-w-lg text-black rounded-lg"
-                                type="text"
-                                placeholder="https://"
-                                wire:model="assets.{{ $index }}.link"
-                            >
-                            @error("assets.$index.link") <p class="text-red-500">{{ $message }}</p> @enderror
-                        </div>
-                    </div>
+                                Delete
+                            </button>
+                    @endforeach
                     <button 
-                            class="px-2 py-1 mt-5 text-white bg-red-500 border rounded-lg hover:bg-red-600"
-                            type="button"
-                            wire:click="removeAsset({{ $index }})"
-                        >
-                            Delete
-                        </button>
-                @endforeach
-                <button 
-                    class="block px-2 py-1 mt-5 text-white bg-gray-500 border rounded-lg hover:bg-gray-600"
-                    type="button" 
-                    wire:click="addAsset"
-                >
-                    Add more asset
-                </button>
-
-            </div>
-            <div>
-                <hr class="my-10">
-                <h1 class="font-bold lg:text-3xl">Socials</h1>
-                @foreach ($socials as $index => $social)
-                    <div class="flex flex-col max-w-screen-md lg:flex-row lg:gap-5">
-                        <div class="flex-grow mt-5 space-y-2">
-                            <label for="" class="block tracking-wider text-gray-600">Label</label>
-                            <input 
-                                class="w-full max-w-lg text-black rounded-lg"
-                                type="text"
-                                wire:model="socials.{{ $index }}.label"
-                            >
-                            @error("socials.$index.label") <p class="text-red-500">{{ $message }}</p> @enderror
+                        class="block px-2 py-1 mt-5 text-white bg-gray-500 border rounded-lg hover:bg-gray-600"
+                        type="button" 
+                        wire:click="addAsset"
+                    >
+                        Add more asset
+                    </button>
+    
+                </div>
+                <div>
+                    <hr class="my-10">
+                    <h1 class="font-bold lg:text-3xl">Socials</h1>
+                    @foreach ($socials as $index => $social)
+                        <div class="flex flex-col max-w-screen-md lg:flex-row lg:gap-5">
+                            <div class="flex-grow mt-5 space-y-2">
+                                <label for="" class="block tracking-wider text-gray-600">Label</label>
+                                <input 
+                                    class="w-full max-w-lg text-black rounded-lg"
+                                    type="text"
+                                    wire:model="socials.{{ $index }}.label"
+                                >
+                                @error("socials.$index.label") <p class="text-red-500">{{ $message }}</p> @enderror
+                            </div>
+                            <div class="flex-grow mt-5 space-y-2">
+                                <label for="" class="block tracking-wider text-gray-600">Link</label>
+                                <input 
+                                    class="w-full max-w-lg text-black rounded-lg"
+                                    type="text"
+                                    placeholder="https://"
+                                    wire:model="socials.{{ $index }}.link"
+                                >
+                                @error("socials.$index.link") <p class="text-red-500">{{ $message }}</p> @enderror
+                            </div>
                         </div>
-                        <div class="flex-grow mt-5 space-y-2">
-                            <label for="" class="block tracking-wider text-gray-600">Link</label>
-                            <input 
-                                class="w-full max-w-lg text-black rounded-lg"
-                                type="text"
-                                placeholder="https://"
-                                wire:model="socials.{{ $index }}.link"
+                        <button 
+                                class="px-2 py-1 mt-5 text-white bg-red-500 border rounded-lg hover:bg-red-600"
+                                type="button"
+                                wire:click="removeSocial({{ $index }})"
                             >
-                            @error("socials.$index.link") <p class="text-red-500">{{ $message }}</p> @enderror
-                        </div>
-                    </div>
+                                Delete
+                            </button>
+                    @endforeach
                     <button 
-                            class="px-2 py-1 mt-5 text-white bg-red-500 border rounded-lg hover:bg-red-600"
-                            type="button"
-                            wire:click="removeSocial({{ $index }})"
-                        >
-                            Delete
-                        </button>
-                @endforeach
+                        class="block px-2 py-1 mt-5 text-white bg-gray-500 border rounded-lg hover:bg-gray-600"
+                        type="button" 
+                        wire:click="addSocial"
+                    >
+                        Add more social
+                    </button>
+                </div>
+            @endif
+            <div class="flex justify-end">            
                 <button 
-                    class="block px-2 py-1 mt-5 text-white bg-gray-500 border rounded-lg hover:bg-gray-600"
-                    type="button" 
-                    wire:click="addSocial"
+                    class="px-4 py-2 mt-5 text-right text-white bg-blue-500 border rounded-lg hover:bg-blue-600"
+                    type="Submit" 
                 >
-                    Add more social
+                    Submit
                 </button>
             </div>
-        @endif
-        <div class="flex justify-end">            
-            <button 
-                class="px-4 py-2 mt-5 text-right text-white bg-blue-500 border rounded-lg hover:bg-blue-600"
-                type="Submit" 
-            >
-                Submit
-            </button>
-        </div>
-    </form>
+        </form>
+    </div>
 </div>

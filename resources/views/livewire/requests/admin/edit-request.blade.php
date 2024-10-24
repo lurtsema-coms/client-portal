@@ -72,7 +72,7 @@ new class extends Component {
 
 }; ?>
 
-<div class="py-12">
+<div class="pb-12">
 	<form action="" wire:submit="handleSave">
 		<div class="mx-auto space-y-6">
 			<div class="p-4 bg-white shadow sm:p-8 sm:rounded-lg">

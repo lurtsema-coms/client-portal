@@ -83,8 +83,8 @@ class extends Component {
 }; ?>
 
 <div class="flex flex-col items-stretch justify-start gap-5">
-    <x-header-title headingTitle="More Info" />
-    <div class="w-full p-3 mt-10 mb-16 text-black bg-white rounded-lg lg:p-6">
+    <x-header-title headingTitle="More Info" backButton="true" />
+    <div class="w-full p-3 mb-16 text-black bg-white rounded-lg lg:p-6">
         <form class="flex flex-col items-start justify-center max-w-screen-sm" wire:submit="handleSubmit">
             <h1 class="font-bold lg:text-3xl">{{ ucwords($clientType) }}</h1>
             <p class="mt-1 text-sm text-gray-600">
