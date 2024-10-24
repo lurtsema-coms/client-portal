@@ -31,7 +31,7 @@ class extends Component {
 }; ?>
 
 <div class="flex flex-col items-stretch justify-start gap-5">
-    <x-header-title headingTitle="Deliverables" />
+    <x-header-title headingTitle="Deliverables" backButton="true" />
     <div class="w-full p-3 text-black bg-white rounded-lg lg:p-6">
         <div class="grid sm:grid-cols-2 sm:gap-x-8">
             <div class="mt-5 space-y-2">

@@ -52,7 +52,7 @@ class extends Component {
 }; ?>
 
 <div class="flex flex-col items-stretch justify-start gap-5">
-    <x-header-title headingTitle="Create Request" />
+    <x-header-title headingTitle="Create Request" backButton="true" />
     <div class="w-full p-3 text-black bg-white rounded-lg lg:p-6">
         <form action="" wire:submit="addRequest">
             <h1 class="font-bold lg:text-3xl">Request Form</h1>
