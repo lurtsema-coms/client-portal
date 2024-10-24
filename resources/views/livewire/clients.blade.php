@@ -67,8 +67,7 @@ new class extends Component {
             <input type="search" wire:model.live.debounce.250ms="search" placeholder="Search..." class="flex-1 w-full pl-10 text-black rounded-lg">
         </div>
     </div>
-    <div class="bg-custom-gradient w-full h-[2px] -z-10 my-10"></div>
-    <div class="w-full p-3 text-black bg-white rounded-lg lg:p-6">
+    <div class="w-full p-3 mt-5 text-black bg-white rounded-lg lg:p-6">
         <h1 class="font-bold lg:text-3xl">Client Requests</h1>
         <table class="w-full my-5 border-collapse">
             <thead>
