@@ -64,95 +64,98 @@ class extends Component {
 
 }; ?>
 
-<div class="w-full p-3 text-black bg-white rounded-lg lg:p-6">
-    <form action="" wire:submit="handleSubmit">
-        <h1 class="font-bold lg:text-3xl">Client Invoice</h1>
-        <div class="grid sm:grid-cols-2 sm:gap-x-8">
-            <div class="mt-5 space-y-2">
-                <label for="" class="block tracking-wider text-gray-600">Client</label>
-                <input 
-                    class="w-full text-black rounded-lg"
-                    type="text"
-                    value="{{ $client->name }}"
-                    readonly
+<div>
+    <x-header-title headingTitle="Invoice" backButton="true" />
+    <div class="w-full p-3 text-black bg-white rounded-lg lg:p-6">
+        <form action="" wire:submit="handleSubmit">
+            <h1 class="font-bold lg:text-3xl">Client Invoice</h1>
+            <div class="grid sm:grid-cols-2 sm:gap-x-8">
+                <div class="mt-5 space-y-2">
+                    <label for="" class="block tracking-wider text-gray-600">Client</label>
+                    <input 
+                        class="w-full text-black rounded-lg"
+                        type="text"
+                        value="{{ $client->name }}"
+                        readonly
+                    >
+                </div>
+                <div class="mt-5 space-y-2">
+                    <label for="" class="block tracking-wider text-gray-600">Project</label>
+                    <input 
+                        class="w-full text-black rounded-lg"
+                        type="text"
+                        wire:model="project"
+                    >
+                    @error('project') <p class="text-red-500">{{ $message }}</p> @enderror
+                </div>
+                <div class="mt-5 space-y-2">
+                    <label for="" class="block tracking-wider text-gray-600">Stripe ID</label>
+                    <input 
+                        class="w-full text-black rounded-lg"
+                        type="text"
+                        wire:model="stripeId"
+                    >
+                    @error('stripeId') <p class="text-red-500">{{ $message }}</p> @enderror
+                </div>
+                <div class="mt-5 space-y-2">
+                    <label for="" class="block tracking-wider text-gray-600">Amount</label>
+                    <input 
+                        class="w-full text-black rounded-lg"
+                        type="number"
+                        wire:model="amount"
+                        step=".01"
+                    >
+                    @error('amount') <p class="text-red-500">{{ $message }}</p> @enderror
+                </div>
+                <div class="mt-5 space-y-2">
+                    <label for="" class="block tracking-wider text-gray-600">Invoice Date</label>
+                    <input 
+                        class="w-full text-black rounded-lg"
+                        type="date"
+                        wire:model="invoiceDate"
+                    >
+                    @error('invoiceDate')<p class="text-red-500">{{ $message }}</p>@enderror
+                </div>
+                <div class="mt-5 space-y-2">
+                    <label for="" class="block tracking-wider text-gray-600">Due Date</label>
+                    <input 
+                        class="w-full text-black rounded-lg"
+                        type="date"
+                        wire:model="dueDate"
+                    >
+                    @error('dueDate')<p class="text-red-500">{{ $message }}</p>@enderror
+                </div>
+                <div class="mt-5 space-y-2">
+                    <label for="" class="block tracking-wider text-gray-600">Status</label>
+                    <select 
+                        class="w-full text-black rounded-lg"
+                        wire:model.change="status"
+                    >
+                        <option value="" disabled selected>Select status</option>
+                        <option value="UNPAID">UNPAID</option>
+                        <option value="PAID">PAID</option>
+                    </select>
+                    @error('status')<p class="text-red-500">{{ $message }}</p>@enderror
+                </div>
+                <div class="mt-5 space-y-2">
+                    <label for="" class="block tracking-wider text-gray-600">Upload Invoice</label>
+                    <input 
+                        class="w-full max-w-lg text-black"
+                        type="file"
+                        accept=".pdf"
+                        wire:model="invoice"
+                    >
+                    @error('invoice')<p class="text-red-500">{{ $message }}</p>@enderror
+                </div>
+            </div>
+            <div class="flex justify-end">            
+                <button 
+                    class="px-4 py-2 mt-5 text-right text-white bg-blue-500 border rounded-lg hover:bg-blue-600"
+                    type="Submit" 
                 >
-            </div>
-            <div class="mt-5 space-y-2">
-                <label for="" class="block tracking-wider text-gray-600">Project</label>
-                <input 
-                    class="w-full text-black rounded-lg"
-                    type="text"
-                    wire:model="project"
-                >
-                @error('project') <p class="text-red-500">{{ $message }}</p> @enderror
-            </div>
-            <div class="mt-5 space-y-2">
-                <label for="" class="block tracking-wider text-gray-600">Stripe ID</label>
-                <input 
-                    class="w-full text-black rounded-lg"
-                    type="text"
-                    wire:model="stripeId"
-                >
-                @error('stripeId') <p class="text-red-500">{{ $message }}</p> @enderror
-            </div>
-            <div class="mt-5 space-y-2">
-                <label for="" class="block tracking-wider text-gray-600">Amount</label>
-                <input 
-                    class="w-full text-black rounded-lg"
-                    type="number"
-                    wire:model="amount"
-                    step=".01"
-                >
-                @error('amount') <p class="text-red-500">{{ $message }}</p> @enderror
-            </div>
-            <div class="mt-5 space-y-2">
-                <label for="" class="block tracking-wider text-gray-600">Invoice Date</label>
-                <input 
-                    class="w-full text-black rounded-lg"
-                    type="date"
-                    wire:model="invoiceDate"
-                >
-                @error('invoiceDate')<p class="text-red-500">{{ $message }}</p>@enderror
-            </div>
-            <div class="mt-5 space-y-2">
-                <label for="" class="block tracking-wider text-gray-600">Due Date</label>
-                <input 
-                    class="w-full text-black rounded-lg"
-                    type="date"
-                    wire:model="dueDate"
-                >
-                @error('dueDate')<p class="text-red-500">{{ $message }}</p>@enderror
-            </div>
-            <div class="mt-5 space-y-2">
-                <label for="" class="block tracking-wider text-gray-600">Status</label>
-                <select 
-					class="w-full text-black rounded-lg"
-					wire:model.change="status"
-				>
-                    <option value="" disabled selected>Select status</option>
-                    <option value="UNPAID">UNPAID</option>
-                    <option value="PAID">PAID</option>
-                </select>
-                @error('status')<p class="text-red-500">{{ $message }}</p>@enderror
-            </div>
-            <div class="mt-5 space-y-2">
-                <label for="" class="block tracking-wider text-gray-600">Upload Invoice</label>
-				<input 
-					class="w-full max-w-lg text-black"
-					type="file"
-                    accept=".pdf"
-					wire:model="invoice"
-				>
-                @error('invoice')<p class="text-red-500">{{ $message }}</p>@enderror
-            </div>
-        </div>
-        <div class="flex justify-end">            
-            <button 
-                class="px-4 py-2 mt-5 text-right text-white bg-blue-500 border rounded-lg hover:bg-blue-600"
-                type="Submit" 
-            >
-                Submit
-            </button>
-        </div>    
-    </form>
+                    Submit
+                </button>
+            </div>    
+        </form>
+    </div>
 </div>
