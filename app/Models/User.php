@@ -31,7 +31,7 @@ class User extends Authenticatable
         'url_sharepoint',
         'socials',
         'assets',
-        'project_manager',
+        'account_manager',
         'password',
         'created_by',
         'updated_by',
