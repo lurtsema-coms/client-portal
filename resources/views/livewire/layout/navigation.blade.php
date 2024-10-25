@@ -138,7 +138,7 @@ new class extends Component
             </x-responsive-nav-link>
         </div>
         <div class="pt-2 pb-3 space-y-1">
-            <x-responsive-nav-link :href="route('deliverables')" :active="str_starts_with(request()->path(), 'request') || str_starts_with(request()->path(), 'add-request') || str_starts_with(request()->path(), 'edit-request') || str_starts_with(request()->path(), 'view-request')" wire:navigate>
+            <x-responsive-nav-link :href="route('deliverables')" :active="str_starts_with(request()->path(), 'deliverables') || str_starts_with(request()->path(), 'add-request') || str_starts_with(request()->path(), 'edit-request') || str_starts_with(request()->path(), 'view-request')" wire:navigate>
                 {{ __('Deliverables') }}
             </x-responsive-nav-link>
         </div>
