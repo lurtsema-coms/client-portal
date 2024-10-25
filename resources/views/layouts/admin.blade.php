@@ -35,7 +35,7 @@
             }
         </style>
     </head>
-    <body class="pt-16 font-sans antialiased text-white bg-custom-blue">
+    <body class="pt-8 font-sans antialiased text-white bg-custom-blue">
         <div class="fixed w-full h-full background-effect-gradient -left-1/2 -z-50"></div>
         <div class="fixed w-full h-full background-effect-gradient -right-1/2 -z-50"></div>
         <livewire:layout.navigation />
