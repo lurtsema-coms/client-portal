@@ -111,7 +111,7 @@ new class extends Component {
     @endif
     
     
-    <div class="w-full p-3 mt-10 mb-16 text-black bg-white rounded-lg lg:p-6">
+    <div class="w-full p-3 mt-10 mb-16 overflow-auto text-black bg-white rounded-lg lg:p-6">
         <h1 class="font-bold lg:text-3xl">Client Requests</h1>
         <table class="w-full mt-5 border-collapse">
             <thead>
@@ -130,7 +130,7 @@ new class extends Component {
                             <p class="italic text-gray-700 md:hidden">{{ $request->user->name }}</p>
                             <p class="text-sm text-gray-500 sm:hidden">{{ date('D, F j, Y', strtotime($request->needed_at)) }}</p>
                         </td>
-                        <td class="hidden px-6 py-5 sm:table-cell whitespace-nowrap">{{ date('D, F j, Y', strtotime($request->created_at)) }}</td>
+                        <td class="hidden px-6 py-5 xl:table-cell whitespace-nowrap">{{ date('D, F j, Y', strtotime($request->created_at)) }}</td>
                         <td class="hidden px-6 py-5 sm:table-cell whitespace-nowrap">{{ date('D, F j, Y', strtotime($request->needed_at)) }}</td>
                         <td class="py-5 pl-6 rounded-r-lg">
                             <a href="{{ route('edit-request', $request->id) }}" wire:navigate>

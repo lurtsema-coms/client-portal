@@ -123,7 +123,7 @@ class extends Component {
     @endif
     
     
-    <div class="w-full p-3 mt-10 mb-16 text-black bg-white rounded-lg lg:p-6">
+    <div class="w-full p-3 mt-10 mb-16 overflow-auto text-black bg-white rounded-lg lg:p-6">
         <h1 class="font-bold lg:text-3xl">Client Requests</h1>
         <table class="w-full mt-5 border-collapse">
             <thead>
@@ -142,7 +142,7 @@ class extends Component {
                             <p class="italic text-gray-700 md:hidden">{{ $request->user->name }}</p>
                             <p class="text-sm text-gray-500 sm:hidden">{{ date('D, F j, Y', strtotime($request->needed_at)) }}</p>
                         </td>
-                        <td class="hidden px-6 py-5 sm:table-cell whitespace-nowrap">{{ date('D, F j, Y', strtotime($request->created_at)) }}</td>
+                        <td class="hidden px-6 py-5 xl:table-cell whitespace-nowrap">{{ date('D, F j, Y', strtotime($request->created_at)) }}</td>
                         <td class="hidden px-6 py-5 sm:table-cell whitespace-nowrap">{{ date('D, F j, Y', strtotime($request->needed_at)) }}</td>
                         <td class="py-5 pl-6 rounded-r-lg">
                             <a href="{{ route('requests.view-request', ['client' => $request->user->id, 'clientRequest' => $request->id]) }}" wire:navigate class="px-5 py-1 font-bold text-black transition-all duration-300 ease-in-out rounded-md bg-button-blue hover:opacity-60">View</a>
@@ -158,7 +158,7 @@ class extends Component {
             {{ $userRequests->links() }}
         </div>
     </div>
-    <div class="w-full p-3 mb-16 text-black bg-white rounded-lg lg:p-6">
+    <div class="w-full p-3 mb-16 overflow-auto text-black bg-white rounded-lg lg:p-6">
         <h1 class="font-bold lg:text-3xl">Deliverables</h1>
         <table class="w-full mt-5 border-collapse">
             <thead>
@@ -175,7 +175,7 @@ class extends Component {
                     <tr class="border-b">
                         <td class="px-3 py-5">
                             <p class="font-bold">{{ $deliverable->title }}</p>
-                            <p class="italic text-gray-700 md:hidden">Client Name A</p>
+                            <p class="italic text-gray-700 md:hidden">{{ $client->name }}</p>
                             <p class="text-sm text-gray-500 sm:hidden">{{ date('D, F j, Y') }}</p>
                         </td>
                         <td class="hidden px-6 py-5 sm:table-cell whitespace-nowrap">{{ $deliverable->status }}</td>
@@ -221,7 +221,7 @@ class extends Component {
                     <tr class="border-b">
                         <td class="px-3 py-5">
                             <p class="font-bold">{{ $complete->title }}</p>
-                            <p class="italic text-gray-700 md:hidden">Client Name A</p>
+                            <p class="italic text-gray-700 md:hidden">{{ $client->name }}</p>
                             <p class="text-sm text-gray-500 sm:hidden">{{ date('D, F j, Y') }}</p>
                         </td>
                         <td class="hidden px-6 py-5 sm:table-cell whitespace-nowrap">{{ $complete->status }}</td>
