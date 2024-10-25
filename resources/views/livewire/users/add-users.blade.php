@@ -22,7 +22,6 @@ class extends Component {
     public $email = '';
     public $role = '';
     public $client_type = '';
-    public $project_manager = '';
     public $url_sharepoint = '';
     public $password = '';
     public $photo;
@@ -34,6 +33,7 @@ class extends Component {
     public $moreInfoValuesPolitical = [];
     public $socials = [];
     public $assets = [];
+    public $account_manager = [];
 
     public function mount()
     {
@@ -65,10 +65,10 @@ class extends Component {
             'company_cell_number' => $this->company_cell === '' ? null : $this->company_cell,
             'company_address' => $this->company_address === '' ? null : $this->company_address,
             'url_sharepoint' => $this->url_sharepoint === '' ? null : $this->url_sharepoint,
-            'project_manager' => $this->project_manager === '' ? null : $this->project_manager,
             'client_type' => $this->client_type === '' ? null : $this->client_type,
-            'assets' => json_encode($this->assets),
-            'socials' => json_encode($this->socials),
+            'account_manager' => !empty($this->account_manager) ? json_encode($this->account_manager) : null,
+            'assets' => !empty($this->assets) ? json_encode($this->assets) : null,
+            'socials' => !empty($this->socials) ? json_encode($this->socials) : null,
             'img_path' => $img_path === '' ? null : $img_path,
             'password' => Hash::make($this->password),
             'created_by' => auth()->user()->id,
@@ -129,7 +129,6 @@ class extends Component {
             'company_address', 
             'person_in_contact', 
             'password', 
-            'project_manager', 
             'client_type'
         ]);
         
@@ -153,9 +152,11 @@ class extends Component {
                 'photo' => 'nullable|image|max:1024',
                 'company_cell' => 'required|min:3',
                 'company_address' => 'required|min:3',
-                'project_manager' => 'required|min:3',
                 'client_type' => 'required|in:business,political',
                 'url_sharepoint' => 'nullable|url',
+                'account_manager.name' => 'required|min:3',
+                'account_manager.cell_number' => 'required|min:3',
+                'account_manager.email' => 'required|email',
                 'person_in_contact.*.name' => 'required|min:3',
                 'person_in_contact.*.cell_number' => 'required|min:3',
                 'person_in_contact.*.email' => 'required|email',
@@ -292,17 +293,6 @@ class extends Component {
                 </div>
                 @if($role === 'client')
                 <div class="mt-5 space-y-2">
-                    <label for="" class="block tracking-wider text-gray-600">Project Manager</label>
-                    <input 
-                        class="w-full text-black rounded-lg"
-                        type="text"
-                        wire:model="project_manager"
-                    >
-                    @error('project_manager')<p class="text-red-500">{{ $message }}</p>@enderror
-                </div>
-                @endif
-                @if($role === 'client')
-                <div class="mt-5 space-y-2">
                     <label for="" class="block tracking-wider text-gray-600">Client Type</label>
                     <select 
                         class="w-full text-black rounded-lg"
@@ -362,6 +352,41 @@ class extends Component {
             </div>
             
             @if($role == 'client')
+                <div>
+                    <hr class="my-10">
+                    <h1 class="font-bold lg:text-3xl">Account Manager</h1>
+                        <div>
+                            <div class="flex flex-col sm:max-w-[50%] lg:max-w-[unset] lg:flex-row lg:gap-5">
+                                <div class="flex-grow mt-5 space-y-2">
+                                    <label for="" class="block tracking-wider text-gray-600">Name</label>
+                                    <input 
+                                        class="w-full max-w-lg text-black rounded-lg"
+                                        type="text"
+                                        wire:model="account_manager.name"
+                                    >
+                                    @error("account_manager.name") <p class="text-red-500">{{ $message }}</p> @enderror
+                                </div>
+                                <div class="flex-grow mt-5 space-y-2">
+                                    <label for="" class="block tracking-wider text-gray-600">Cell Number</label>
+                                    <input 
+                                        class="w-full max-w-lg text-black rounded-lg"
+                                        type="text"
+                                        wire:model="account_manager.cell_number"
+                                    >
+                                    @error("account_manager.cell_number") <p class="text-red-500">{{ $message }}</p> @enderror
+                                </div>
+                                <div class="flex-grow mt-5 space-y-2">
+                                    <label for="" class="block tracking-wider text-gray-600">Email Address</label>
+                                    <input 
+                                        class="w-full max-w-lg text-black rounded-lg"
+                                        type="text"
+                                        wire:model="account_manager.email"
+                                    >
+                                    @error("account_manager.email") <p class="text-red-500">{{ $message }}</p> @enderror
+                                </div>
+                            </div>
+                        </div>
+                </div>
                 {{-- more Info --}}
                 @php
                 if ($client_type === 'business') {
