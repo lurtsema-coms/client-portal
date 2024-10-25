@@ -75,9 +75,11 @@ new class extends Component {
                             <a href="{{ route('edit-users', $user->id) }}" wire:navigate>                                
                                 <button class="px-5 py-1 font-bold text-black transition-all duration-300 ease-in-out rounded-md bg-button-blue hover:opacity-60">Edit</button>
                             </a>
+                            @if ($user->role === 'client')
                             <a href="{{ route('view-users', $user->id) }}" wire:navigate>                                
                                 <button class="px-5 py-1 font-bold text-black transition-all duration-300 ease-in-out rounded-md bg-button-blue hover:opacity-60">View</button>
                             </a>
+                            @endif
                         </td>
                     </tr>
                 @endforeach
