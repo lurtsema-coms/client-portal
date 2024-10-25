@@ -247,7 +247,7 @@ class extends Component {
 <div>
     <x-header-title headingTitle="Add User" backButton="true" />
     <div class="w-full p-3 text-black bg-white rounded-lg lg:p-6">
-        <form action="" wire:submit="addUser">
+        <form action="" wire:submit="addUser" autocomplete="off">
             <h1 class="font-bold lg:text-3xl">Personal Information</h1>
             <div class="grid sm:grid-cols-2 sm:gap-x-8">
                 <div class="mt-5 space-y-2">
