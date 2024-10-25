@@ -9,6 +9,7 @@ new class extends Component {
     public $socials;
     public $paidInvoice;
     public $unpaidInvoice;
+    public $accountManager;
 
     public function mount($client) {
         $this->client = $client;
@@ -16,6 +17,7 @@ new class extends Component {
         $this->unpaidInvoice = $client->invoice()->byStatus('UNPAID')->get();
         $this->assets = json_decode($client->assets, true) ?? [];
         $this->socials = json_decode($client->socials, true) ?? [];
+        $this->accountManager = json_decode( $client->account_manager) ?? [];
     }
 }; ?>
 
@@ -69,15 +71,15 @@ new class extends Component {
                 <h4 class="mb-2 text-2xl font-bold md:w-56 md:text-right">Account Manager</h4>
                 <div class="flex items-center gap-5 md:gap-10">
                     <p class="w-40 font-semibold md:w-56 md:text-right">Name:</p>
-                    <p>Jane Dela Cruz</p>
+                    <p>{{ $accountManager?->name ?? '' }}</p>
                 </div>
                 <div class="flex items-center gap-5 md:gap-10">
                     <p class="w-40 font-semibold md:w-56 md:text-right">Email Address:</p>
-                    <p>janedelacruz@test.emaildsfdsd</p>
+                    <p>{{ $accountManager?->email ?? '' }}</p>
                 </div>
                 <div class="flex items-center gap-5 md:gap-10">
                     <p class="w-40 font-semibold md:w-56 md:text-right">Cell Number:</p>
-                    <p>9329843949</p>
+                    <p>{{ $accountManager?->cell_number ?? '' }}</p>
                 </div>
             </div>
             <div class="flex flex-col gap-2">
@@ -121,7 +123,8 @@ new class extends Component {
                     @endif
                     @foreach ($socials as $social)
                     <a href="{{ $social['link'] }}" target="_blank" class="underline cursor-pointer md:text-right lg:text-left hover:text-button-blue">{{ strtoupper($social['label']) }}</a>
-                    @endforeach                </div>
+                    @endforeach                
+                </div>
             </div>
         </div>
     </div>
