@@ -71,9 +71,12 @@ new class extends Component {
                         <td class="hidden md:table-cell">{{ $user->email }}</td>
                         <td class="hidden xl:table-cell">{{ $user->role }}</td>
                         <td class="hidden sm:table-cell">{{ Carbon::parse($user->created_at)->format('D, F j, Y')}}</td>
-                        <td class="rounded-r-lg">
+                        <td class="flex flex-col gap-2 py-2 rounded-r-lg md:flex-row">
                             <a href="{{ route('edit-users', $user->id) }}" wire:navigate>                                
                                 <button class="px-5 py-1 font-bold text-black transition-all duration-300 ease-in-out rounded-md bg-button-blue hover:opacity-60">Edit</button>
+                            </a>
+                            <a href="{{ route('view-users', $user->id) }}" wire:navigate>                                
+                                <button class="px-5 py-1 font-bold text-black transition-all duration-300 ease-in-out rounded-md bg-button-blue hover:opacity-60">View</button>
                             </a>
                         </td>
                     </tr>
