@@ -59,7 +59,7 @@ class extends Component {
 }; ?>
 
 <div class="flex flex-col items-stretch justify-start gap-5">
-  <x-header-title headingTitle="Client Deliverable" />
+  <x-header-title headingTitle="Client Deliverable" backButton="true" />
   @if (session('success'))
     <div 
         x-data="{ show: true }"
@@ -70,7 +70,7 @@ class extends Component {
         {{ session('success') }}
     </div>
   @endif
-  <div class="py-12">
+  <div class="">
     <form action="" wire:submit="handleSave">
       <div class="mx-auto space-y-6">
         <div class="p-4 bg-white shadow sm:p-8 sm:rounded-lg">
