@@ -91,7 +91,12 @@ class extends Component {
                 </div>
             </div>
             <div class="flex flex-col gap-2">
+                @role('admin')
+                    <a href="{{ route('invoices.show-invoice', $client->id) }}" class="mb-2 text-2xl font-bold underline hover:text-button-blue md:w-56 md:text-right">Invoices</a>
+                @endrole
+                @role('client')
                 <h4 class="mb-2 text-2xl font-bold md:w-56 md:text-right">Invoices</h4>
+                @endrole
                 <div class="flex items-center gap-5 md:gap-10">
                     <p class="w-40 font-semibold md:w-56 md:text-right">Paid Invoice:</p>
                     <div class="flex-1">
