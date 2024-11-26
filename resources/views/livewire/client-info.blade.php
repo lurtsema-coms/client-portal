@@ -50,7 +50,7 @@ new class extends Component {
                 <h4 class="mb-2 text-2xl font-bold md:w-56 md:text-right">Person In Contact</h4>
                 <div class="flex flex-col items-center justify-start gap-10">
                     @foreach ($client->personInContact as $person)
-                    <div class="flex flex-col w-full gap-2">
+                    <div class="flex flex-col w-full gap-1">
                         <div class="flex items-center gap-5 md:gap-10">
                             <p class="w-40 font-semibold md:w-56 md:text-right">Name:</p>
                             <p>{{ $person->name }}</p>
@@ -67,7 +67,7 @@ new class extends Component {
                     @endforeach
                 </div>
             </div>
-            <div class="flex flex-col gap-2">
+            <div class="flex flex-col gap-1">
                 <h4 class="mb-2 text-2xl font-bold md:w-56 md:text-right">Account Manager</h4>
                 <div class="flex items-center gap-5 md:gap-10">
                     <p class="w-40 font-semibold md:w-56 md:text-right">Name:</p>
@@ -82,7 +82,7 @@ new class extends Component {
                     <p>{{ $accountManager?->cell_number ?? '' }}</p>
                 </div>
             </div>
-            <div class="flex flex-col gap-2">
+            <div class="flex flex-col gap-1">
                 <h4 class="mb-2 text-2xl font-bold md:w-56 md:text-right">Invoices</h4>
                 <div class="flex items-center gap-5 md:gap-10">
                     <p class="w-40 font-semibold md:w-56 md:text-right">Paid Invoice:</p>
@@ -106,7 +106,7 @@ new class extends Component {
         <div class="flex flex-col gap-10 max-w-[500px] lg:max-w-[600px] md:pr-5">
             <div class="md:w-56">
                 <h4 class="mb-2 text-2xl font-bold md:text-right lg:text-left">Assets</h4>
-                <div class="flex flex-col gap-2">
+                <div class="flex flex-col gap-1">
                     @if (!count($assets))
                     <p class="italic text-gray-400 md:text-right lg:text-left">Not available</p>
                     @endif
@@ -117,7 +117,7 @@ new class extends Component {
             </div>
             <div class="md:w-56">
                 <h4 class="mb-2 text-2xl font-bold md:text-right lg:text-left">Socials</h4>
-                <div class="flex flex-col gap-2">
+                <div class="flex flex-col gap-1">
                     @if (!count($socials))
                     <p class="italic text-gray-400 md:text-right lg:text-left">Not available</p>
                     @endif
