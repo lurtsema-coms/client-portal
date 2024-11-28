@@ -214,7 +214,7 @@ new class extends Component {
                             <p class="italic text-gray-700 md:hidden">{{ $complete->user->name }}</p>
                             <p class="text-sm text-gray-500 sm:hidden">{{ date('D, F j, Y') }}</p>
                         </td>
-                        <td class="hidden px-6 py-5 xl:table-cell whitespace-nowrap">{{ date('D, F j, Y', strtotime($complete->needed_at)) }}</td>
+                        <td class="hidden px-6 py-5 sm:table-cell whitespace-nowrap">{{ date('D, F j, Y', strtotime($complete->needed_at)) }}</td>
                         <td class="py-5 pl-6 rounded-r-lg">
                             <a href="{{ route('view-completed', $complete->id) }}" wire:navigate>
                                 <button class="px-5 py-1 font-bold text-black transition-all duration-300 ease-in-out rounded-md bg-button-blue hover:opacity-60">View</button>
