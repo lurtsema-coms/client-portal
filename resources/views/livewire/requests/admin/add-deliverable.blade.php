@@ -145,10 +145,10 @@ class extends Component {
           wire:key="uniqueKey"
         ></trix-editor>
           @error('remarks')<p class="mt-2 text-red-500">{{ $message }}</p>@enderror
-        </div>
-        <button 
-          class="px-4 py-2 mt-5 text-right text-white bg-blue-500 border rounded-lg hover:bg-blue-600"
-          type="Submit" 
+      </div>
+      <button 
+        class="px-4 py-2 mt-5 text-right text-white bg-blue-500 border rounded-lg hover:bg-blue-600"
+        type="Submit" 
         >
         Submit
       </button>      
