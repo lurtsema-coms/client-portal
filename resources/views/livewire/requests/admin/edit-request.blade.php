@@ -123,7 +123,7 @@ new class extends Component {
 			<h1 class="font-bold text-black lg:text-3xl">Deliverable Form</h1>
 			<div class="grid sm:grid-cols-2 sm:gap-x-8">
 				<div class="mt-5 space-y-2">
-					<label for="" class="block tracking-wider text-gray-600">Created By</label>
+					<label for="" class="block tracking-wider text-gray-600">Client</label>
 					<input 
 						class="w-full text-black rounded-lg"
 						type="text"
