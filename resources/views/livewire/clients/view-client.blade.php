@@ -82,7 +82,7 @@ class extends Component {
 
 <div class="w-full mx-auto ">
     <x-header-title headingTitle="Client Deliverables" backButton="true" />
-    <a href="{{ route('view-users', $client->id) }}" class="text-2xl italic text-gray-400 underline hover:opacity-50">{{ $client->name }}</a>
+    <a href="{{ route('view-users', $client->id) }}" class="text-2xl italic text-gray-400 underline hover:opacity-50" wire:navigate>{{ $client->name }}</a>
     <div class="flex flex-col w-full gap-5 mt-5 lg:items-center lg:justify-between lg:flex-row">
         <div class="flex flex-col-reverse flex-1 gap-5 shrink-0 lg:flex-row">
             <a href="{{ route('requests.add-deliverable', $client->id) }}" class="max-w-60" wire:navigate>
