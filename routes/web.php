@@ -35,6 +35,7 @@ Route::group(['middleware' => 'auth'], function () {
         Volt::route('clients/{client}/deliverable/add', 'requests.admin.add-deliverable')->name('requests.add-deliverable');
         Volt::route('clients/{client}/deliverables/{clientRequest}', 'requests.admin.view-deliverable')->name('requests.view-deliverable');
         Volt::route('clients/{client}', 'clients.view-client')->name('clients.view-client');
+        Volt::route('clients/{client}/view-deliverable-details/{id}', 'view-deliverable-details')->name('requests.view-deliverable-details');
 
         // users
         Route::view('users', 'users')->name('users');
