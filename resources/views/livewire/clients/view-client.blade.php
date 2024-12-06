@@ -144,8 +144,9 @@ class extends Component {
                         </td>
                         <td class="hidden px-6 py-5 xl:table-cell whitespace-nowrap">{{ date('D, F j, Y', strtotime($request->created_at)) }}</td>
                         <td class="hidden px-6 py-5 sm:table-cell whitespace-nowrap">{{ date('D, F j, Y', strtotime($request->needed_at)) }}</td>
-                        <td class="py-5 pl-6 rounded-r-lg">
-                            <a href="{{ route('requests.view-request', ['client' => $request->user->id, 'clientRequest' => $request->id]) }}" wire:navigate class="px-5 py-1 font-bold text-black transition-all duration-300 ease-in-out rounded-md bg-button-blue hover:opacity-60">View</a>
+                        <td class="flex flex-col gap-2 py-2 rounded-r-lg md:flex-row">
+                            <a href="{{ route('requests.view-request', ['client' => $request->user->id, 'clientRequest' => $request->id]) }}" wire:navigate class="px-5 py-1 font-bold text-black transition-all duration-300 ease-in-out rounded-md bg-button-blue hover:opacity-60">Edit</a>
+                            <a href="{{ route('requests.view-deliverable-details', ['client' => $request->user->id,'id' => $request->id]) }}" wire:navigate class="px-5 py-1 font-bold text-black transition-all duration-300 ease-in-out rounded-md bg-button-blue hover:opacity-60">View</a>
                         </td>
                     </tr>
                 @endforeach
@@ -181,8 +182,9 @@ class extends Component {
                         <td class="hidden px-6 py-5 sm:table-cell whitespace-nowrap">{{ $deliverable->status }}</td>
                         <td class="hidden px-6 py-5 xl:table-cell whitespace-nowrap">{{ date('D, F j, Y', strtotime($deliverable->updated_at)) }}</td>
                         <td class="hidden px-6 py-5 xl:table-cell">{{ $deliverable->updatedBy?->name }}</td>
-                        <td class="py-5 pl-6 rounded-r-lg">
-                            <a href="{{ route('requests.view-deliverable', ['client' => $deliverable->user->id, 'clientRequest' => $deliverable->id]) }}" wire:navigate class="px-5 py-1 font-bold text-black transition-all duration-300 ease-in-out rounded-md bg-button-blue hover:opacity-60">View</a>
+                        <td class="flex flex-col gap-2 py-2 rounded-r-lg md:flex-row">
+                            <a href="{{ route('requests.view-deliverable', ['client' => $deliverable->user->id, 'clientRequest' => $deliverable->id]) }}" wire:navigate class="px-5 py-1 font-bold text-black transition-all duration-300 ease-in-out rounded-md bg-button-blue hover:opacity-60">Edit</a>
+                            <a href="{{ route('requests.view-deliverable-details', ['client' => $deliverable->user->id,'id' => $deliverable->id]) }}" wire:navigate class="px-5 py-1 font-bold text-black transition-all duration-300 ease-in-out rounded-md bg-button-blue hover:opacity-60">View</a>
                         </td>
                     </tr>
                 @endforeach
@@ -227,8 +229,9 @@ class extends Component {
                         <td class="hidden px-6 py-5 sm:table-cell whitespace-nowrap">{{ $complete->status }}</td>
                         <td class="hidden px-6 py-5 xl:table-cell whitespace-nowrap">{{ date('D, F j, Y', strtotime($complete->updated_at)) }}</td>
                         <td class="hidden px-6 py-5 xl:table-cell">{{ $complete->updatedBy?->name }}</td>
-                        <td class="py-5 pl-6 rounded-r-lg">
-                            <a href="{{ route('requests.view-deliverable', ['client' => $complete->user->id, 'clientRequest' => $complete->id]) }}" wire:navigate class="px-5 py-1 font-bold text-black transition-all duration-300 ease-in-out rounded-md bg-button-blue hover:opacity-60">View</a>
+                        <td class="flex flex-col gap-2 py-2 rounded-r-lg md:flex-row">
+                            <a href="{{ route('requests.view-deliverable', ['client' => $complete->user->id, 'clientRequest' => $complete->id]) }}" wire:navigate class="px-5 py-1 font-bold text-black transition-all duration-300 ease-in-out rounded-md bg-button-blue hover:opacity-60">Edit</a>
+                            <a href="{{ route('requests.view-deliverable-details', ['client' => $complete->user->id,'id' => $complete->id]) }}" wire:navigate class="px-5 py-1 font-bold text-black transition-all duration-300 ease-in-out rounded-md bg-button-blue hover:opacity-60">View</a>
                         </td>
                     </tr>
                 @endforeach
