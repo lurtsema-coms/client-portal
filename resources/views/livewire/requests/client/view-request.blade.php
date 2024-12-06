@@ -22,7 +22,7 @@ class extends Component {
         $id = request()->id;
 
         $request = ClientRequest::find($id);
-        $this->authorize('view', $request);
+        $this->authorize('edit', $request);
         
         $this->request = $request;
         $this->title = $request->title;

@@ -30,7 +30,12 @@ class ClientRequestPolicy
      */
     public function update(User $user, ClientRequest $clientRequest): bool
     {
-        return $user->id === $clientRequest->user_id || $user->role === 'admin';
+        return ($user->id === $clientRequest->user_id && $clientRequest->status === 'PENDING') || $user->role === 'admin';
+    }
+
+    public function edit(User $user, ClientRequest $clientRequest): bool
+    {
+        return ($user->id === $clientRequest->user_id && $clientRequest->status === 'PENDING') || $user->role === 'admin';
     }
 
     /**
