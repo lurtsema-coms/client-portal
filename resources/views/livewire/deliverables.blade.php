@@ -132,8 +132,11 @@ new class extends Component {
                         </td>
                         <td class="hidden px-6 py-5 xl:table-cell whitespace-nowrap">{{ date('D, F j, Y', strtotime($request->created_at)) }}</td>
                         <td class="hidden px-6 py-5 sm:table-cell whitespace-nowrap">{{ date('D, F j, Y', strtotime($request->needed_at)) }}</td>
-                        <td class="py-5 pl-6 rounded-r-lg">
+                        <td class="flex flex-col gap-2 py-2 rounded-r-lg md:flex-row">
                             <a href="{{ route('edit-request', $request->id) }}" wire:navigate>
+                                <button class="px-5 py-1 font-bold text-black transition-all duration-300 ease-in-out rounded-md bg-button-blue hover:opacity-60">Edit</button>
+                            </a>
+                            <a href="{{ route('view-deliverables', $request->id) }}" wire:navigate>
                                 <button class="px-5 py-1 font-bold text-black transition-all duration-300 ease-in-out rounded-md bg-button-blue hover:opacity-60">View</button>
                             </a>
                         </td>
@@ -171,7 +174,7 @@ new class extends Component {
                         <td class="hidden px-6 py-5 sm:table-cell whitespace-nowrap">{{ $deliverable->status }}</td>
                         <td class="hidden px-6 py-5 xl:table-cell whitespace-nowrap">{{ date('D, F j, Y', strtotime($deliverable->updated_at)) }}</td>
                         <td class="hidden px-6 py-5 xl:table-cell">{{ $deliverable->updatedBy->name }}</td>
-                        <td class="py-5 pl-6 rounded-r-lg">
+                        <td class="flex flex-col gap-2 py-2 rounded-r-lg md:flex-row">
                             <a href="{{ route('view-deliverables', $deliverable->id) }}" wire:navigate>
                                 <button class="px-5 py-1 font-bold text-black transition-all duration-300 ease-in-out rounded-md bg-button-blue hover:opacity-60">View</button>
                             </a>
