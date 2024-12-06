@@ -58,8 +58,8 @@ Route::group(['middleware' => 'auth'], function () {
         Route::view('deliverables', 'deliverables')->name('deliverables');
         Volt::route('add-request', 'requests.client.add-request')->name('add-request');
         Volt::route('edit-request/{id}', 'requests.client.view-request')->name('edit-request');
-        Volt::route('view-request-deliverables/{id}', 'requests.client.view-deliverables')->name('view-deliverables');
-        Volt::route('view-request-completed/{id}', 'requests.client.view-completed')->name('view-completed');
+        Volt::route('view-request-deliverables/{id}', 'view-deliverable-details')->name('view-deliverables');
+        Volt::route('view-request-completed/{id}', 'view-deliverable-details')->name('view-completed');
     });
 });
 
