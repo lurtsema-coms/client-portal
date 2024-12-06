@@ -4,8 +4,59 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "615bfcd5d86ca3335115e32e78af34b3",
+    "content-hash": "8ae560e6e915bf836f48bbc3ee3a1b2b",
     "packages": [
+        {
+            "name": "asika/autolink",
+            "version": "2.0.4",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/asika32764/php-autolink.git",
+                "reference": "7474c6a025c8972a0abad3da072499e316e450e3"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/asika32764/php-autolink/zipball/7474c6a025c8972a0abad3da072499e316e450e3",
+                "reference": "7474c6a025c8972a0abad3da072499e316e450e3",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=8.0"
+            },
+            "require-dev": {
+                "phpunit/phpunit": "^9.0||^10.0||^11.0",
+                "windwalker/test": "^4.0",
+                "windwalker/utilities": "^4.0"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "Asika\\Autolink\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Simon Asika",
+                    "email": "asika32764@gmail.com"
+                }
+            ],
+            "description": "Auto convert url to link anchor.",
+            "homepage": "https://github.com/asika32764/php-autolink",
+            "keywords": [
+                "Linkify",
+                "autolink",
+                "link"
+            ],
+            "support": {
+                "issues": "https://github.com/asika32764/php-autolink/issues",
+                "source": "https://github.com/asika32764/php-autolink/tree/2.0.4"
+            },
+            "time": "2024-05-24T08:38:53+00:00"
+        },
         {
             "name": "brick/math",
             "version": "0.12.1",
