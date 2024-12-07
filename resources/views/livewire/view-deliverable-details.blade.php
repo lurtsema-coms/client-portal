@@ -4,6 +4,7 @@ use App\Models\ClientRequest;
 use Livewire\Attributes\Validate;
 use Livewire\Volt\Component;
 use Livewire\Attributes\Layout;
+use Asika\Autolink\AutolinkStatic;
 
 new #[Layout('layouts.admin')] 
 class extends Component {
@@ -25,7 +26,7 @@ class extends Component {
         $this->request = $request;
         $this->title = $request->title;
         $this->date_need = $request->needed_at;
-        $this->remarks = $request->remarks;
+        $this->remarks = AutolinkStatic::convert($request->remarks, ['class' => 'text-button-blue underline', 'target' => '_blank']);
         $this->subItems = json_decode($request->subitems, true) ?? [];
     }
 
