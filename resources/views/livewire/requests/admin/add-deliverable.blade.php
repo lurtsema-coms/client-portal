@@ -244,9 +244,12 @@ class extends Component {
       <button 
         class="px-4 py-2 mt-5 text-right text-white bg-blue-500 border rounded-lg hover:bg-blue-600"
         type="Submit" 
-        >
-        Submit
-      </button>      
+        wire:loading.attr="disabled"
+        wire:loading.class="opacity-50 cursor-not-allowed"
+      >
+        <span wire:loading.remove>Submit</span>
+        <span wire:loading>Submitting...</span>
+		</button>    
     </form>
   </div>
 </div>

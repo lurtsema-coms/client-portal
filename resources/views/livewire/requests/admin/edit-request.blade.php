@@ -262,12 +262,15 @@ new class extends Component {
 		<button 
 			class="px-4 py-2 mt-5 text-right text-white bg-blue-500 border rounded-lg hover:bg-blue-600"
 			type="Submit" 
+			wire:loading.attr="disabled"
+			wire:loading.class="opacity-50 cursor-not-allowed"
 			>
-			Submit
+			<span wire:loading.remove>Submit</span>
+			<span wire:loading>Submitting...</span>
 		</button>
 		<button 
 				data-modal-target="default-modal" data-modal-toggle="default-modal"
-				class="px-4 py-2 mt-5 ml-3 text-right text-white bg-red-500 border rounded-lg hover:bg-red-600"
+				class="px-4 py-2 mt-5 ml-3 text-right text-white bg-red-500 border rounded-lg disabled:opacity-50 disabled:cursor-not-allowed hover:bg-red-600"
 				type="button" 
 		>
 				Delete
