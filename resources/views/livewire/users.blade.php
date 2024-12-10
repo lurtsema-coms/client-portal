@@ -80,10 +80,10 @@ new class extends Component {
                     <tr class="border-b"wire:key="user-id{{ $user->id }}">
                         <td class="px-3 py-5">
                             <p class="font-bold">{{ $user->name }}</p>
-                            <p class="italic text-gray-700 md:hidden">{{ $user->email }}</p>
+                            <p class="italic text-gray-700 md:hidden">{{ strlen($user->email) > 25 ? substr($user->email, 0, 25) . '...' : $user->email }}</p>
                             <p class="text-sm text-gray-500 sm:hidden">{{ $user->role }}</p>
                         </td>
-                        <td class="hidden md:table-cell">{{ $user->email }}</td>
+                        <td class="hidden md:table-cell">{{ strlen($user->email) > 25 ? substr($user->email, 0, 25) . '...' : $user->email }}</td>
                         <td class="hidden xl:table-cell">{{ $user->role }}</td>
                         <td class="hidden sm:table-cell">{{ Carbon::parse($user->created_at)->format('D, F j, Y')}}</td>
                         <td class="flex flex-col gap-2 py-2 rounded-r-lg md:flex-row">
