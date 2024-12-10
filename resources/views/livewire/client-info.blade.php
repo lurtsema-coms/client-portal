@@ -13,6 +13,7 @@ new class extends Component {
 
     public function mount($client) {
         $this->client = $client;
+        $this->client->moreInfos = $client->moreInfo()->whereNull('more_infos.deleted_at');
         $this->paidInvoice = $client->invoice()->byStatus('PAID')->get();
         $this->unpaidInvoice = $client->invoice()->byStatus('UNPAID')->get();
         $this->assets = json_decode($client->assets, true) ?? [];
@@ -36,7 +37,7 @@ new class extends Component {
                 <p class=""><span class="font-semibold">Address: </span>{{ $client->company_address }}</p>
             </div>
             <div class="flex flex-col mt-10">
-                @foreach ($client->moreInfo as $info)
+                @foreach ($client->moreInfos as $info)
                 <div class="">
                     <p class=""><span class="font-semibold">{{ $info->moreInfo->label }}: </span>{{ $info->text_value ?? $info->paragraph_value ?? date('D, F j, Y', strtotime($info->date_value))  }}</p>    
                 </div>
