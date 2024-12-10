@@ -143,13 +143,13 @@ class extends Component {
             'role' => 'required|in:admin,client',
             'email' => 'required|email|unique:users,email',
             'password' => 'required|min:4',
+            'photo' => 'nullable|mimes:jpg,png,svg,webp|max:1024',
         ];
 
         $moreRules = [];
 
         if ($this->role === 'client') {
             $rules = array_merge($rules, [
-                'photo' => 'nullable|image|max:1024',
                 'company_cell' => 'required|min:3',
                 'company_address' => 'required|min:3',
                 'client_type' => 'required|in:business,political',
@@ -339,7 +339,7 @@ class extends Component {
             </div>
             
             <div class="mt-5 space-y-2">
-                @if ($photo) 
+                @if ($photo && in_array($photo->getClientOriginalExtension(), ['jpg', 'jpeg', 'png', 'svg', 'webp']))
                     <img src="{{ $photo->temporaryUrl() }}" class="mb-5 rounded-lg shadow-md max-w-48">
                 @endif
                 <label for="" class="block tracking-wider text-gray-600">Upload Logo</label>
@@ -347,6 +347,7 @@ class extends Component {
                     class="w-full max-w-lg"
                     type="file"
                     wire:model="photo"
+                    accept=".jpg, .jpeg, .png, .svg, webp"
                 >
                 @error('photo')<p class="text-red-500">{{ $message }}</p>@enderror
             </div>
