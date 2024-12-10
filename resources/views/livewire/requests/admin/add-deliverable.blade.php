@@ -248,7 +248,7 @@ class extends Component {
         wire:loading.class="opacity-50 cursor-not-allowed"
       >
         <span wire:loading.remove>Submit</span>
-        <span wire:loading>Submitting...</span>
+        <span wire:loading>Loading...</span>
 		</button>    
     </form>
   </div>

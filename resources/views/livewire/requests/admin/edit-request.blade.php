@@ -42,6 +42,11 @@ new class extends Component {
 		];
 	}
 
+	public function removeSubItem($index) {
+    unset($this->subItems[$index]);
+    $this->subItems = array_values($this->subItems);
+  }
+
 	public function handleSave()
     {
         $this->validate();
@@ -266,7 +271,7 @@ new class extends Component {
 			wire:loading.class="opacity-50 cursor-not-allowed"
 			>
 			<span wire:loading.remove>Submit</span>
-			<span wire:loading>Submitting...</span>
+			<span wire:loading>Loading...</span>
 		</button>
 		<button 
 				data-modal-target="default-modal" data-modal-toggle="default-modal"
