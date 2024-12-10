@@ -13,7 +13,7 @@ new class extends Component {
 
     public function mount($client) {
         $this->client = $client;
-        $this->client->moreInfos = $client->moreInfo()->whereNull('more_infos.deleted_at');
+        $this->client->moreInfos = $client->moreInfo()->whereHas('moreInfo', fn($query) => $query->whereNull('deleted_at'))->get();
         $this->paidInvoice = $client->invoice()->byStatus('PAID')->get();
         $this->unpaidInvoice = $client->invoice()->byStatus('UNPAID')->get();
         $this->assets = json_decode($client->assets, true) ?? [];
