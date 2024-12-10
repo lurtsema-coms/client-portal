@@ -8,6 +8,8 @@ new class extends Component {
     use WithPagination;
     
     public $search = '';
+    public $clientTypes = ['all', 'admin', 'business', 'political',];
+    public $clientType = 'all';
     
     public function with() : array
     {
@@ -25,25 +27,38 @@ new class extends Component {
                     ->orWhere('role', 'like', '%' . $this->search . '%')
                     ->orWhereRaw("DATE_FORMAT(created_at, '%a, %M %e, %Y') LIKE ?", ['%' . $this->search . '%']);
 
-            })
+            });
+
+        if ($this->clientType !== 'all' && $this->clientType !== 'admin') {
+            $query->where('client_type', $this->clientType);
+        } else if ($this->clientType === 'admin') {
+            $query->where('role', 'admin');
+        }
+
+        return $query
             ->orderBy('name', 'asc')
             ->paginate(7);
-
-        return $query;
     }
 }; ?>
 
 <div class="flex flex-col w-full">
     <div class="flex flex-wrap items-center justify-between gap-4 mb-5">
-        <a href="{{ route('add-users') }}" wire:navigate>
-            <button class="px-5 py-1 font-bold text-black transition-all duration-300 ease-in-out rounded-md bg-button-blue hover:opacity-60">Add</button>
-        </a>
-        <input 
-            class="w-full text-black rounded-lg max-w-96"
-            type="search"
-            placeholder="Search..." 
-            wire:model.live.debounce.250ms="search"
-        >
+        <select wire:model.change="clientType" name="client_type" id="client-type" class="w-full bg-transparent border-none outline-none lg:text-3xl md:max-w-52">
+            @foreach ($clientTypes as $clientType)
+                <option class="text-black" value="{{ $clientType }}">{{ ucwords($clientType) }}</option>
+            @endforeach
+        </select>
+        <div class="flex flex-row justify-between gap-5 w-96 max-w-screen-md items-center">
+            <a href="{{ route('add-users') }}" wire:navigate>
+                <button class="px-5 py-1 font-bold text-black transition-all duration-300 ease-in-out rounded-md bg-button-blue hover:opacity-60">Add</button>
+            </a>
+            <input 
+                class="w-full text-black rounded-lg max-w-96"
+                type="search"
+                placeholder="Search..." 
+                wire:model.live.debounce.250ms="search"
+            >
+        </div>
     </div>
     <div class="w-full p-3 text-black bg-white rounded-lg lg:p-6">
         <h1 class="font-bold lg:text-3xl">Users</h1>
