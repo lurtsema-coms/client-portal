@@ -47,17 +47,17 @@
             <div class="flex flex-col items-start justify-between flex-grow w-full gap-6 md:flex-row md:justify-around lg:justify-between text-slate-400">
               <div class="flex flex-col gap-3">
                 <h4 class="text-2xl font-semibold">Marketing</h4>
-                <p href="" class="text-md">Business Consulting</p>
-                <p href="" class="text-md">Social Media Marketing</p>
-                <p href="" class="text-md">Google Ads</p>
-                <p href="" class="text-md">SEO Optimization</p>
-                <p href="" class="text-md">Political Outreach</p>
+                <a href="{{ env('WEBSITE_LINK') ? env('WEBSITE_LINK') . '' : '#' }}" @if(env('WEBSITE_LINK'))  target="_blank" @endif class="text-md @if(env('WEBSITE_LINK')) underline @endif">Business Consulting</a>
+                <a href="{{ env('WEBSITE_LINK') ? env('WEBSITE_LINK') . '' : '#' }}" @if(env('WEBSITE_LINK'))  target="_blank" @endif class="text-md @if(env('WEBSITE_LINK')) underline @endif">Social Media Marketing</a>
+                <a href="{{ env('WEBSITE_LINK') ? env('WEBSITE_LINK') . '' : '#' }}" @if(env('WEBSITE_LINK'))  target="_blank" @endif class="text-md @if(env('WEBSITE_LINK')) underline @endif">Google Ads</a>
+                <a href="{{ env('WEBSITE_LINK') ? env('WEBSITE_LINK') . '' : '#' }}" @if(env('WEBSITE_LINK'))  target="_blank" @endif class="text-md @if(env('WEBSITE_LINK')) underline @endif">SEO Optimization</a>
+                <a href="{{ env('WEBSITE_LINK') ? env('WEBSITE_LINK') . '' : '#' }}" @if(env('WEBSITE_LINK'))  target="_blank" @endif class="text-md @if(env('WEBSITE_LINK')) underline @endif">Political Outreach</a>
               </div>
               <div class="flex flex-col gap-3">
                 <h4 class="text-2xl font-semibold">Creatives</h4>
-                <p href="" class="text-md">Videography</p>
-                <p href="" class="text-md">Website Development</p>
-                <p href="" class="text-md">Graphic Design</p>
+                <a href="{{ env('WEBSITE_LINK') ? env('WEBSITE_LINK') . '' : '#' }}" @if(env('WEBSITE_LINK'))  target="_blank" @endif class="text-md @if(env('WEBSITE_LINK')) underline @endif">Videography</a>
+                <a href="{{ env('WEBSITE_LINK') ? env('WEBSITE_LINK') . '' : '#' }}" @if(env('WEBSITE_LINK'))  target="_blank" @endif class="text-md @if(env('WEBSITE_LINK')) underline @endif">Website Development</a>
+                <a href="{{ env('WEBSITE_LINK') ? env('WEBSITE_LINK') . '' : '#' }}" @if(env('WEBSITE_LINK'))  target="_blank" @endif class="text-md @if(env('WEBSITE_LINK')) underline @endif">Graphic Design</a>
                 <p class="text-md">Logo Development</p>
               </div>
               <div class="flex flex-col gap-3">
