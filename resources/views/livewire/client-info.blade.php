@@ -24,7 +24,7 @@ new class extends Component {
 
 <div class="flex flex-col items-center w-full">
     <div class="flex flex-col items-center w-full max-w-screen-lg gap-10 p-8 overflow-hidden text-black bg-white md:flex-row rounded-xl">
-        <div class="relative flex w-40 overflow-hidden border rounded-full md:place-self-start aspect-square place-items-center border-slate-500">
+        <div class="relative p-5 flex w-40 overflow-hidden border rounded-full md:place-self-start aspect-square place-items-center border-slate-500">
             <img class="" src="{{ $client->img_path ?? asset('images/user.png') }}" alt="">
         </div>
         <div class="flex flex-col justify-center">
