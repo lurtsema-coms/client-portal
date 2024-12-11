@@ -27,7 +27,7 @@ class extends Component {
 }; ?>
 
 <div class="flex flex-col items-center w-full">
-    <div class="w-full max-w-screen-lg">
+    <div class="w-full">
         <button onclick="history.back()" class="my-5 text-lg border border-t-0 border-l-0 border-r-0 place-self-start border-b-button-blue text-button-blue hover:opacity-50">← Back </button>
     </div>
     @livewire('client-info', ['client' => $client])
