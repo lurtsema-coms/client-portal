@@ -29,9 +29,9 @@ new class extends Component {
         </div>
         <div class="flex flex-col justify-center flex-grow">
             <div class="flex flex-col">
-                <h3 class="text-2xl font-bold">{{ ucwords($client->client_type) }} Client</h3>
-                <div class="flex flex-col mt-3 lg:flex-row gap-x-10 lg:gap-x-40 xl:gap-x-52">
-                    <p class=""><span class="font-semibold">Email: </span>{{ $client->email }}</p>
+                <h3 class="text-2xl font-bold">{{ $client->name }}</h3>
+                <div class="flex flex-col mt-3 lg:flex-row gap-x-10 lg:gap-x-20 xl:gap-x-52">
+                    <p class="break-words break-all"><span class="font-semibold">Email: </span>{{ $client->email }}</p>
                     <p class=""><span class="font-semibold">Cell Number: </span>{{ $client->company_cell_number }}</p>
                 </div>
                 <p class=""><span class="font-semibold">Address: </span>{{ $client->company_address }}</p>
