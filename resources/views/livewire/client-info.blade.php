@@ -46,7 +46,7 @@ new class extends Component {
         </div>
     </div>
     <div class="relative flex flex-col justify-between w-full mt-16 lg:flex-row lg:items-stretch">
-        <div class="flex flex-col gap-10 md:pr-20 lg:border-r lg:mr-10 border-button-blue">
+        <div class="flex flex-col gap-10 md:pr-20 lg:border-r lg:mr-10 border-button-blue xl:min-w-[800px] xl:pr-0">
             <div class="flex flex-col flex-grow gap-2">
                 <h4 class="mb-2 text-2xl font-bold md:w-56">Person In Contact</h4>
                 <div class="flex flex-col items-center justify-start gap-10">
