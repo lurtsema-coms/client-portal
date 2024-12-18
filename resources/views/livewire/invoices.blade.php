@@ -9,15 +9,23 @@ new class extends Component {
     use WithPagination;
 
     public $search = '';
+    public $clientTypes = ['all', 'business', 'political'];
+    public $clientType = 'all';
 
     public function  with(): array {
-        $clients = User::client()
+        $query = User::client()
             ->where('name', 'like', '%' . $this->search . '%')
-            ->orderBy('users.name', 'asc')
-            ->paginate(7);
+            ->orderBy('users.name', 'asc');
+
+        if ($this->clientType !== 'all' && $this->clientType !== 'admin') {
+            $query->where('client_type', $this->clientType);
+        } else if ($this->clientType === 'admin') {
+            $query->where('role', 'admin');
+        }
+        $query = $query->paginate(10);
             
         return [
-            'clients' => $clients,
+            'clients' => $query,
         ];
     }
 
@@ -25,7 +33,12 @@ new class extends Component {
 }; ?>
 
 <div class="flex flex-col w-full">
-    <div class="flex flex-wrap items-center justify-end gap-4 mb-5">
+    <div class="flex flex-wrap items-center justify-between gap-4 mb-5">
+        <select wire:model.change="clientType" name="client_type" id="client-type" class="w-full bg-transparent border-none outline-none lg:text-3xl md:max-w-52">
+            @foreach ($clientTypes as $clientType)
+                <option class="text-black" value="{{ $clientType }}">{{ ucwords($clientType) }}</option>
+            @endforeach
+        </select>
         <input 
             class="w-full text-black rounded-lg max-w-96"
             type="search"
@@ -33,7 +46,7 @@ new class extends Component {
             wire:model.live.debounce.250ms="search"
         >
     </div>
-    <div class="w-full p-3 text-black bg-white rounded-lg lg:p-6">
+    <div class="w-full p-3 overflow-x-auto text-black bg-white rounded-lg lg:p-6">
         <h1 class="font-bold lg:text-3xl">Clients</h1>
         <table class="w-full my-5 border-collapse">
             <thead>
