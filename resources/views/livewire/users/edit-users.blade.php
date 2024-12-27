@@ -395,6 +395,8 @@ class extends Component {
                     <input 
                         class="w-full text-black rounded-lg"
                         type="text"
+                        name="url_sharepoint"
+                        autocomplete="off"
                         wire:model="url_sharepoint"
                     >
                     @error('url_sharepoint')<p class="text-red-500">{{ $message }}</p>@enderror
@@ -406,6 +408,7 @@ class extends Component {
                         class="w-full text-black rounded-lg"
                         type="password"
                         wire:model="password"
+                        autocomplete="off"
                     >
                     @error('password')<p class="text-red-500">{{ $message }}</p>@enderror
                 </div>
