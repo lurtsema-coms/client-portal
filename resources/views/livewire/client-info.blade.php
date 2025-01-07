@@ -85,7 +85,7 @@ new class extends Component {
                     </tr>
                 </table>
             </div>
-            <div class="flex flex-col gap-1">
+            {{-- <div class="flex flex-col gap-1">
                 <h4 class="mb-2 text-2xl font-bold md:w-56">Invoices</h4>
                 <table class="w-full">
                     <tr>
@@ -105,7 +105,7 @@ new class extends Component {
                         </td>
                     </tr>
                 </table>
-            </div>
+            </div> --}}
         </div>
         <hr class="w-full h-px my-10 border-0 bg-button-blue text-button-blue lg:hidden">
         <div class="flex flex-col gap-10 max-w-[500px] lg:max-w-[600px] md:pr-5 flex-grow">
